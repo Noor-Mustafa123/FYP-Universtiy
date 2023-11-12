@@ -266,6 +266,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+  //add filter functionality by price 
+
+  //-- I need to add a slider functionality
+  //get the element with the slider 
+  const slider = document.querySelector(".form-control-range");
+
+  slider.addEventListener("input", function () {
+    const currentValue = slider.value;
+    slider.previousElementSibling.innerText = `Price: $0 - $${currentValue}`;
+
+    //--I need to categorize the items according to price 
+    //in need to get the value slider and match it with the price of items 
+    document.querySelectorAll(".product").forEach(function (item) {
+      //get the price of each item through querySelector
+      const price = parseInt(item.querySelector(".text-center span:last-child").textContent.slice(1));//slicing the string to remove the $ sign
+      if (currentValue >= price) {
+        item.style.display = "block";
+        console.log(price);
+      }// if value is less then the price the display other wise dont 
+      else {
+        item.style.display = "none";
+      }
+    })
+
+  })
+
+
+
+
+  // add filter functionality by name 
+  const inputSection = document.querySelector(".form-control");
+  inputSection.addEventListener("input", function (e) {
+    const inputValue = inputSection.value.toLowerCase();// Convert to lowercase for case-insensitive comparison
+
+    //loop through the items to get the items names 
+    const products = document.querySelectorAll(".product")
+      products.forEach(function (item) {
+        const itemName = item.querySelector(".featured-container").nextElementSibling.innerText.toLowerCase();
+        // use if else to match
+        if (itemName.includes(inputValue)) {
+          item.style.display = "block";
+        }
+        else{
+          item.style.display = "none";
+        }
+      })
+  })
+
+
 
 });
 
