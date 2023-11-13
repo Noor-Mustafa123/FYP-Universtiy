@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   addToCartBtns.forEach(function (btn) {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
+      console.log("click")
       //is used to prevent the page from navigating to the URL specified in the href attribute of
       const item = e.target.parentElement.parentElement;
       const itemInfo = {
@@ -202,8 +203,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const img = btn.previousElementSibling.src;
       const name = btn.parentElement.nextElementSibling.textContent.trim();
       const price = btn.parentElement.nextElementSibling.nextElementSibling.lastElementChild.textContent.trim();
-
-
+      
+      //addinig add to cart functionality in the adc modal
       btns.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
           const itemInfo = {
@@ -339,11 +340,9 @@ document.addEventListener("DOMContentLoaded", function () {
           item.style.display = "none";
         }
       })
-
-    });
+    })
   });
 
-  //nothing is being console logged
 
 
 });
