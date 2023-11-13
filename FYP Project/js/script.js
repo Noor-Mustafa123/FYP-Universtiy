@@ -302,22 +302,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //loop through the items to get the items names 
     const products = document.querySelectorAll(".product")
-      products.forEach(function (item) {
-        const itemName = item.querySelector(".featured-container").nextElementSibling.innerText.toLowerCase();
-        // use if else to match
-        if (itemName.includes(inputValue)) {
+    products.forEach(function (item) {
+      const itemName = item.querySelector(".featured-container").nextElementSibling.innerText.toLowerCase();
+      // use if else to match
+      if (itemName.includes(inputValue)) {
+        item.style.display = "block";
+      }
+      else {
+        item.style.display = "none";
+      }
+    })
+  })
+
+
+
+
+  const colorBtns = document.querySelectorAll(".products-color-link");
+
+  colorBtns.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      const clickedColor = e.currentTarget.querySelector('.products-color').nextSibling.textContent.trim();
+      // the nextSibling gets the next element wether its an element or just text 
+      // Hide all products
+      document.querySelectorAll(".product").forEach(function (item) {
+        item.style.display = "none";
+      });
+      // show only the matching products 
+      document.querySelectorAll(".product").forEach(function (item) {
+        if (item.classList.contains(clickedColor)) {
           item.style.display = "block";
         }
         else{
           item.style.display = "none";
         }
       })
-  })
+
+    });
+  });
+
+  //nothing is being console logged
+
 
 
 
 });
-
-
-
 
