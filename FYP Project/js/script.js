@@ -330,6 +330,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       // show only the matching products 
       document.querySelectorAll(".product").forEach(function (item) {
+        // .contains it is used with DOM elements
+        // .includes it is used to search inside an array 
         if (item.classList.contains(clickedColor)) {
           item.style.display = "block";
         }
@@ -342,8 +344,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   //nothing is being console logged
-
-
 
 
 });
