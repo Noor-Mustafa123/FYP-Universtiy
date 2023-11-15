@@ -5,11 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         
+        
         {
             "type": "msedge",
             "request": "launch",
             "name": "Launch Edge against localhost",
-            "url": "http://localhost:8080",
+            "url": "http://127.0.0.1:5500/FYP%20Project/index.html",
             "webRoot": "${workspaceFolder}"
         }
     ]
