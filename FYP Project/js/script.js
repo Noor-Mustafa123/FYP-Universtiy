@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const img = btn.previousElementSibling.src;
       const name = btn.parentElement.nextElementSibling.textContent.trim();
       const price = btn.parentElement.nextElementSibling.nextElementSibling.lastElementChild.textContent.trim();
-      
+
       //addinig add to cart functionality in the adc modal
       btns.forEach(function (btn) {
         btn.addEventListener('click', function (e) {
@@ -336,7 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (item.classList.contains(clickedColor)) {
           item.style.display = "block";
         }
-        else{
+        else {
           item.style.display = "none";
         }
       })
@@ -345,5 +345,290 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+  // JSON FOR THE SINGLE PRODUCT PAGE 
+
+
+
+  [
+    {
+      "name": "Luxury Couch",
+      "price": {
+        "old": 2000,
+        "new": 1500
+      },
+      "category": "livingroom",
+      "color": "black",
+      "image": "img/img-products/product-7.png",
+      "description": "Premium luxury couch for your living room. Elegant design and comfortable seating.",
+      "reviews": {
+        "rating": 4.5,
+        "count": 15
+      },
+      "additionalInformation": "Dimensions: 80\" x 40\" x 30\"\nMaterial: High-quality fabric\nAssembly required: Yes"
+    },
+    {
+      "name": "Kitchen Table",
+      "price": {
+        "old": 600,
+        "new": 499
+      },
+      "category": "kitchen",
+      "color": "yellow",
+      "image": "img/img-products/product-8.png",
+      "description": "Stylish kitchen table for family gatherings and meals.",
+      "reviews": {
+        "rating": 4.2,
+        "count": 10
+      },
+      "additionalInformation": "Dimensions: 48\" x 30\" x 28\"\nMaterial: Solid wood\nAssembly required: No"
+    },
+    {
+      "name": "Cupboard",
+      "price": {
+        "old": 300,
+        "new": 250
+      },
+      "category": "kitchen",
+      "color": "yellow",
+      "image": "img/img-products/product-9.png",
+      "description": "Spacious cupboard for your kitchen storage needs.",
+      "reviews": {
+        "rating": 4.0,
+        "count": 8
+      },
+      "additionalInformation": "Dimensions: 36\" x 24\" x 72\"\nMaterial: Particle board\nAssembly required: Yes"
+    },
+    {
+      "name": "Queen Sized Bed",
+      "price": {
+        "old": 2500,
+        "new": 2000
+      },
+      "category": "bedroom",
+      "color": "red",
+      "image": "img/img-products/product-3.png",
+      "description": "Luxurious queen-sized bed for a comfortable night's sleep.",
+      "reviews": {
+        "rating": 4.8,
+        "count": 20
+      },
+      "additionalInformation": "Dimensions: 60\" x 80\" x 36\"\nMaterial: Solid wood\nAssembly required: Yes"
+    },
+    {
+      "name": "Designer Table",
+      "price": {
+        "old": 500,
+        "new": 480
+      },
+      "category": "livingroom",
+      "color": "white",
+      "image": "img/img-products/product-10.png",
+      "description": "Elegant designer table to enhance your living room decor.",
+      "reviews": {
+        "rating": 4.7,
+        "count": 18
+      },
+      "additionalInformation": "Dimensions: 36\" x 36\" x 18\"\nMaterial: MDF and metal\nAssembly required: No"
+    },
+    {
+      "name": "Patio Table",
+      "price": {
+        "old": 800,
+        "new": 600
+      },
+      "category": "patio",
+      "color": "white",
+      "image": "img/img-products/product-11.png",
+      "description": "Sturdy patio table for outdoor gatherings and relaxation.",
+      "reviews": {
+        "rating": 4.6,
+        "count": 25
+      },
+      "additionalInformation": "Dimensions: 48\" x 28\" x 24\"\nMaterial: Weather-resistant wood\nAssembly required: Yes"
+    },
+    {
+      "name": "Shelf",
+      "price": {
+        "old": 400,
+        "new": 350
+      },
+      "category": "bedroom",
+      "color": "white",
+      "image": "img/img-products/product-12.png",
+      "description": "Versatile shelf for organizing your bedroom essentials.",
+      "reviews": {
+        "rating": 4.3,
+        "count": 12
+      },
+      "additionalInformation": "Dimensions: 24\" x 12\" x 60\"\nMaterial: Particle board\nAssembly required: Yes"
+    },
+    {
+      "name": "Chair",
+      "price": {
+        "old": 200,
+        "new": 150
+      },
+      "category": "patio",
+      "color": "black",
+      "image": "img/img-products/product-1.png",
+      "description": "Comfortable chair for your patio relaxation.",
+      "reviews": {
+        "rating": 4.4,
+        "count": 22
+      },
+      "additionalInformation": "Dimensions: 24\" x 24\" x 36\"\nMaterial: Plastic and metal\nAssembly required: No"
+    },
+    {
+      "name": "Marble Sink",
+      "price": {
+        "old": 800,
+        "new": 750
+      },
+      "category": "bathroom",
+      "color": "white",
+      "image": "img/img-products/product-13.png",
+      "description": "Elegant marble sink for your bathroom upgrade.",
+      "reviews": {
+        "rating": 4.9,
+        "count": 30
+      },
+      "additionalInformation": "Dimensions: 36\" x 22\" x 8\"\nMaterial: Marble\nAssembly required: No"
+    },
+    {
+      "name": "Small Sofa",
+      "price": {
+        "old": 200,
+        "new": 175
+      },
+      "category": "livingroom",
+      "color": "yellow",
+      "image": "img/img-products/product-14.png",
+      "description": "Cozy small sofa perfect for compact living spaces.",
+      "reviews": {
+        "rating": 4.2,
+        "count": 15
+      },
+      "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Fabric\nAssembly required: No"
+    },
+    {
+      "name": "Wooden Table",
+      "price": {
+        "old": 100,
+        "new": 75
+      },
+      "category": "patio",
+      "color": "yellow",
+      "image": "img/img-products/product-15.png",
+      "description": "Durable wooden table for your patio setup.",
+      "reviews": {
+        "rating": 4.5,
+        "count": 18
+      },
+      "additionalInformation": "Dimensions: 36\" x 24\" x 18\"\nMaterial: Solid wood\nAssembly required: Yes"
+    },
+    {
+      "name": "Couch",
+      "price": {
+        "old": 1000,
+        "new": 800
+      },
+      "category": "livingroom",
+      "color": "white",
+      "image": "img/img-products/product-6.png",
+      "description": "Classic couch for a stylish and comfortable living room.",
+      "reviews": {
+        "rating": 4.6,
+        "count": 20
+      },
+      "additionalInformation": "Dimensions: 72\" x 36\" x 30\"\nMaterial: Linen fabric\nAssembly required: No"
+    },
+    {
+      "name": "Large Couch",
+      "price": {
+        "old": 1200,
+        "new": 1000
+      },
+      "category": "livingroom",
+      "color": "yellow",
+      "image": "img/img-products/product-5.png",
+      "description": "Spacious couch for large living rooms. Ultimate comfort for the whole family.",
+      "reviews": {
+        "rating": 4.7,
+        "count": 25
+      },
+      "additionalInformation": "Dimensions: 90\" x 40\" x 36\"\nMaterial: Leather\nAssembly required: Yes"
+    },
+    {
+      "name": "Side Table",
+      "price": {
+        "old": 500,
+        "new": 300
+      },
+      "category": "bedroom",
+      "color": "blue",
+      "image": "img/img-products/product-4.png",
+      "description": "Compact side table for your bedroom essentials.",
+      "reviews": {
+        "rating": 4.0,
+        "count": 10
+      },
+      "additionalInformation": "Dimensions: 18\" x 18\" x 24\"\nMaterial: Wood\nAssembly required: No"
+    },
+    {
+      "name": "Sofa",
+      "price": {
+        "old": 400,
+        "new": 250
+      },
+      "category": "bedroom",
+      "color": "blue",
+      "image": "img/img-products/product-2.png",
+      "description": "Modern sofa for your bedroom with a touch of elegance.",
+      "reviews": {
+        "rating": 4.3,
+        "count": 15
+      },
+      "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Velvet\nAssembly required: No"
+    }
+  ]
+
+
+
+  // target those elements in which to change the data 
+  const mainImage = document.getElementById("main-image");
+  const productName = document.querySelector(".single-product-info h2:first-child");
+  const productPrice = document.querySelector(".single-product-info h2:last-child");
+  const productDescription = document.querySelector(".single-product-info p");
+  const reviewCount = document.querySelector(".ratings .text-capitalize");
+  console.log("ppp");
+  // taget btns
+  const nextBtn = document.querySelector(".next-btn");
+  const prevBtn = document.querySelector(".prev-btn");
+  
+ // Event listeners
+nextBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  $('#productCarousel').carousel('next');
+  console.log("nnn");
 });
+
+prevBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  $('#productCarousel').carousel('prev');
+  
+});
+
+
+
+
+
+}); // the end of dom content loaded dont write below it 
+
+
+
+
+
+
+
 
