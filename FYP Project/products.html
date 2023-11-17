@@ -133,7 +133,7 @@
             <!-- the price slider  -->
             <div class="form-group">
               <label for="price-range">Price : $0 - $3000</label>
-              <input type="range" min="0" max="3000" class="form-control-range" id="price-range">
+              <input type="range" min="0" max="3000" class="form-control-range jlk" >
             </div>
 
             <!--  the search by name seciton -->
@@ -944,8 +944,10 @@
     </div>
   </div>
 
+  <!-- end of modal -->
 
 
+  <!-- THESE ARE PLACED AT THE END OF A CODE BECAUSE OF EXECUTION TIME PROBLEMS  -->
   <!-- end of modal -->
   <!-- jQuery -->
   <script src="js/jquery-3.4.1.min.js"></script>
@@ -955,6 +957,21 @@
   <script src="js/all.min.js"></script>
   <!-- Custom js -->
   <script src="js/script.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Your existing code...
+
+      // Add an event listener for the shown.bs.modal event
+      $('#productModal').on('shown.bs.modal', function () {
+        // Access elements in the modal here
+        var productName = $('#modal-product-name').text();
+        console.log(productName);
+      });
+
+      // Your existing code...
+    });
+  </script>
 </body>
 
 </html>

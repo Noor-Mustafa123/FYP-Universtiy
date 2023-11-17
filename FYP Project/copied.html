@@ -18,3 +18,234 @@
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
+
+
+
+
+    // minified
+
+    const featuredSection = document.querySelectorAll(".featured");
+const addToCartBtns = document.querySelectorAll(".featured-store-link");
+const ADCSection = document.querySelector(".pointer");
+const shopObj = {};
+
+addToCartBtns.forEach(function (btn) {
+  btn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const item = e.target.parentElement.parentElement;
+    const itemInfo = {
+      img: item.querySelector(".img-fluid").src,
+      name: item.querySelector(".texas").textContent.trim(),
+      price: item.querySelector(".span-text").textContent,
+      quantity: 1
+    };
+
+    const id = itemInfo.name;
+    if (shopObj[id]) {
+      shopObj[id].quantity += 1;
+    } else {
+      shopObj[id] = itemInfo;
+    }
+    updateCart(shopObj);
+  });
+});
+
+function updateCart(shopObj) {
+  while (ADCSection.firstChild) {
+    ADCSection.removeChild(ADCSection.firstChild);
+  }
+
+  for (let id in shopObj) {
+    let item = shopObj[id];
+    let html = `
+      <div class="col-10 mx-auto col-md-2 my-3">
+        <img src="${item.img}" alt="" class="img-fluid">
+      </div>
+      <div class="col-10 mx-auto col-md-4">
+        <p class="text-uppercase">${item.name}</p>
+      </div>
+      <div class="col-10 mx-auto col-md-2">
+        <p class="text-uppercase">${item.price}</p>
+      </div>
+      <div class="col-10 mx-auto col-md-2">
+        <div class="d-flex justify-content-center align-items-center">
+          <span class="btn btn-black mx-1 quantity-minus" data-id="${id}">-</span>
+          <span class="btn btn-black mx-1 quantity">${item.quantity}</span>
+          <span class="btn btn-black mx-1 quantity-plus" data-id="${id}">+</span>
+        </div>
+      </div>
+      <div class="col-10 mx-auto col-md-2 subTotal">
+        <p class="text-uppercase">$${parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity}</p>
+      </div>`;
+    ADCSection.innerHTML += html;
+  }
+
+  let totalPrice = 0;
+  for (let id in shopObj) {
+    let item = shopObj[id];
+    totalPrice += parseFloat(item.price.replace(/[^\d.]/g, '')) * item.quantity;
+  }
+
+  const tax = 0.12 * totalPrice;
+  const shipping = 10;
+  const orderTotal = totalPrice + tax + shipping;
+
+  const cartTotalSection = document.querySelector(".cart-total");
+  cartTotalSection.innerHTML = `
+    <div class="col-6">SUBTOTAL</div>
+    <div class="col-6">$${totalPrice.toFixed(2)}</div>
+    <div class="col-6">TAX</div>
+    <div class="col-6">$${tax.toFixed(2)}</div>
+    <div class="col-6">SHIPPING</div>
+    <div class="col-6">$${shipping.toFixed(2)}</div>
+    <div class="col-6 my-2">ORDER TOTAL</div>
+    <div class="col-6 text-danger my-2">$${orderTotal.toFixed(2)}</div>`;
+
+  ADCSection.querySelectorAll(".quantity-plus").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      const id = btn.dataset.id;
+      const jsonInfo = shopObj[id];
+      jsonInfo.quantity += 1;
+      updateCart(shopObj);
+    });
+  });
+
+  ADCSection.querySelectorAll(".quantity-minus").forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      const id = btn.dataset.id;
+      const jsonInfo = shopObj[id];
+      if (jsonInfo.quantity >= 1) {
+        jsonInfo.quantity -= 1;
+        updateCart(shopObj);
+      }
+    });
+  });
+}
+
+const categoryBtns = document.querySelectorAll(".category");
+
+categoryBtns.forEach(function (btn) {
+  btn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const catClass = btn.classList[3];
+
+    document.querySelectorAll(".product").forEach(function (item) {
+      item.style.display = "none";
+
+      document.querySelectorAll("." + catClass).forEach(function (item) {
+        item.style.display = "block";
+      });
+    });
+  });
+});
+
+const zoomBtns = document.querySelectorAll(".featured-search-icon");
+const btns = document.querySelectorAll('.modal-adc');
+
+zoomBtns.forEach(function (btn) {
+  btn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const img = btn.previousElementSibling.src;
+    const name = btn.parentElement.nextElementSibling.textContent.trim();
+    const price = btn.parentElement.nextElementSibling.nextElementSibling.lastElementChild.textContent.trim();
+
+    btns.forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        const itemInfo = {
+          img: img,
+          name: name,
+          price: price,
+          quantity: 1
+        };
+
+        const id = itemInfo.name;
+        if (shopObj[id]) {
+          shopObj[id].quantity += 1;
+        } else {
+          shopObj[id] = itemInfo;
+        }
+        updateCart(shopObj);
+      });
+    });
+
+    document.querySelectorAll(".plus").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        const middleSpan = btn.previousElementSibling;
+        if (middleSpan) {
+          let currentValue = parseInt(middleSpan.innerText);
+          currentValue += 1;
+          middleSpan.innerText = currentValue;
+        }
+      });
+    });
+
+    document.querySelectorAll(".minus").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        const middleSpan = btn.nextElementSibling;
+        let currentValue = parseInt(middleSpan.innerText);
+        if (currentValue > 0) {
+          currentValue -= 1;
+          middleSpan.innerText = currentValue;
+        }
+      });
+    });
+
+    document.getElementById("modal-product-image").src = img;
+    document.getElementById("modal-product-name").innerText = name;
+    document.getElementById("modal-product-price").innerText = price;
+
+    $("#productModal").modal("show");
+  });
+});
+
+const slider = document.querySelector(".jlk");
+
+slider.addEventListener("input", function () {
+  const currentValue = slider.value;
+  slider.previousElementSibling.innerText = `Price: $0 - $${currentValue}`;
+
+  document.querySelectorAll(".product").forEach(function (item) {
+    const price = parseInt(item.querySelector(".text-center span:last-child").textContent.slice(1));
+    if (currentValue >= price) {
+      item.style.display = "block";
+    } else {
+      item.style.display = "none";
+    }
+  });
+});
+
+const inputSection = document.querySelector(".form-control");
+inputSection.addEventListener("input", function (e) {
+  const inputValue = inputSection.value.toLowerCase();
+
+  const products = document.querySelectorAll(".product");
+  products.forEach(function (item) {
+    const itemName = item.querySelector(".featured-container").nextElementSibling.innerText.toLowerCase();
+    if (itemName.includes(inputValue)) {
+      item.style.display = "block";
+    } else {
+      item.style.display = "none";
+    }
+  });
+});
+
+const colorBtns = document.querySelectorAll(".products-color-link");
+
+colorBtns.forEach(function (btn) {
+  btn.addEventListener("click", function (e) {
+    e.preventDefault();
+    const clickedColor = e.currentTarget.querySelector('.products-color').nextSibling.textContent.trim();
+
+    document.querySelectorAll(".product").forEach(function (item) {
+      item.style.display = "none";
+    });
+
+    document.querySelectorAll(".product").forEach(function (item) {
+      if (item.classList.contains(clickedColor)) {
+        item.style.display = "block";
+      } else {
+        item.style.display = "none";
+      }
+    });
+  });
+});
