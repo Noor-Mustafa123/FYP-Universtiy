@@ -1,4 +1,4 @@
-// document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
 // DOM ITEMS
 const featuredSection = document.querySelectorAll(".featured");
 const addToCartBtns = document.querySelectorAll(".featured-store-link")
@@ -277,8 +277,9 @@ zoomBtns.forEach(function (btn) {
 //get the element with the slider 
 
 const slider = document.querySelector(".jlk");
-console.log(slider);
-
+//The bug on line 287 occurred because of how the Document Object Model (DOM) works. When a webpage loads, the DOM can only access elements from the currently open page in the browser. If you try to access an element from any other page using JavaScript, it will return null. 
+//The issue arose because an event listener was being attached to this null element. 
+//As a result, it wasn’t returning the expected value and caused a bug. To fix this, i used an if else condition
 
 // ERROR:indicates that you're trying to call the addEventListener method on an object that is null
 // this slider object is null
@@ -364,7 +365,7 @@ colorBtns.forEach(function (btn) {
 
 
 
-[
+const productObj = [
   {
     "name": "Luxury Couch",
     "price": {
@@ -611,22 +612,57 @@ colorBtns.forEach(function (btn) {
 
 // target those elements in which to change the data 
 const mainImage = document.getElementById("main-image");
-const productName = document.querySelector(".single-product-info h2:first-child");
-const productPrice = document.querySelector(".single-product-info h2:last-child");
-const productDescription = document.querySelector(".single-product-info p");
-const reviewCount = document.querySelector(".ratings .text-capitalize");
+const productName = document.querySelector(".name-product");
+const productPrice = document.querySelector(".price-product");
+const productDescription = document.querySelector(".description-product");
+const reviewCount = document.querySelector(".ratings span.text-capitalize");
 
 // taget btns
 const nextBtn = document.querySelector(".next-btn");
 const prevBtn = document.querySelector(".prev-btn");
 
+console.log(mainImage);
+console.log(productName);// this 
+console.log(productPrice);//this 
+console.log(productDescription);//this 
+console.log(reviewCount);
+
+// currentIndex
+let currentProductIndex = 0;
+
 // Event listeners
-console.log("jlskjdf")
+// nextBtn
+nextBtn.addEventListener("click", function (e) {
+  currentProductIndex++;
+  if (currentProductIndex >= productObj) {
+    currentProductIndex = 0;
+  }
+  const currentObj = productObj[currentProductIndex];
+  //setting the values
+  mainImage.src = currentObj.image;
+  productName.textContent = currentObj.name; // textContent keeps the formating of the text while innerText does not 
+  productPrice.textContent = `Price:$${currentObj.price.old}-$${currentObj.price.new}`;
+  productDescription.textContent = currentObj.description;
+  reviewCount.textContent = `Customer reviews: ${currentObj.reviews.count}`;
+})
+
+//prevBtn
+prevBtn.addEventListener("click", function (e) {
+  currentProductIndex--;
+  if (currentProductIndex < 0) {
+    currentProductIndex = productObj.length - 1;
+  }
+
+  const currentProduct = productObj[currentProductIndex];
+  mainImage.src = currentProduct.image;
+  productName.textContent = currentProduct.name;
+  productPrice.textContent = `Price: $${currentProduct.price.new}`;
+  productDescription.textContent = currentProduct.description;
+  reviewCount.textContent = `Customer reviews: ${currentProduct.reviews.count}`;
+});
 
 
-
-
-// }); // the end of dom content loaded dont write below it 
+}); // the end of dom content loaded dont write below it 
 
 
 
