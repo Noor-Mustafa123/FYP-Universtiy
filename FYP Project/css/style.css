@@ -336,3 +336,9 @@ body {
     border-radius: 5px;
 }
 
+.block{
+    display: none;
+}
+.block.active{
+    display: block;
+}
