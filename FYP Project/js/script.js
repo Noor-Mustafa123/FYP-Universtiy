@@ -616,16 +616,17 @@ const productName = document.querySelector(".name-product");
 const productPrice = document.querySelector(".price-product");
 const productDescription = document.querySelector(".description-product");
 const reviewCount = document.querySelector(".ratings span.text-capitalize");
+const imagesMany = document.querySelectorAll(".single-product-photo");
 
 // taget btns
 const nextBtn = document.querySelector(".next-btn");
 const prevBtn = document.querySelector(".prev-btn");
 
-console.log(mainImage);
-console.log(productName);// this 
-console.log(productPrice);//this 
-console.log(productDescription);//this 
-console.log(reviewCount);
+// console.log(mainImage);
+// console.log(productName);// this 
+// console.log(productPrice);//this 
+// console.log(productDescription);//this 
+// console.log(reviewCount);
 
 // currentIndex
 let currentProductIndex = 0;
@@ -634,7 +635,7 @@ let currentProductIndex = 0;
 // nextBtn
 nextBtn.addEventListener("click", function (e) {
   currentProductIndex++;
-  if (currentProductIndex >= productObj) {
+  if (currentProductIndex >= productObj.length) {
     currentProductIndex = 0;
   }
   const currentObj = productObj[currentProductIndex];
@@ -644,6 +645,10 @@ nextBtn.addEventListener("click", function (e) {
   productPrice.textContent = `Price:$${currentObj.price.old}-$${currentObj.price.new}`;
   productDescription.textContent = currentObj.description;
   reviewCount.textContent = `Customer reviews: ${currentObj.reviews.count}`;
+  //adding the images
+  imagesMany.forEach(function(image){
+     image.lastElementChild.src= currentObj.image;
+  });
 })
 
 //prevBtn
@@ -659,6 +664,10 @@ prevBtn.addEventListener("click", function (e) {
   productPrice.textContent = `Price: $${currentProduct.price.new}`;
   productDescription.textContent = currentProduct.description;
   reviewCount.textContent = `Customer reviews: ${currentProduct.reviews.count}`;
+   //adding the images
+   imagesMany.forEach(function(image){
+    image.lastElementChild.src= currentProduct.image;
+ });
 });
 
 
