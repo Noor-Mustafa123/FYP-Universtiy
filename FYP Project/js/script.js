@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // OBJECT TO SAVE ITEMS 
-  const shopObj = {};
+  const shopObj = {}
+
 
   // FUNCTIONS
   addToCartBtns.forEach(function (btn) {
@@ -54,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Iterate over each item in the shopObj
     // This is a for...in loop, which is used to iterate over the properties of an object. it executes code for each property of an object
+    //key is hte name of the property which has the value {property: value}
     for (let id in shopObj) {
       let item = shopObj[id];
 
@@ -744,28 +746,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+  //adding the quantity counter (maybe Before? the above functionality)
+  // EVENTLISTNERS TO THE QUANTITY BTNS
+
+  const plusBtn = document.querySelector(".quantityplus")
+
+
+
+  plusBtn.addEventListener("click", function () {
+    const middleSpan = this.previousElementSibling;
+    if (middleSpan) {
+      let currentValue = parseInt(middleSpan.innerText);
+      currentValue += 1;
+      middleSpan.innerText = currentValue;
+    }
+  });
+
+
+
+  const minusBtn = document.querySelector(".quantityminus");
+
+  minusBtn.addEventListener("click", function () {
+
+    const middleSpan = this.nextElementSibling;
+    let currentValue = parseInt(middleSpan.innerText);
+    if (currentValue > 0) {
+      currentValue -= 1;
+      middleSpan.innerText = currentValue;
+    }
+  });
+
+
+
+
   //adding adc functionality to the add to cart button in the single product page 
   // GIVE EACH MODAL DIFFERENT NAME AND PICTURE
   // !! Dont add dashes in classes like single-page-adc because browser considers it as a bootstrap class and not as a simple class
   const singlePageAdc = document.querySelector('.singlepageadc');
-
-
-
+  
   singlePageAdc.addEventListener("click", function (e) {
     e.preventDefault();
     //get the items 
     const img = mainImage.src;
     const name = productName.textContent;
     const price = productPrice.textContent;
-
+   //IMPORTANT //. This is because you want to get the current quantity value at the time the singlePageAdc button is clicked, not at the time the page loads.
+   const quantityValue = parseInt(plusBtn.previousElementSibling.innerText);
+   console.log(quantityValue);
+ 
 
     //creating the object to store inside the json
-
     const itemInfo = {
       img: img,
       name: name,
       price: price,
-      quantity: 1
+      quantity: quantityValue
     };
     console.log("modal adc working ");
 
@@ -784,7 +820,6 @@ document.addEventListener("DOMContentLoaded", function () {
 }); // the end of dom content loaded dont write below it 
 
 
-//adding the quantity counter (maybe Before? the above functionality)
 
 
 
