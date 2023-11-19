@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
   addToCartBtns.forEach(function (btn) {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
+      console.log("add to cart button is working")
       //is used to prevent the page from navigating to the URL specified in the href attribute of
       const item = e.target.parentElement.parentElement;
       const itemInfo = {
@@ -198,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   // Move the event listeners for "Add to Cart" buttons outside of the "Zoom" button click event
-
+  // the add to cart funcitonality for modals has been added here 
 
   zoomBtns.forEach(function (btn) {
     btn.addEventListener("click", function (e) {
@@ -217,7 +218,10 @@ document.addEventListener("DOMContentLoaded", function () {
             price: price,
             quantity: 1
           };
+          console.log("modal adc working ");
 
+          //It then checks if the product already exists in the shopObj (which represents the shopping cart). 
+          //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
 
           const id = itemInfo.name;
           if (shopObj[id]) {
@@ -399,6 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
       "additionalInformation": "Dimensions: 48\" x 30\" x 28\"\nMaterial: Solid wood\nAssembly required: No"
     },
     {
+
       "name": "Cupboard",
       "price": {
         "old": 300,
@@ -614,7 +619,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const mainImage = document.getElementById("main-image");
   const productName = document.querySelector(".name-product");
   const productPrice = document.querySelector(".price-product");
-  const productDescription = document.querySelector(".description-product");
+  const productDescription = document.querySelector(".description-product"); // ALL OF THESE ARE GLOBAL VARIABLES
   const reviewCount = document.querySelector(".ratings span.text-capitalize");
   const imagesMany = document.querySelectorAll(".single-product-photo");
   const infoLink = document.querySelectorAll(".product-info-link");
@@ -738,8 +743,48 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 
+
+  //adding adc functionality to the add to cart button in the single product page 
+  // GIVE EACH MODAL DIFFERENT NAME AND PICTURE
+  // !! Dont add dashes in classes like single-page-adc because browser considers it as a bootstrap class and not as a simple class
+  const singlePageAdc = document.querySelector('.singlepageadc');
+
+
+
+  singlePageAdc.addEventListener("click", function (e) {
+    e.preventDefault();
+    //get the items 
+    const img = mainImage.src;
+    const name = productName.textContent;
+    const price = productPrice.textContent;
+
+
+    //creating the object to store inside the json
+
+    const itemInfo = {
+      img: img,
+      name: name,
+      price: price,
+      quantity: 1
+    };
+    console.log("modal adc working ");
+
+    //It then checks if the product already exists in the shopObj (which represents the shopping cart). 
+    //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
+
+    const id = itemInfo.name;
+    if (shopObj[id]) {
+      shopObj[id].quantity += 1;
+    } else {
+      shopObj[id] = itemInfo;
+    }
+    updateCart(shopObj);
+
+  });
 }); // the end of dom content loaded dont write below it 
 
+
+//adding the quantity counter (maybe Before? the above functionality)
 
 
 
