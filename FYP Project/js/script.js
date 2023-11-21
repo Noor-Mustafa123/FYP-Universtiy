@@ -817,6 +817,8 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCart(shopObj);
 
   });
+
+  
 }); // the end of dom content loaded dont write below it 
 
 
