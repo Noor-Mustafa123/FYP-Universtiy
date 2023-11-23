@@ -819,6 +819,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   
+  
 }); // the end of dom content loaded dont write below it 
 
 
