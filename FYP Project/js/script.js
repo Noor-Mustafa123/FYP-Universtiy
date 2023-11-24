@@ -641,110 +641,112 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentProductIndex = 0;
 
   // Event listeners
-  // nextBtn
-  nextBtn.addEventListener("click", function (e) {
-    currentProductIndex++;
-    if (currentProductIndex >= productObj.length) {
-      currentProductIndex = 0;
-    }
-    const currentObj = productObj[currentProductIndex];
-    //setting the values
-    mainImage.src = currentObj.image;
-    productName.textContent = currentObj.name; // textContent keeps the formating of the text while innerText does not 
-    productPrice.textContent = `Price:$${currentObj.price.old}-$${currentObj.price.new}`;
-    productDescription.textContent = currentObj.description;
-    reviewCount.textContent = `Customer reviews: ${currentObj.reviews.count}`;
-    //adding the images
-    imagesMany.forEach(function (image) {
-      image.lastElementChild.src = currentObj.image;
-    });
-
-    // adding the tab swapping functionality 
-
-    let currentId = 'description';
-
-    infoLink.forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        currentId = e.currentTarget.id; // Update the currentId variable
-
-        if (currentId === 'description') {
-          block.textContent = productObj[currentProductIndex].description;
-        } else if (currentId === 'additional') {
-          block.textContent = productObj[currentProductIndex].additionalInformation;
-        } else if (currentId === 'reviews') {
-          block.textContent = productObj[currentProductIndex].reviews.rating;
-        }
-
-        // Hide all blocks except the current one
-        block.classList.add('active');
-        // document.querySelectorAll('.block').forEach(function(otherBlock) {
-        //   if (otherBlock !== block) {
-        //     otherBlock.textContent = '';
-        //     otherBlock.classList.remove('active');
-        //   }
-        // });
+  if (nextBtn) {
+    nextBtn.addEventListener("click", function (e) {
+      currentProductIndex++;
+      if (currentProductIndex >= productObj.length) {
+        currentProductIndex = 0;
+      }
+      const currentObj = productObj[currentProductIndex];
+      //setting the values
+      mainImage.src = currentObj.image;
+      productName.textContent = currentObj.name; // textContent keeps the formating of the text while innerText does not 
+      productPrice.textContent = `Price:$${currentObj.price.old}-$${currentObj.price.new}`;
+      productDescription.textContent = currentObj.description;
+      reviewCount.textContent = `Customer reviews: ${currentObj.reviews.count}`;
+      //adding the images
+      imagesMany.forEach(function (image) {
+        image.lastElementChild.src = currentObj.image;
       });
-    });
-  })
+
+      // adding the tab swapping functionality 
+
+      let currentId = 'description';
+
+      infoLink.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          currentId = e.currentTarget.id; // Update the currentId variable
+
+          if (currentId === 'description') {
+            block.textContent = productObj[currentProductIndex].description;
+          } else if (currentId === 'additional') {
+            block.textContent = productObj[currentProductIndex].additionalInformation;
+          } else if (currentId === 'reviews') {
+            block.textContent = productObj[currentProductIndex].reviews.rating;
+          }
+
+          // Hide all blocks except the current one
+          block.classList.add('active');
+          // document.querySelectorAll('.block').forEach(function(otherBlock) {
+          //   if (otherBlock !== block) {
+          //     otherBlock.textContent = '';
+          //     otherBlock.classList.remove('active');
+          //   }
+          // });
+        });
+      });
+    })
+  }
 
   //prevBtn
-  prevBtn.addEventListener("click", function (e) {
-    currentProductIndex--;
-    if (currentProductIndex < 0) {
-      currentProductIndex = productObj.length - 1;
-    }
+  if (prevBtn) {
+    prevBtn.addEventListener("click", function (e) {
+      currentProductIndex--;
+      if (currentProductIndex < 0) {
+        currentProductIndex = productObj.length - 1;
+      }
 
-    const currentProduct = productObj[currentProductIndex];
-    mainImage.src = currentProduct.image;
-    productName.textContent = currentProduct.name;
-    productPrice.textContent = `Price: $${currentProduct.price.new}`;
-    productDescription.textContent = currentProduct.description;
-    reviewCount.textContent = `Customer reviews: ${currentProduct.reviews.count}`;
+      const currentProduct = productObj[currentProductIndex];
+      mainImage.src = currentProduct.image;
+      productName.textContent = currentProduct.name;
+      productPrice.textContent = `Price: $${currentProduct.price.new}`;
+      productDescription.textContent = currentProduct.description;
+      reviewCount.textContent = `Customer reviews: ${currentProduct.reviews.count}`;
 
-    //adding the images
+      //adding the images
 
-    imagesMany.forEach(function (image) {
-      image.lastElementChild.src = currentProduct.image;
-    });
-
-    // adding the tab swapping functionality 
-
-    let currentId = 'description';
-
-    infoLink.forEach(function (link) {
-      link.addEventListener('click', function (e) {
-        e.preventDefault();
-
-        currentId = e.currentTarget.id; // Update the currentId variable
-
-        if (currentId === 'description') {
-          block.textContent = productObj[currentProductIndex].description;
-        } else if (currentId === 'additional') {
-          block.textContent = productObj[currentProductIndex].additionalInformation;
-        } else if (currentId === 'reviews') {
-          block.textContent = productObj[currentProductIndex].reviews.rating;
-        }
-
-        // Hide all blocks except the current one
-        block.classList.add('active');
-        //because there are no blocks except the one block and every other data is filtered throught the if else conditions
-        //we directly add the active class to the current value of the block filtered by the above condition 
-
-        //  document.querySelectorAll('.block').forEach(function(otherBlock) {
-        //    if (otherBlock !== block) {
-        //      otherBlock.textContent = '';
-        //      otherBlock.classList.remove('active');
-        //      console.log(otherBlock);
-        //    }
-        //  });
+      imagesMany.forEach(function (image) {
+        image.lastElementChild.src = currentProduct.image;
       });
+
+      // adding the tab swapping functionality 
+
+      let currentId = 'description';
+
+      infoLink.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          currentId = e.currentTarget.id; // Update the currentId variable
+
+          if (currentId === 'description') {
+            block.textContent = productObj[currentProductIndex].description;
+          } else if (currentId === 'additional') {
+            block.textContent = productObj[currentProductIndex].additionalInformation;
+          } else if (currentId === 'reviews') {
+            block.textContent = productObj[currentProductIndex].reviews.rating;
+          }
+
+          // Hide all blocks except the current one
+          block.classList.add('active');
+          //because there are no blocks except the one block and every other data is filtered throught the if else conditions
+          //we directly add the active class to the current value of the block filtered by the above condition 
+
+          //  document.querySelectorAll('.block').forEach(function(otherBlock) {
+          //    if (otherBlock !== block) {
+          //      otherBlock.textContent = '';
+          //      otherBlock.classList.remove('active');
+          //      console.log(otherBlock);
+          //    }
+          //  });
+        });
+      });
+
+
     });
-
-  });
-
-
+  }
 
 
   //adding the quantity counter (maybe Before? the above functionality)
@@ -753,73 +755,76 @@ document.addEventListener("DOMContentLoaded", function () {
   const plusBtn = document.querySelector(".quantityplus")
 
 
-
-  plusBtn.addEventListener("click", function () {
-    const middleSpan = this.previousElementSibling;
-    if (middleSpan) {
-      let currentValue = parseInt(middleSpan.innerText);
-      currentValue += 1;
-      middleSpan.innerText = currentValue;
-    }
-  });
-
+  if (plusBtn) {
+    plusBtn.addEventListener("click", function () {
+      const middleSpan = this.previousElementSibling;
+      if (middleSpan) {
+        let currentValue = parseInt(middleSpan.innerText);
+        currentValue += 1;
+        middleSpan.innerText = currentValue;
+      }
+    });
+  }
 
 
   const minusBtn = document.querySelector(".quantityminus");
+  if (minusBtn) {
+    minusBtn.addEventListener("click", function () {
 
-  minusBtn.addEventListener("click", function () {
+      const middleSpan = this.nextElementSibling;
+      let currentValue = parseInt(middleSpan.innerText);
+      if (currentValue > 0) {
+        currentValue -= 1;
+        middleSpan.innerText = currentValue;
+      }
+    });
+  }
 
-    const middleSpan = this.nextElementSibling;
-    let currentValue = parseInt(middleSpan.innerText);
-    if (currentValue > 0) {
-      currentValue -= 1;
-      middleSpan.innerText = currentValue;
-    }
-  });
-
-  
 
 
   //adding adc functionality to the add to cart button in the single product page 
   // GIVE EACH MODAL DIFFERENT NAME AND PICTURE
   // !! Dont add dashes in classes like single-page-adc because browser considers it as a bootstrap class and not as a simple class
   const singlePageAdc = document.querySelector('.singlepageadc');
-  
-  singlePageAdc.addEventListener("click", function (e) {
-    e.preventDefault();
-    //get the items 
-    const img = mainImage.src;
-    const name = productName.textContent;
-    const price = productPrice.textContent;
-   //IMPORTANT //. This is because you want to get the current quantity value at the time the singlePageAdc button is clicked, not at the time the page loads.
-   const quantityValue = parseInt(plusBtn.previousElementSibling.innerText);
-   console.log(quantityValue);
- 
+  if (singlePageAdc) {
+    singlePageAdc.addEventListener("click", function (e) {
+      e.preventDefault();
+      //get the items 
+      const img = mainImage.src;
+      const name = productName.textContent;
+      const price = productPrice.textContent;
+      //IMPORTANT //. This is because you want to get the current quantity value at the time the singlePageAdc button is clicked, not at the time the page loads.
+      const quantityValue = parseInt(plusBtn.previousElementSibling.innerText);
+      console.log(quantityValue);
 
-    //creating the object to store inside the json
-    const itemInfo = {
-      img: img,
-      name: name,
-      price: price,
-      quantity: quantityValue
-    };
-    console.log("modal adc working ");
 
-    //It then checks if the product already exists in the shopObj (which represents the shopping cart). 
-    //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
+      //creating the object to store inside the json
+      const itemInfo = {
+        img: img,
+        name: name,
+        price: price,
+        quantity: quantityValue
+      };
+      console.log("modal adc working ");
 
-    const id = itemInfo.name;
-    if (shopObj[id]) {
-      shopObj[id].quantity += 1;
-    } else {
-      shopObj[id] = itemInfo;
-    }
-    updateCart(shopObj);
+      //It then checks if the product already exists in the shopObj (which represents the shopping cart). 
+      //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
 
-  });
+      const id = itemInfo.name;
+      if (shopObj[id]) {
+        shopObj[id].quantity += 1;
+      } else {
+        shopObj[id] = itemInfo;
+      }
+      updateCart(shopObj);
 
-  
-  
+    });
+  }
+
+//   const dom = $(".sd")
+//   console.log(dom);
+// const domma = document.querySelectorAll(".sd");
+// console.log(domma);
 }); // the end of dom content loaded dont write below it 
 
 
