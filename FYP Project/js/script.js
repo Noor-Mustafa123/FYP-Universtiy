@@ -777,7 +777,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-
+  
 
 
   //adding adc functionality to the add to cart button in the single product page 
