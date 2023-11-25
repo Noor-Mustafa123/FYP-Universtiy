@@ -6,10 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bootstrap project-4 | E-commerce Project</title>
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <!-- fontawesome css -->
-  <link rel="stylesheet" href="css/all.min.css">
-  <!-- Bootstrap css -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
+   <!-- fontawesome css -->
+   <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+   <!-- Bootstrap css -->
+   <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
   <!-- custom css -->
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -41,8 +41,8 @@
           </li>
         </ul>
       </div>
-       <!-- the container for icons at the right side  -->
-       <div class="navbar-icons d-lg-flex d-none ">
+      <!-- the container for icons at the right side  -->
+      <div class="navbar-icons d-lg-flex d-none ">
         <!-- navicon are custom css classes -->
         <!-- single icon -->
         <a href="store.html" class="navbar-icon mx-2 navbar-cart-icon">
@@ -571,82 +571,82 @@
   <!-- end of footer section -->
 
 
-<!-- modal -->
-<div class="modal fade" id="productModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <!-- modal header -->
-      <div class="modal-header">
-        <h5 class="modal-title text-capitalize">product info</h5>
-        <button type="button" class="close" data-dismiss="modal">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- end of modal header -->
-      <!-- modal body -->
-      <div class="modal-body">
-        <div class="row">
-          <div class="col text-center">
-            <img id="modal-product-image" src="img/img-products/product-1.png" class="img-fluid" alt="" />
-            <!-- ratings -->
-            <div id="modal-ratings" class="ratings">
-              <span class="rating-icon"><i class="fas fa-star"></i></span>
-              <span class="rating-icon"><i class="fas fa-star"></i></span>
-              <span class="rating-icon"><i class="fas fa-star"></i></span>
-              <span class="rating-icon"><i class="fas fa-star"></i></span>
-              <span class="rating-icon"><i class="far fa-star"></i></span>
-              <span class="text-capitalize" id="modal-customer-reviews">(25 customer reviews)</span>
-            </div>
-            <!-- end of ratings -->
-            <h2 id="modal-product-name" class="text-uppercase my-2">premium office armchair</h2>
-            <h2 id="modal-product-price">$10.00 - $200.00</h2>
-            <p id="modal-product-description" class="lead text-muted">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro.
-            </p>
-            <!-- colors -->
-            <h5 class="text-uppercase">
-              colors :
-              <span class="d-inline-block products-color products-color-black mr-2"></span>
-              <span class="d-inline-block products-color products-color-red mr-2"></span>
-              <span class="d-inline-block products-color products-color-blue mr-2"></span>
-            </h5>
-            <!-- end of colors -->
-            <!-- sizes -->
-            <h5 class="text-uppercase">
-              sizes : <span class="mx-2">xs</span> <span class="mx-2">s</span>
-              <span class="mx-2">m</span> <span class="mx-2">l</span>
-              <span class="mx-2">xl</span>
-            </h5>
-            <div class="d-flex flex-wrap">
-              <!-- cart buttons -->
-              <div class="d-flex my-2">
-                <span class="btn minus btn-black mx-1">-</span>
-                <span class="btn value btn-black mx-1">4</span> 
-                <span class="btn plus btn-black mx-1">+</span>
+  <!-- modal -->
+  <div class="modal fade" id="productModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!-- modal header -->
+        <div class="modal-header">
+          <h5 class="modal-title text-capitalize">product info</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- end of modal header -->
+        <!-- modal body -->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col text-center">
+              <img id="modal-product-image" src="img/img-products/product-1.png" class="img-fluid" alt="" />
+              <!-- ratings -->
+              <div id="modal-ratings" class="ratings">
+                <span class="rating-icon"><i class="fas fa-star"></i></span>
+                <span class="rating-icon"><i class="fas fa-star"></i></span>
+                <span class="rating-icon"><i class="fas fa-star"></i></span>
+                <span class="rating-icon"><i class="fas fa-star"></i></span>
+                <span class="rating-icon"><i class="far fa-star"></i></span>
+                <span class="text-capitalize" id="modal-customer-reviews">(25 customer reviews)</span>
               </div>
-              <button class="btn btn-black my-2 mx-2">wishlist</button>
-              <button class="modal-adc btn btn-yellow my-2 mx-2">add to cart</button>
+              <!-- end of ratings -->
+              <h2 id="modal-product-name" class="text-uppercase my-2">premium office armchair</h2>
+              <h2 id="modal-product-price">$10.00 - $200.00</h2>
+              <p id="modal-product-description" class="lead text-muted">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, porro.
+              </p>
+              <!-- colors -->
+              <h5 class="text-uppercase">
+                colors :
+                <span class="d-inline-block products-color products-color-black mr-2"></span>
+                <span class="d-inline-block products-color products-color-red mr-2"></span>
+                <span class="d-inline-block products-color products-color-blue mr-2"></span>
+              </h5>
+              <!-- end of colors -->
+              <!-- sizes -->
+              <h5 class="text-uppercase">
+                sizes : <span class="mx-2">xs</span> <span class="mx-2">s</span>
+                <span class="mx-2">m</span> <span class="mx-2">l</span>
+                <span class="mx-2">xl</span>
+              </h5>
+              <div class="d-flex flex-wrap">
+                <!-- cart buttons -->
+                <div class="d-flex my-2">
+                  <span class="btn minus btn-black mx-1">-</span>
+                  <span class="btn value btn-black mx-1">4</span>
+                  <span class="btn plus btn-black mx-1">+</span>
+                </div>
+                <button class="btn btn-black my-2 mx-2">wishlist</button>
+                <button class="modal-adc btn btn-yellow my-2 mx-2">add to cart</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- end modal body -->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">close</button>
+        <!-- end modal body -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">close</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
-  <!-- jQuery -->
-  <script src="js/jquery-3.4.1.min.js"></script>
-  <!-- Bootstrap js -->
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <!-- fontwesome js -->
-  <script src="js/all.min.js"></script>
-  <!-- Custom js -->
-  <script src="js/script.js"></script>
+ <!-- jQuery -->
+<script src="../node_modules/jquery/dist/jquery.slim.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- FontAwesome JS -->
+<script src="../node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+<!-- Custom js -->
+<script src="js/script.js"></script>
 </body>
 
 </html>
