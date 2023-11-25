@@ -627,9 +627,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const infoLink = document.querySelectorAll(".product-info-link");
   const block = document.querySelector(".block");
 
+// THE JQUERY FORMAT IS $(selector).action()
+// $: Defines or accesses jQuery.
+// (selector): Finds HTML elements based on the selector.
+// .action(): Is a jQuery action to be performed on the element(s).
+
   // taget btns
-  const nextBtn = document.querySelector(".next-btn");
-  const prevBtn = document.querySelector(".prev-btn");
+  const $nextBtn = $(".next-btn");
+  const $prevBtn = $(".prev-btn");
 
   // console.log(mainImage);
   // console.log(productName);// this 
@@ -641,8 +646,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentProductIndex = 0;
 
   // Event listeners
-  if (nextBtn) {
-    nextBtn.addEventListener("click", function (e) {
+  // if (nextBtn) {
+    $nextBtn.on("click", function (e) {
       currentProductIndex++;
       if (currentProductIndex >= productObj.length) {
         currentProductIndex = 0;
@@ -688,11 +693,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
     })
-  }
+  //}
 
   //prevBtn
-  if (prevBtn) {
-    prevBtn.addEventListener("click", function (e) {
+  // if (prevBtn) {
+    $prevBtn.on("click", function (e) {
       currentProductIndex--;
       if (currentProductIndex < 0) {
         currentProductIndex = productObj.length - 1;
@@ -746,7 +751,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     });
-  }
+  //}
 
 
   //adding the quantity counter (maybe Before? the above functionality)
@@ -785,9 +790,9 @@ document.addEventListener("DOMContentLoaded", function () {
   //adding adc functionality to the add to cart button in the single product page 
   // GIVE EACH MODAL DIFFERENT NAME AND PICTURE
   // !! Dont add dashes in classes like single-page-adc because browser considers it as a bootstrap class and not as a simple class
-  const singlePageAdc = document.querySelector('.singlepageadc');
-  if (singlePageAdc) {
-    singlePageAdc.addEventListener("click", function (e) {
+  const $singlePageAdc = $('.singlepageadc');
+  // if (singlePageAdc) {
+    $singlePageAdc.on("click", function (e) {
       e.preventDefault();
       //get the items 
       const img = mainImage.src;
@@ -819,12 +824,9 @@ document.addEventListener("DOMContentLoaded", function () {
       updateCart(shopObj);
 
     });
-  }
+  // }
 
-//   const dom = $(".sd")
-//   console.log(dom);
-// const domma = document.querySelectorAll(".sd");
-// console.log(domma);
+
 }); // the end of dom content loaded dont write below it 
 
 
