@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 <!-- Bootstrap css -->
 <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/style.css">
-
+ <!-- css -->
+<link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -86,14 +86,15 @@
           <form action="#">
             <div class="input-group mb-3">
               <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-              <input type="text" class="form-control" placeholder="Email Address">
+              <input type="text" class="form-control" placeholder="Email Address" name="email"> 
+              
             </div>
             <div class="input-group mb-4">
               <span class="input-group-text"><i class="fa fa-lock"></i></span>
-              <input type="text" class="form-control" placeholder="Password">
+              <input type="password" class="form-control" placeholder="Password" name="password">
             </div>
             <div class="d-grid">
-              <button type="button" class="btn btn-success btn-block mb-3">Login</button>
+              <button type="submit" class="btn btn-success btn-block mb-3">Login</button>
               <p class="text-center">Don't have an account? <a href="SignUp.html">Sign Up Here</a></p>
             </div>
           </form>
@@ -111,12 +112,23 @@
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <!-- jQuery Validation Plugin -->
 <script src="../node_modules/jquery-validation/dist/jquery.validate.js"></script>
+<script src="../node_modules/jquery-validation/dist/additional-methods.js"></script>
+<script>
+    $(document).ready(function() {
+        if(jQuery().validate) {
+            console.log("jQuery Validate is loaded");
+        } else {
+            console.log("jQuery Validate is not loaded");
+        }
+    });
+</script>
 <!-- Bootstrap JS -->
 <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- FontAwesome JS -->
 <script src="../node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
 <!-- Custom js -->
 <script src="js/script.js"></script>
+
 
 </body>
 
