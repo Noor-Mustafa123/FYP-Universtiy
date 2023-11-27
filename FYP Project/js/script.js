@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ATTACHING EVENT LISTNERS TO QUANTITY BUTTONS
 
-
+///////////////////////////////////////////////
   // UPDATE CART FUNCTION
   function updateCart(shopObj) {
     // Clear the cart first
@@ -91,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ADCSection.innerHTML += html;
     }
 
+    ////////////////////////////////////////////////
     // Total functionality
     // Calculate the total price of all items in the cart
     let totalPrice = 0;
@@ -168,8 +169,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // NEXT PART
 
-
+////////////////////////////////////////////////////////
   // attaching event listners to the categories by name
+
   const categoryBtns = document.querySelectorAll(".category");
 
 
@@ -235,6 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       });
 
+
       // EVENTLISTNERS TO THE QUANTITY BTNS
       document.querySelectorAll(".plus").forEach(function (btn) {
         btn.addEventListener("click", function (e) {
@@ -276,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
   })
 
 
-
+//////////////////////////////////////////
   //add filter functionality by price 
 
   //-- I need to add a slider functionality
@@ -316,8 +319,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
+///////////////////////////////////////////////////
   // add filter functionality by name 
+
   const inputSection = document.querySelector(".form-control");
   inputSection.addEventListener("input", function (e) {
     const inputValue = inputSection.value.toLowerCase();// Convert to lowercase for case-insensitive comparison
@@ -366,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
+////////////////////////////////////////////////////////////
   // JSON FOR THE SINGLE PRODUCT PAGE 
 
 
@@ -682,6 +686,8 @@ document.addEventListener("DOMContentLoaded", function () {
           block.textContent = productObj[currentProductIndex].reviews.rating;
         }
 
+
+
         // Hide all blocks except the current one
         block.classList.add('active');
         // document.querySelectorAll('.block').forEach(function(otherBlock) {
@@ -912,7 +918,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Password:", $("input[name='password']").val());
 
       // Add your AJAX request here if you want to submit the form data to the server
-
+ 
       // Show a toast notification for successful submission
       console.log('Form submitted successfully.');
 
@@ -952,7 +958,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       password: {
         required: "Please enter your password",
-        minlength: "Your password must be at least 6 characters long"
+        minlength: "Your password must be at least 6 characters Long"
       }
     },
     errorElement: "span",
