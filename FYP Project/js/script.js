@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // When updateCart is called, the while loop clears the cart, and then the for loop adds each item in shopObj back into the cart.
     // This includes both the first and second items you clicked on.
 
+    //   this line is added for testing
     while (ADCSection.firstChild) {
       ADCSection.removeChild(ADCSection.firstChild);
     }
