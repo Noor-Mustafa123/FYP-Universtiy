@@ -835,6 +835,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   ////////////////////////////////////////////////////
   // adding validation for the sign up page
+  console.log($);
   $(".form").validate({
     rules: {
       first: {
@@ -926,7 +927,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Prevent form submission so the page doesn't reload
       return false;
     }
-    else {
+    else if($(".form").invalid()) {
       console.log('Form submission failed. Please check your inputs.');
 
       // Prevent form submission so the page doesn't reload
@@ -985,6 +986,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // Check if the form is valid
+    // The $("form") selector in jQuery selects all the <form> elements in the HTML of the currently loaded webpage. that is why we didnt use a .for selecting a class name
+
     if ($("form").valid()) {
       // If the form is valid
       console.log("Email:", $("input[name='email']").val());
@@ -997,7 +1000,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Prevent form submission so the page doesn't reload
       return false;
-    } else {
+    }
+    else if ($("form")){
       // If the form is not valid
 
       // Show a toast notification for unsuccessful submission
