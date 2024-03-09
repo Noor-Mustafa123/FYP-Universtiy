@@ -1,4 +1,4 @@
-package org.example;
+package Old_Hibernate_practiceproject_classes;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,7 +32,7 @@ public class App {
             Entity1 obj5 = new Entity1(5, "Emma", 25, "HR");
             Entity1 obj6 = new Entity1(6, "David", 26, "Sales");
             Entity1 obj7 = new Entity1(7,"finality",120000,"Final");
-            Entity1 objUltimate = new Entity1(8,"ultimatality",120000,"Ultimal");
+            Entity1 objUltimate = new Entity1(8,"ultimatality",120000,"Ultimaly");
           Session openSession =  sessionFactory.openSession();
             Transaction transaction = openSession.beginTransaction();
             openSession.save(objUltimate);

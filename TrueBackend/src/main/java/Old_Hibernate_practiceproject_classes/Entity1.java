@@ -1,4 +1,4 @@
-package org.example;
+package Old_Hibernate_practiceproject_classes;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
