@@ -73,9 +73,11 @@ login form -->
           <i class="fas fa-shopping-cart"></i>
           <div class="cart-items">2</div>
         </a>
-        <a href="SignUp.html" class="navbar-icon mx-2 navbar-user-icon">
+        <a href="SignUp.html" class="navbar-icon mx-2 navbar-user-icon userIcon">
           <i class="fas fa-user"></i>
         </a>
+         <button type="button" class="btn btn-danger mr-1 signOutBtn">Sign Out</button>
+
         <!-- end of  single icon -->
       </div>
     </nav>
@@ -91,9 +93,11 @@ login form -->
  *
  *==========================================================================  -->
 
+  <div class="alertContainer  d-flex justify-content-center "></div>
+
 <section >
   <div class="container">
-    <div class="row mt-5">
+    <div class="row mt-4">
       <div class="col-lg-4 m-auto bg-light sign">  <!--this m-auto is keeping the container horizontally centered-->
         <h2 class="text-center pt-3 pb-1">Signup Now</h2>
         <p class="text-center fs-1 pb-3">Its free and only takes a minute</p>
@@ -120,7 +124,7 @@ login form -->
             <input type="text" class="form-control" placeholder="Repeat Password" name="repeat">
           </div>
           <div class="d-grid">
-            <button type="submit" class="btn btn-custom btn-block">Sign Up</button>
+            <button type="submit" id="submitBtn" class="btn btn-custom btn-block">Sign Up</button>
           <p class="text-center mt-2 text-muted">when you click on the sign up button you Agree to our
             <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a></p>
             <p class="text-center">Already have an account? <a href="login.html">Login Here</a></p>

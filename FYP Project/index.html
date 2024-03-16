@@ -59,9 +59,11 @@
           <i class="fas fa-shopping-cart"></i>
           <div class="cart-items">2</div>
         </a>
-        <a href="SignUp.html" class="navbar-icon mx-2 navbar-user-icon">
+        <a href="SignUp.html" class="navbar-icon mx-2 navbar-user-icon userIcon">
           <i class="fas fa-user"></i>
         </a>
+
+        <button type="button" class="btn btn-danger mr-1 signOutBtn">Sign Out</button>
         <!-- end of  single icon -->
       </div>
     </nav>
@@ -77,7 +79,7 @@
         <h1 class="text-lowercase font-weight-bold">
           interior style
         </h1>
-        <a href="products.html" class="btn btn-yellow"> view collection </a>
+        <a href="products.html" class="btn btn-yellow testBtn"> view collection </a>
       </div>
     </div>
   </header>
@@ -126,6 +128,7 @@
           </p>
         </div>
       </div>
+    </div>
   </section>
 
   <!-- categories section -->
@@ -728,6 +731,8 @@
   <!-- end of modal -->
 <!-- jQuery -->
 <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/jquery-validation/dist/jquery.validate.js"></script>
+<!--  However, in your other HTML files, you might not have included the jQuery Validation plugin, or it might be included before jQuery itself (which would cause it to fail, as it depends on jQuery).-->
 <!-- Bootstrap JS -->
 <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- FontAwesome JS -->
