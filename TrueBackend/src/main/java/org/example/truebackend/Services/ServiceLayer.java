@@ -5,6 +5,8 @@ import org.example.truebackend.Models.User1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 
 public class ServiceLayer {
@@ -15,17 +17,50 @@ public class ServiceLayer {
 
     }
 
-    public void postMethod(User1 entityObj) {
-         repoObj.save(entityObj);
+    public String postMethod(User1 entityObj) {
+        //these are query methods which are taking the object as parameters
+        List<User1> listOfNames = repoObj.findByFirstName(entityObj.getFirstName());
+        List<User1> listOfEmails = repoObj.findByEmail(entityObj.getEmail());
+        if (!listOfNames.isEmpty() && !listOfEmails.isEmpty()) {
+            return "Name and Email already Exists!";
+
+        }
+        else if (!listOfEmails.isEmpty()) {
+            return "This Email is already used";
+        }
+        else if (!listOfNames.isEmpty()) {
+            return "This name is already used";
+        }
+        else{
+            repoObj.save(entityObj);
+            return "Data saved Successfully";
+        }
+    }
+
+    public String authenticateUser(String email,String password){
+//        List of obj with matching emails
+        List<User1> listOfEmails = repoObj.findByEmail(email);
+        List<User1> listOfPasswords = repoObj.findByPassword(password);
+
+        if(listOfEmails.isEmpty() && listOfPasswords.isEmpty()){
+                return "The Email and password do not exist Please sign up with a new account";
+        }
+        else if (listOfEmails.isEmpty()) {
+                return "Email does not exist";
+        }
+        else if (listOfPasswords.isEmpty()) {
+                return "Password is incorrect";
+        }
+        else if(listOfEmails.getFirst().getEmail().equals("mustafanoor715@gmail.com")){
+            return "This is an admin";
+        }
+        else {
+           String firstName = listOfEmails.getFirst().getFirstName();
+                return STR."Successfully logged in as \{firstName}";
+        }
 }
 
 }
 
 
-// i first need to set up the entity class to accept the json data and save it
-// create a method of the service layer which calls the method from the repository interface and does a post operation
-    //--Define a method named postMethod in your ServiceLayer class.
-    //--This method should take a User1 object as a parameter.
-    //--Inside this method, call the save method on the RepositoryLayer object, passing the User1 object as an argument
-//call both objects in the controllerLayer obj the entity obj and the service obj and call its methods
-//parse the data and then use those methods to post it on the database
+//TODO: make noor mustafa in the database as admin and the only one to be able to access the admin panel
