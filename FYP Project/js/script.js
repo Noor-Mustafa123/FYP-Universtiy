@@ -1143,7 +1143,7 @@ document.addEventListener("DOMContentLoaded", function () {
     $(document).ready(function () {
         const userName = localStorage.getItem('userName');
 console.log(userName);
-
+        // this is a ocmment
         if (!userName) {
             const signOutBtn = $(".signOutBtn");
             signOutBtn.hide();
