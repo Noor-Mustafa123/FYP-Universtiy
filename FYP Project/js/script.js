@@ -961,7 +961,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    localStorage.setItem('userName', "Noor");
 
                    setTimeout(() => {
-                       window.location.href = 'AdminDashboard.html';
+                       window.location.href = 'index.html';
                    }, 5000);
                }
 
@@ -1023,7 +1023,7 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </div>`;
 
-        if (responseString.includes("Successfully")) {
+        if (responseString.includes("Successfully") || responseString.includes("Admin")) {
             alertContainer.html(successTemplateString);
         } else {
             alertContainer.html(failureTemplateString)
@@ -1142,6 +1142,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // retrieving name from local storage to show it
     $(document).ready(function () {
         const userName = localStorage.getItem('userName');
+console.log(userName);
 
         if (!userName) {
             const signOutBtn = $(".signOutBtn");
@@ -1155,6 +1156,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const adminElement = $("#dropdownMenuButton");
             adminElement.text(`Hello, ${userName}`)
         }
+        if(userName=="Noor"){
+        // setting the adminpanel link in the homepage navbar
+       let ul = $(".homePageUl")
+            ul.each(function(){$(this).append('<li class="nav-item mx-2"><a href="AdminDashboard.html" class="nav-link">Admin Panel</a></li>');
+        }
+        )}
     });
 
     function btnNameRemove() {
