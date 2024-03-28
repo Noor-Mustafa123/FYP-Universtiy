@@ -5,16 +5,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const ADCSection = document.querySelector(".pointer") // Modified this line
 
-
+    // The line of code you're asking about is retrieving an item from the browser's local storage and parsing it as JSON to convert it from a string to a JavaScript object. If the item doesn't exist in local storage (i.e., localStorage.getItem('shopObj') returns null), it defaults to an empty array [].
     // OBJECT TO SAVE ITEMS
-    const shopObj = {}
-
+    const shopObj = JSON.parse(sessionStorage.getItem("shopObj")) || [];
 
     // FUNCTIONS
     addToCartBtns.forEach(function (btn) {
         btn.addEventListener("click", function (e) {
             e.preventDefault();
-            console.log("add to cart button is working")
+
             //is used to prevent the page from navigating to the URL specified in the href attribute of
             const item = e.target.parentElement.parentElement;
             const itemInfo = {
@@ -26,14 +25,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // DUPLICATE
             // if duplicate increase the quantity
-            const id = itemInfo.name;
-            if (shopObj[id]) {
-                shopObj[id].quantity += 1;
+            const existantItem = shopObj.find(function(obj){
+               return obj.name === itemInfo.name;
+            });
+            if (existantItem) {
+                existantItem.quantity += 1;
             } else {
-                shopObj[id] = itemInfo;
+                shopObj.push(itemInfo);
                 //adding the itemInfo to the object and making he name the key value pair
             }
+            sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
             updateCart(shopObj);
+            console.log("add to cart button is working to the end")
         });
     });
 
@@ -42,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
 ///////////////////////////////////////////////
     // UPDATE CART FUNCTION
     function updateCart(shopObj) {
+        if(ADCSection){
         // Clear the cart first
         // while (condition) {
         // code to be executed as long as the condition is true }
@@ -49,10 +53,11 @@ document.addEventListener("DOMContentLoaded", function () {
         // This includes both the first and second items you clicked on.
 
         //   this line is added for testing
+
         while (ADCSection.firstChild) {
             ADCSection.removeChild(ADCSection.firstChild);
-        }
 
+        }
         // Iterate over each item in the shopObj
         // This is a for...in loop, which is used to iterate over the properties of an object. it executes code for each property of an object
         //key is hte name of the property which has the value {property: value}
@@ -89,8 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
             // how does the items price multiply because it is lower in lexadecical order ?
 
             ADCSection.innerHTML += html;
-        }
 
+
+        }
         ////////////////////////////////////////////////
         // Total functionality
         // Calculate the total price of all items in the cart
@@ -145,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const id = btn.dataset.id; // it is coming from the code above in the update cart this gets the name
                 const jsonInfo = shopObj[id]; // this gets the whole object the whole json of the item
                 jsonInfo.quantity += 1;
+                sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
                 updateCart(shopObj); //why is this being used because still htese evnt listners are inside the scope of this funciton
             });
         })
@@ -154,6 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const jsonInfo = shopObj[id]; // this gets the whole object
                 if (jsonInfo.quantity >= 1) {
                     jsonInfo.quantity -= 1;
+                    sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
                     updateCart(shopObj); //why is this being used because still htese evnt listners are inside the scope of this funciton???
                     // ANSWER : (RECURSION) User clicks a quantity button (plus or minus).
                     // The event listener updates the shopObj.
@@ -162,7 +170,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         })
+
+        }
     }
+
+
+
+
+    // so that the update cart method runs only when the store page is opened
+    $(document).ready(function() {
+        updateCart(shopObj);
+    });
+
+
+
+
 
 
     // NEXT PART
@@ -222,12 +244,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     //It then checks if the product already exists in the shopObj (which represents the shopping cart).
                     //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
 
-                    const id = itemInfo.name;
-                    if (shopObj[id]) {
-                        shopObj[id].quantity += 1;
+
+                    // DUPLICATE
+                    // if duplicate increase the quantity
+                    const existantItem = shopObj.find(function(obj){
+                        return obj.name === itemInfo.name;
+                    });
+                    if (existantItem) {
+                        existantItem.quantity += 1;
                     } else {
-                        shopObj[id] = itemInfo;
+                        shopObj.push(itemInfo);
+                        //adding the itemInfo to the object and making he name the key value pair
                     }
+                    sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
+                    console.log("modal is working to the end")
                     updateCart(shopObj);
                 });
             });
@@ -802,14 +832,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
         //It then checks if the product already exists in the shopObj (which represents the shopping cart).
         //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
+                                                                                                                                 // FIXME: this is the error
 
-        const id = itemInfo.name;
-        if (shopObj[id]) {
-            shopObj[id].quantity += 1;
+
+        // DUPLICATE
+        // if duplicate increase the quantity
+        const existantItem = shopObj.find(function(obj){
+            return obj.name === itemInfo.name;
+        });
+        if (existantItem) {
+            existantItem.quantity += 1;
         } else {
-            shopObj[id] = itemInfo;
+            shopObj.push(itemInfo);
+            //adding the itemInfo to the object and making he name the key value pair
         }
+        sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
         updateCart(shopObj);
+
+
+        // const id = itemInfo.name;
+        // if (shopObj[id]) {
+        //     shopObj[id].quantity += 1;
+        // } else {
+        //     shopObj[id] = itemInfo;
+        // }
+        // updateCart(shopObj);
 
     });
     // }
@@ -916,7 +963,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (responseData.includes("successfully")) {
                 // Store the username in localStorage
-                localStorage.setItem('userName', userName);
+                sessionStorage.setItem('userName', userName);
                 // Redirect to the home page after the POST request is completed
                 setTimeout(function () {
                     window.location.href = 'index.html';
@@ -931,7 +978,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // No, the HTTP GET request does not typically have a body. According to the HTTP/1.1 specification, a GET request should not include a message body because the server will not use it. Instead, data sent to the server is appended to the URL as query parameters.
-// //FIXME: this whole request need to be written again
 
     async function userLoginRequest(url){
        await fetch (url)
@@ -950,15 +996,14 @@ document.addEventListener("DOMContentLoaded", function () {
         //Dynamically getting the first name
                    let responseParts = responseData.split(' '); // This splits the string into an array of words
                    let lastName = responseParts[responseParts.length - 1];
-                   // FIXME: this is only for temporary display when creating final functionality it should return the object with the details which can further be used not the string and the error showing should be done here
-                   // TODO: I should try using spring security framework with this is that could play a role in returning an object instead of a string as a resposne
-                   localStorage.setItem('userName', `${lastName}`);
+
+                   sessionStorage.setItem('userName', `${lastName}`);
 
                }
                else if(responseData.includes("admin")){
                    showAlert("Welcome Admin")
 
-                   localStorage.setItem('userName', "Noor");
+                   sessionStorage.setItem('userName', "Noor");
 
                    setTimeout(() => {
                        window.location.href = 'index.html';
@@ -978,6 +1023,9 @@ document.addEventListener("DOMContentLoaded", function () {
                console.log("this catch is catching the error")
            });
     }
+
+
+
 
 
 
@@ -1135,13 +1183,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // API's //
+    // TODO: build more APIs
+    // TODO: make a plan and guess ideas to make the data retent across the storage when an item is added into the cart?
+    // TODO: maybe because the cart is only for short term then add the elements in the local storage?
+    // TODO: just for a guess if i can use the database then how but i think local host is better do research with copilot then make any further decisions
+
+
+
+
+
+
 
 
 
     ///////////////////////////////////////////////
     // retrieving name from local storage to show it
     $(document).ready(function () {
-        const userName = localStorage.getItem('userName');
+        const userName = sessionStorage.getItem('userName');
 console.log(userName);
         // this is a ocmment
         if (!userName) {
@@ -1165,7 +1225,7 @@ console.log(userName);
     });
 
     function btnNameRemove() {
-        localStorage.removeItem("userName");
+        sessionStorage.removeItem("userName");
         $('.nameSpan').remove();
 
     }
