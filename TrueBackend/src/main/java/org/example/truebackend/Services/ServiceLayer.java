@@ -2,16 +2,19 @@ package org.example.truebackend.Services;
 
 import org.example.truebackend.Models.RepositoryLayer;
 import org.example.truebackend.Models.User1;
+import org.example.truebackend.Models.UserInfoForStripe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 
 public class ServiceLayer {
     @Autowired
     public RepositoryLayer repoObj;
+
 
     public ServiceLayer() {
 
@@ -59,6 +62,8 @@ public class ServiceLayer {
                 return STR."Successfully logged in as \{firstName}";
         }
 }
+
+
 
 }
 

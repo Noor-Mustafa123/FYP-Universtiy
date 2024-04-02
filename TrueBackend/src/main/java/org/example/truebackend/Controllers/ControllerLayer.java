@@ -1,11 +1,31 @@
 package org.example.truebackend.Controllers;
 
 
+
+import com.stripe.exception.StripeException;
+import com.stripe.model.Price;
+import com.stripe.model.Product;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.PriceCreateParams;
+import com.stripe.param.ProductCreateParams;
+import com.stripe.param.checkout.SessionCreateParams;
+import org.apache.coyote.Response;
+import org.example.truebackend.Models.ProductResponse;
 import org.example.truebackend.Models.User1;
+import org.example.truebackend.Models.UserInfoForStripe;
+import org.example.truebackend.Models.itemInfo;
 import org.example.truebackend.Services.ServiceLayer;
+import org.example.truebackend.Services.StripeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -17,9 +37,24 @@ public class ControllerLayer {
     //    INSTANCE VARIABLES
     @Autowired
     private ServiceLayer serviceObj;
-
+    @Autowired
+    private ProductResponse productResponse;
 
     User1 userObj;
+
+    @Autowired
+    private StripeService stripeService;
+
+
+
+/////////////////////////////////////////////////////////
+//    FOR BETTER ERROR LOGGING AND MORE ROBUST IMPORT A LIBRARY
+
+//    The Factory Pattern is about creating an object from one of several possible classes that share a common super class or interface, based on some input parameters. It’s useful when you don’t know ahead of time what class object you need
+//    The Builder Pattern, on the other hand, is about constructing a complex object step by step. It’s particularly useful when an object needs to be created with many possible configuration
+  private static final Logger logger = LoggerFactory.getLogger(ControllerLayer.class);
+
+
 
     // the parameter in the getmapping is a path vairable which allows you to pass
 // a value directly from the path into a method parameter
@@ -29,16 +64,17 @@ public class ControllerLayer {
 //   return new User1(1,"Noor","mustafanoor715@gmail.com");
     }
 
-@GetMapping("/login")
-public ResponseEntity<String> getUserloinData(@RequestParam String email, @RequestParam String password){
-    String loginMethodOutput = serviceObj.authenticateUser(email, password);
-    return ResponseEntity.ok(loginMethodOutput);
-}
+    @GetMapping("/login")
+    public ResponseEntity<String> getUserloinData(@RequestParam String email, @RequestParam String password) {
+        String loginMethodOutput = serviceObj.authenticateUser(email, password);
+        return ResponseEntity.ok(loginMethodOutput);
+    }
 
 
     @PostMapping("/PUser1")
 // This error message is indicating that the method is expecting a return type of String, but it's actually returning a ResponseEntity<String>.
     public ResponseEntity<String> postMethod(@RequestBody User1 UserObj) {
+
         this.userObj = UserObj;
         String postMethodOutput = serviceObj.postMethod(UserObj);
 
@@ -64,10 +100,107 @@ public ResponseEntity<String> getUserloinData(@RequestParam String email, @Reque
         this.userObj = null;
         return " this User1 is deleted";
     }
+
+
+
+
+    @PostMapping("/Stripe/AddProduct")
+    public ResponseEntity<ProductResponse> addNewProduct(@RequestBody itemInfo itemInfo) {
+        try {
+            ProductCreateParams Parameters = ProductCreateParams.builder()
+                    .setName(itemInfo.getProductName())
+                    .setDescription(itemInfo.getProductDesc())
+                    .build();
+            Product productObj = Product.create(Parameters);
+
+            PriceCreateParams priceParams = PriceCreateParams.builder()
+                    .setUnitAmount(itemInfo.getProductPrice())
+                    .setCurrency("usd")
+                    // use the ID of the product you just created
+                    .setProduct(productObj.getId())
+                    .build();
+
+            Price price = Price.create(priceParams);
+
+
+//Created this DTO to transfer data as a response
+            productResponse.setId(productObj.getId());
+            productResponse.setName(productObj.getName());
+            productResponse.setDescription(productObj.getDescription());
+            productResponse.setPriceId(price.getId());
+
+
+            return ResponseEntity.ok(productResponse);
+
+        }
+        catch (StripeException e) {
+            logger.error("An error occurred: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
+
+
+
+
+/////    TODO: DOUBT why am i creating two headers? understand how the request is being sent?
+
+    @PostMapping("/Stripe/Authenticate")
+    public ResponseEntity<String> stripeMethod(@RequestBody UserInfoForStripe userInfo) throws StripeException {
+//     creating object to add parameter
+        SessionCreateParams parameters = SessionCreateParams.builder()
+                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setSuccessUrl("http://http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
+                .setCancelUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/login.html")
+//              TODO:  the line items to send to the stripe api to autenticate against is missing hardcoded one for testing purposes
+                .addLineItem(
+                        SessionCreateParams.LineItem.builder()
+                                .setPrice("price_1P0EoP03YcH2K12qnyAv7O5s")
+                                .setQuantity(1L)
+                                .build())
+                .build();
+        try {
+//        The Session.create(params) call is used to create a new session with the specified parameters. This call communicates with the Stripe API and returns a Session object.
+        Session sessionObj = Session.create(parameters);
+        stripeService.saveUserInfoOnOrder(userInfo);
+
+//         The Session object is then converted to a JSON string using the toJson() method.
+        return ResponseEntity.ok(sessionObj.toJson());
+        }
+        catch (StripeException e){
+            logger.error("An error occurred: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
+
 }
+//TODO: currently just trying to get the link from the api to redirect to the payment page
 
+//Create a header for the request and add api key to it in the authenticaion field
+//Create the request
+//send the post request
 
-
+//   SessionCreateParams params =
+//                SessionCreateParams.builder()
+//                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+//                        .setMode(SessionCreateParams.Mode.PAYMENT)
+//                        .setSuccessUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
+//                        .setCancelUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
+//                        .addLineItem(
+//                                SessionCreateParams.LineItem.builder()
+//                                        .setPrice("price_1P0EoP03YcH2K12qnyAv7O5s")
+//                                        .setQuantity(1L)
+//                                        .build())
+//                        .build();
+//
+//        Session session = Session.create(params);
+//        return ResponseEntity.ok(session.toJson());
 //////////////////////////////////////////////
 // Yes, you've got the flow mostly correct. Here's a step-by-step breakdown:
 //1 The client (JavaScript running in the browser) sends an HTTP request to the server. This request includes a body which contains the data to be sent to the server.

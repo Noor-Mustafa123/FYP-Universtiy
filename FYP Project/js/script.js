@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
         //key is hte name of the property which has the value {property: value}
         for (let id in shopObj) {
             let item = shopObj[id];
-
+            console.log(item);
             // Add the HTML for each column in the row
             let html = `
       
@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let totalPrice = 0;
         for (let id in shopObj) {
             let item = shopObj[id];
+
             totalPrice += parseFloat(item.price.replace(/[^\d.]/g, '')) * item.quantity; //the parse float Converts the string back to a number
             //So, [^\d.] means "match any character that is not a digit or a period."
         }
@@ -1185,12 +1186,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // API's //
-    // TODO: build more APIs
-    // TODO: make a plan and guess ideas to make the data retent across the storage when an item is added into the cart?
-    // TODO: maybe because the cart is only for short term then add the elements in the local storage?
-    // TODO: just for a guess if i can use the database then how but i think local host is better do research with copilot then make any further decisions
-
-
+    // TODO:
 
 
 
