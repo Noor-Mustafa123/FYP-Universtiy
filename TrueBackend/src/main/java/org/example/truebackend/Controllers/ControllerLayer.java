@@ -2,13 +2,18 @@ package org.example.truebackend.Controllers;
 
 
 
+import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
+import com.stripe.model.Event;
 import com.stripe.model.Price;
 import com.stripe.model.Product;
 import com.stripe.model.checkout.Session;
+import com.stripe.net.Webhook;
 import com.stripe.param.PriceCreateParams;
 import com.stripe.param.ProductCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
 import org.example.truebackend.Models.ProductResponse;
 import org.example.truebackend.Models.User1;
@@ -21,11 +26,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.support.HttpRequestHandlerServlet;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.event;
 
 
 @RestController
@@ -45,7 +53,9 @@ public class ControllerLayer {
     @Autowired
     private StripeService stripeService;
 
+    private UserInfoForStripe userInfo;
 
+    private static final String signingSecret = "whsec_5c941243c40ad457e7f9e698617a5d31777f96ccfbe233b91abf8b80b0485c62";
 
 /////////////////////////////////////////////////////////
 //    FOR BETTER ERROR LOGGING AND MORE ROBUST IMPORT A LIBRARY
@@ -148,14 +158,14 @@ public class ControllerLayer {
 /////    TODO: DOUBT why am i creating two headers? understand how the request is being sent?
 
     @PostMapping("/Stripe/Authenticate")
-    public ResponseEntity<String> stripeMethod(@RequestBody UserInfoForStripe userInfo) throws StripeException {
+    public ResponseEntity<String> stripeMethod(@RequestBody UserInfoForStripe userInfo) {
 //     creating object to add parameter
         SessionCreateParams parameters = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setSuccessUrl("http://http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
                 .setCancelUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/login.html")
-//              TODO:  the line items to send to the stripe api to autenticate against is missing hardcoded one for testing purposes
+//              TODO:  the line items to send to the stripe api to autenticate against is missing I hardcoded one for testing purposes
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
                                 .setPrice("price_1P0EoP03YcH2K12qnyAv7O5s")
@@ -165,8 +175,11 @@ public class ControllerLayer {
         try {
 //        The Session.create(params) call is used to create a new session with the specified parameters. This call communicates with the Stripe API and returns a Session object.
         Session sessionObj = Session.create(parameters);
-        stripeService.saveUserInfoOnOrder(userInfo);
 
+//        I will only save the userData in the database only if  the payment intent is completed
+//
+            this.userInfo = userInfo;
+System.out.println("User Data Recieved");
 //         The Session object is then converted to a JSON string using the toJson() method.
         return ResponseEntity.ok(sessionObj.toJson());
         }
@@ -175,6 +188,54 @@ public class ControllerLayer {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+
+
+//    I have activated the endpoint as a webhook
+//    now i make a controleller method that when i locally trigger an event in case of that specific event that method dosee that specific thing
+    @PostMapping("/webhook")
+    public void paymentSuccessEventHandler(@RequestBody String payload , HttpServletRequest request) {
+        String headerSignature = request.getHeader("Stripe-Signature");
+        Event event= null;
+        try {
+            event = Webhook.constructEvent(payload,headerSignature,signingSecret);
+//            System.out.println(event);
+        } catch (SignatureVerificationException e) {
+            logger.error("this is the authentication error in the webhook event creating ", e);
+            throw new RuntimeException(e);
+        }
+        catch(Exception e){
+            logger.error("this is the exception occurred while creating an event ", e);
+        };
+//TODO: replace the runtime exceptions with the real response entity expetions so that if real the end user can see them
+
+//        how is the Event object created without a constructor
+//        chat gpt says first construct the event object first which takes some parameters
+//        then check for exceptions
+//        what is this stripe-signature passed as an argument to the getHeader method of the request?
+        try {
+            if (event.getType().equals("payment_intent.succeeded")) {
+                stripeService.saveUserInfoOnOrder(userInfo);
+                Charge charge = (Charge) event.getData().getObject();
+                System.out.println(charge.toString());
+                System.out.println("User Data Saved");
+            } else {
+                System.out.println("The If Condition is not passed");
+                System.out.println(STR."Other events ignored, Event type: \{event.getType()}");
+            }
+        }
+        catch(Exception e){
+            logger.error("AN exception occurred in the if else statement",e);
+        }
+
+//        then get the object from the session?
+//        then save the data
+//        why are we returning a response entity and to whom?
+
+    }
+
+
+
 
 
 

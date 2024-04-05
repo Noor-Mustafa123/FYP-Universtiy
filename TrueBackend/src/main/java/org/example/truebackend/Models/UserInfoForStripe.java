@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Component
 @Table(name="User_Details_Stripe")
 public class UserInfoForStripe {
 @Id
