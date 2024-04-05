@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             //is used to prevent the page from navigating to the URL specified in the href attribute of
             const item = e.target.parentElement.parentElement;
+            console.log(item);
             const itemInfo = {
                 img: item.querySelector(".img-fluid").src,
                 name: item.querySelector(".texas").textContent.trim(),
@@ -25,8 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // DUPLICATE
             // if duplicate increase the quantity
-            const existantItem = shopObj.find(function(obj){
-               return obj.name === itemInfo.name;
+            const existantItem = shopObj.find(function (obj) {
+                return obj.name === itemInfo.name;
             });
             if (existantItem) {
                 existantItem.quantity += 1;
@@ -45,27 +46,27 @@ document.addEventListener("DOMContentLoaded", function () {
 ///////////////////////////////////////////////
     // UPDATE CART FUNCTION
     function updateCart(shopObj) {
-        if(ADCSection){
-        // Clear the cart first
-        // while (condition) {
-        // code to be executed as long as the condition is true }
-        // When updateCart is called, the while loop clears the cart, and then the for loop adds each item in shopObj back into the cart.
-        // This includes both the first and second items you clicked on.
+        if (ADCSection) {
+            // Clear the cart first
+            // while (condition) {
+            // code to be executed as long as the condition is true }
+            // When updateCart is called, the while loop clears the cart, and then the for loop adds each item in shopObj back into the cart.
+            // This includes both the first and second items you clicked on.
 
-        //   this line is added for testing
+            //   this line is added for testing
 
-        while (ADCSection.firstChild) {
-            ADCSection.removeChild(ADCSection.firstChild);
+            while (ADCSection.firstChild) {
+                ADCSection.removeChild(ADCSection.firstChild);
 
-        }
-        // Iterate over each item in the shopObj
-        // This is a for...in loop, which is used to iterate over the properties of an object. it executes code for each property of an object
-        //key is hte name of the property which has the value {property: value}
-        for (let id in shopObj) {
-            let item = shopObj[id];
-            console.log(item);
-            // Add the HTML for each column in the row
-            let html = `
+            }
+            // Iterate over each item in the shopObj
+            // This is a for...in loop, which is used to iterate over the properties of an object. it executes code for each property of an object
+            //key is hte name of the property which has the value {property: value}
+            for (let id in shopObj) {
+                let item = shopObj[id];
+                console.log(item);
+                // Add the HTML for each column in the row
+                let html = `
       
                 <div class=" col-10 mx-auto col-md-2 my-3">
                     <img src="${item.img}" alt="" class="img-fluid">
@@ -86,40 +87,44 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="col-10 mx-auto col-md-2 subTotal">
                     <p class="text-uppercase">$${parseFloat(item.price.replace(/[^\d.-]/g, '')) * item.quantity}</p> 
                 </div>`;
-            //  In this line, item.price.replace(/[^\d.-]/g, '') removes any characters from the item.price string that are not digits, a dot (.), or a hyphen (-). The resulting string is then parsed as a float and multiplied by item.quantity.
-            // Append the HTML to the cart section
+                //  In this line, item.price.replace(/[^\d.-]/g, '') removes any characters from the item.price string that are not digits, a dot (.), or a hyphen (-). The resulting string is then parsed as a float and multiplied by item.quantity.
+                // Append the HTML to the cart section
 
-            // the event listner is attached on the first click the nit works to update quantity ?
+                // the event listner is attached on the first click the nit works to update quantity ?
 
-            // how does the items price multiply because it is lower in lexadecical order ?
+                // how does the items price multiply because it is lower in lexadecical order ?
 
-            ADCSection.innerHTML += html;
+                ADCSection.innerHTML += html;
 
 
-        }
-        ////////////////////////////////////////////////
-        // Total functionality
-        // Calculate the total price of all items in the cart
-        let totalPrice = 0;
-        for (let id in shopObj) {
-            let item = shopObj[id];
+            }
+            ////////////////////////////////////////////////
+            // Total functionality
+            // Calculate the total price of all items in the cart
+            let totalPrice = 0;
 
-            totalPrice += parseFloat(item.price.replace(/[^\d.]/g, '')) * item.quantity; //the parse float Converts the string back to a number
-            //So, [^\d.] means "match any character that is not a digit or a period."
-        }
+            for (let id in shopObj) {
+                // HERE IN THIS OBJECT FORIN LOOP IT IS GETTING AN ARRAY AS AN OBJECT SO HERE THE ID IS THE INDEX OF THE OBJECTIN THE ARRAY AND THE
+                // ITEM IS THE CURRENT OBJEECT MATCHIGN THE INDEX
+                let item = shopObj[id];
 
-        // Calculate the tax
-        const tax = 0.12 * totalPrice;
+                totalPrice += parseFloat(item.price.replace(/[^\d.]/g, '')) * item.quantity; //the parse float Converts the string back to a number
+                //So, [^\d.] means "match any character that is not a digit or a period."
 
-        // Calculate the shipping cost
-        const shipping = 10;
+            }
 
-        // Calculate the order total
-        const orderTotal = totalPrice + tax + shipping;
+            // Calculate the tax
+            const tax = 0.12 * totalPrice;
 
-        // Update the cart total section
-        const cartTotalSection = document.querySelector(".cart-total");
-        cartTotalSection.innerHTML = `
+            // Calculate the shipping cost
+            const shipping = 10;
+
+            // Calculate the order total
+            const orderTotal = totalPrice + tax + shipping;
+
+            // Update the cart total section
+            const cartTotalSection = document.querySelector(".cart-total");
+            cartTotalSection.innerHTML = `
         <div class="col-6">
           SUBTOTAL
         </div>
@@ -144,48 +149,42 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="col-6 text-danger my-2">
           $${orderTotal.toFixed(2)}
         </div>`;
-        // Rounds off  to 2 decimal places the 'toFixed(2)';
+            // Rounds off  to 2 decimal places the 'toFixed(2)';
 
-        // adding event listner to plus button
-        ADCSection.querySelectorAll(".quantity-plus").forEach(function (btn) {
-            btn.addEventListener("click", function (e) {
-                const id = btn.dataset.id; // it is coming from the code above in the update cart this gets the name
-                const jsonInfo = shopObj[id]; // this gets the whole object the whole json of the item
-                jsonInfo.quantity += 1;
-                sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
-                updateCart(shopObj); //why is this being used because still htese evnt listners are inside the scope of this funciton
-            });
-        })
-        ADCSection.querySelectorAll(".quantity-minus").forEach(function (btn) {
-            btn.addEventListener("click", function (e) {
-                const id = btn.dataset.id; // it is coming from the code above in the update cart this gets the name
-                const jsonInfo = shopObj[id]; // this gets the whole object
-                if (jsonInfo.quantity >= 1) {
-                    jsonInfo.quantity -= 1;
+            // adding event listner to plus button
+            ADCSection.querySelectorAll(".quantity-plus").forEach(function (btn) {
+                btn.addEventListener("click", function (e) {
+                    const id = btn.dataset.id; // it is coming from the code above in the update cart this gets the name
+                    const jsonInfo = shopObj[id]; // this gets the whole object the whole json of the item
+                    jsonInfo.quantity += 1;
                     sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
-                    updateCart(shopObj); //why is this being used because still htese evnt listners are inside the scope of this funciton???
-                    // ANSWER : (RECURSION) User clicks a quantity button (plus or minus).
-                    // The event listener updates the shopObj.
-                    // The updateCart function is called with the updated shopObj.
-                    // updateCart clears the cart's HTML, generates the updated HTML for the cart, and recalculates the totals based on the modified shopObj.
-                }
-            });
-        })
+                    updateCart(shopObj); //why is this being used because still htese evnt listners are inside the scope of this funciton
+                });
+            })
+            ADCSection.querySelectorAll(".quantity-minus").forEach(function (btn) {
+                btn.addEventListener("click", function (e) {
+                    const id = btn.dataset.id; // it is coming from the code above in the update cart this gets the name
+                    const jsonInfo = shopObj[id]; // this gets the whole object
+                    if (jsonInfo.quantity >= 1) {
+                        jsonInfo.quantity -= 1;
+                        sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
+                        updateCart(shopObj); //why is this being used because still htese evnt listners are inside the scope of this funciton???
+                        // ANSWER : (RECURSION) User clicks a quantity button (plus or minus).
+                        // The event listener updates the shopObj.
+                        // The updateCart function is called with the updated shopObj.
+                        // updateCart clears the cart's HTML, generates the updated HTML for the cart, and recalculates the totals based on the modified shopObj.
+                    }
+                });
+            })
 
         }
     }
 
 
-
-
     // so that the update cart method runs only when the store page is opened
-    $(document).ready(function() {
+    $(document).ready(function () {
         updateCart(shopObj);
     });
-
-
-
-
 
 
     // NEXT PART
@@ -231,6 +230,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const name = btn.parentElement.nextElementSibling.textContent.trim();
             const price = btn.parentElement.nextElementSibling.nextElementSibling.lastElementChild.textContent.trim();
 
+
+
+
             //addinig add to cart functionality in the adc modal
             btns.forEach(function (btn) {
                 btn.addEventListener('click', function (e) {
@@ -248,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // DUPLICATE
                     // if duplicate increase the quantity
-                    const existantItem = shopObj.find(function(obj){
+                    const existantItem = shopObj.find(function (obj) {
                         return obj.name === itemInfo.name;
                     });
                     if (existantItem) {
@@ -655,11 +657,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const $nextBtn = $(".next-btn");
     const $prevBtn = $(".prev-btn");
 
-    // console.log(mainImage);
-    // console.log(productName);// this
-    // console.log(productPrice);//this
-    // console.log(productDescription);//this
-    // console.log(reviewCount);
+
+
 
     // currentIndex
     let currentProductIndex = 0;
@@ -701,18 +700,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     block.textContent = productObj[currentProductIndex].reviews.rating;
                 }
 
-
                 // Hide all blocks except the current one
                 block.classList.add('active');
-                // document.querySelectorAll('.block').forEach(function(otherBlock) {
-                //   if (otherBlock !== block) {
-                //     otherBlock.textContent = '';
-                //     otherBlock.classList.remove('active');
-                //   }
-                // });
+
             });
         });
+    //     Moving this out of the forEachstatment
+
+
+        // Trigger click event on the current link button
+        document.getElementById('description').click();
+
+
     })
+
     //}
 
     //prevBtn
@@ -746,6 +747,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 currentId = e.currentTarget.id; // Update the currentId variable
 
+
+
                 if (currentId === 'description') {
                     block.textContent = productObj[currentProductIndex].description;
                 } else if (currentId === 'additional') {
@@ -759,19 +762,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 //because there are no blocks except the one block and every other data is filtered throught the if else conditions
                 //we directly add the active class to the current value of the block filtered by the above condition
 
-                //  document.querySelectorAll('.block').forEach(function(otherBlock) {
-                //    if (otherBlock !== block) {
-                //      otherBlock.textContent = '';
-                //      otherBlock.classList.remove('active');
-                //      console.log(otherBlock);
-                //    }
-                //  });
+
             });
         });
+        // Trigger click event on the current link button
+        document.getElementById('description').click();
 
 
-    });
-    //}
+});
+
 
 
     //adding the quantity counter (maybe Before? the above functionality)
@@ -806,17 +805,29 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+
+
+
+
+
+
     //adding adc functionality to the add to cart button in the single product page
     // GIVE EACH MODAL DIFFERENT NAME AND PICTURE
     // !! Dont add dashes in classes like single-page-adc because browser considers it as a bootstrap class and not as a simple class
     const $singlePageAdc = $('.singlepageadc');
     // if (singlePageAdc) {
     $singlePageAdc.on("click", function (e) {
+
+        // fixing the bug of adding the full string literal in the updateCart method
+        const newPrice = productPrice.textContent; // "Price:$oldPrice-$newPrice"
+        const priceParts = newPrice.split('-'); // ["Price:$oldPrice", "$newPrice"]
+        const newPricePart = priceParts[1]; // "$newPrice"
+        // const newPPrice = parseFloat(newPricePart.split('$')[1]); // "newPrice" as a number
         e.preventDefault();
         //get the items
         const img = mainImage.src;
         const name = productName.textContent;
-        const price = productPrice.textContent;
+        const price = newPricePart;
         //IMPORTANT //. This is because you want to get the current quantity value at the time the singlePageAdc button is clicked, not at the time the page loads.
         const quantityValue = parseInt(plusBtn.previousElementSibling.innerText);
         console.log(quantityValue);
@@ -829,7 +840,7 @@ document.addEventListener("DOMContentLoaded", function () {
             price: price,
             quantity: quantityValue
         };
-        console.log("modal adc working ");
+        console.log("adc or single page is working ");
 
         //It then checks if the product already exists in the shopObj (which represents the shopping cart).
         //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
@@ -851,15 +862,16 @@ document.addEventListener("DOMContentLoaded", function () {
         updateCart(shopObj);
 
 
-        // const id = itemInfo.name;
-        // if (shopObj[id]) {
-        //     shopObj[id].quantity += 1;
-        // } else {
-        //     shopObj[id] = itemInfo;
-        // }
-        // updateCart(shopObj);
 
     });
+
+
+
+
+
+
+
+
     // }
 
     ////////////////////////////////////////////////////

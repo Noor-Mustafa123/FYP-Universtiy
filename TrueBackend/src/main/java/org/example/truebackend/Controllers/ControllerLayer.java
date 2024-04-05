@@ -4,10 +4,7 @@ package org.example.truebackend.Controllers;
 
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
-import com.stripe.model.Event;
-import com.stripe.model.Price;
-import com.stripe.model.Product;
+import com.stripe.model.*;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.stripe.param.PriceCreateParams;
@@ -214,10 +211,11 @@ System.out.println("User Data Recieved");
 //        then check for exceptions
 //        what is this stripe-signature passed as an argument to the getHeader method of the request?
         try {
+//            THREE EVENTS are taking place so only one is accepted other ones are ignored
             if (event.getType().equals("payment_intent.succeeded")) {
                 stripeService.saveUserInfoOnOrder(userInfo);
-                Charge charge = (Charge) event.getData().getObject();
-                System.out.println(charge.toString());
+                PaymentIntent PaymentIntent = (PaymentIntent) event.getData().getObject();
+                System.out.println(PaymentIntent.toString());
                 System.out.println("User Data Saved");
             } else {
                 System.out.println("The If Condition is not passed");
