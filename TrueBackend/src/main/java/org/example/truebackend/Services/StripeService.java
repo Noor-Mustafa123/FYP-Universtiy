@@ -15,6 +15,7 @@ public class StripeService {
 
     public void saveUserInfoOnOrder (UserInfoForStripe infoObj) {
         stripeRepoObj.save(infoObj);
+        System.out.println("payment sucessfull user data sucessfully saved to the database");
     }
 
 

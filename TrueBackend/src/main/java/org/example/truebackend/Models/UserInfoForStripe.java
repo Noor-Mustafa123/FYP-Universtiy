@@ -3,35 +3,33 @@ package org.example.truebackend.Models;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Entity
 @Table(name="User_Details_Stripe")
 public class UserInfoForStripe {
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
-    public int orderId ;
+    private int orderId ;
 
-    public String email ;
-    public String password ;
-    public String address ;
-    public int itemId ;
-    public int itemQuantity;
-    public String priceId;
+    private String email ;
+    private String address ;
+//    The @OneToMany annotation in Spring Data JPA is used to establish a one-to-many relationship between two entities. In your case, it seems like you want to establish a relationship where one user can have many products in their cart.
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   private List<EachProductInADC> items ;
 
-    public String getPriceId() {
-        return priceId;
+    public List<EachProductInADC> getItems() {
+        return items;
     }
 
-    public void setPriceId(String priceId) {
-        this.priceId = priceId;
+    public void setItems(List<EachProductInADC> items) {
+        this.items = items;
     }
 
-    public UserInfoForStripe(String email, String password, String address, int itemId, int itemQuantity) {
-        this.email = email;
-        this.password = password;
-        this.address = address;
-        this.itemId = itemId;
-        this.itemQuantity = itemQuantity;
+    public UserInfoForStripe() {
+
     }
+
 
     public int getOrderId() {
         return orderId;
@@ -49,13 +47,6 @@ public class UserInfoForStripe {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getAddress() {
         return address;
@@ -65,23 +56,7 @@ public class UserInfoForStripe {
         this.address = address;
     }
 
-    public int getItemId() {
-        return itemId;
-    }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
 
-    public int getItemQuantity() {
-        return itemQuantity;
-    }
 
-    public void setItemQuantity(int itemQuantity) {
-        this.itemQuantity = itemQuantity;
-    }
-
-    public UserInfoForStripe() {
-
-    }
 }

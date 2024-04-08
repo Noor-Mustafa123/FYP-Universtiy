@@ -8,7 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
     // The line of code you're asking about is retrieving an item from the browser's local storage and parsing it as JSON to convert it from a string to a JavaScript object. If the item doesn't exist in local storage (i.e., localStorage.getItem('shopObj') returns null), it defaults to an empty array [].
     // OBJECT TO SAVE ITEMS
     const shopObj = JSON.parse(sessionStorage.getItem("shopObj")) || [];
-
+    const adcproductObj = JSON.parse(sessionStorage.getItem("adcObjArray")) || {
+        "email": sessionStorage.getItem("Email"),
+        "address": sessionStorage.getItem("Address"),
+        "items": []
+    };
     // FUNCTIONS
     addToCartBtns.forEach(function (btn) {
         btn.addEventListener("click", function (e) {
@@ -16,27 +20,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
             //is used to prevent the page from navigating to the URL specified in the href attribute of
             const item = e.target.parentElement.parentElement;
-            console.log(item);
+
             const itemInfo = {
                 img: item.querySelector(".img-fluid").src,
                 name: item.querySelector(".texas").textContent.trim(),
                 // the trim remove the extra spaces in the name
                 price: item.querySelector(".span-text").textContent,
-                quantity: 1 //
+                quantity: 1,
+
             }
+
             // DUPLICATE
+
             // if duplicate increase the quantity
+          const adcItemInfo = {
+                "itemName": item.querySelector(".texas").textContent.trim(),
+                "itemQuantity": 1,
+                "productId" : e.currentTarget.dataset.productId
+            }
+
+
+
+            // Check if item already exists in the array
+            const existantItemForadcObj = adcproductObj.items.find(function (obj){
+                return obj.itemName === adcItemInfo.itemName;
+            });
+            // for adcitemObj
+            if(existantItemForadcObj){
+                existantItemForadcObj.itemQuantity += 1 ;
+            }
+            else{
+                adcproductObj.items.push(adcItemInfo);
+            }
+
+
             const existantItem = shopObj.find(function (obj) {
                 return obj.name === itemInfo.name;
             });
+            // for shop obj
             if (existantItem) {
                 existantItem.quantity += 1;
             } else {
                 shopObj.push(itemInfo);
                 //adding the itemInfo to the object and making he name the key value pair
             }
+
+            sessionStorage.setItem("adcObjArray", JSON.stringify(adcproductObj));
             sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
             updateCart(shopObj);
+            console.log("adcObjarray added to the session storage")
             console.log("add to cart button is working to the end")
         });
     });
@@ -64,7 +96,6 @@ document.addEventListener("DOMContentLoaded", function () {
             //key is hte name of the property which has the value {property: value}
             for (let id in shopObj) {
                 let item = shopObj[id];
-                console.log(item);
                 // Add the HTML for each column in the row
                 let html = `
       
@@ -229,8 +260,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const img = btn.previousElementSibling.src;
             const name = btn.parentElement.nextElementSibling.textContent.trim();
             const price = btn.parentElement.nextElementSibling.nextElementSibling.lastElementChild.textContent.trim();
-
-
+            const parent = btn.parentElement.querySelector(".featured-store-link");
+            const priceId = parent.dataset.productId;
 
 
             //addinig add to cart functionality in the adc modal
@@ -262,6 +293,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
                     console.log("modal is working to the end")
                     updateCart(shopObj);
+
+
+
+
+                //     FOR THE PRODUCTOBJ FUNCTIONAITY
+                    const adcItemInfo = {
+                        "itemName": name,
+                        "itemQuantity": 1,
+                        "productId" : priceId
+                    }
+
+
+
+                    // Check if item already exists in the array
+                    const existantItemForadcObj = adcproductObj.items.find(function (obj){
+                        return obj.itemName === adcItemInfo.itemName;
+                    });
+                    // for adcitemObj
+                    if(existantItemForadcObj){
+                        existantItemForadcObj.itemQuantity += 1 ;
+                    }
+                    else{
+                        adcproductObj.items.push(adcItemInfo);
+                    }
+
+                    sessionStorage.setItem("adcObjArray", JSON.stringify(adcproductObj));
+
                 });
             });
 
@@ -408,7 +466,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 "rating": 4.5,
                 "count": 15
             },
-            "additionalInformation": "Dimensions: 80\" x 40\" x 30\"\nMaterial: High-quality fabric\nAssembly required: Yes"
+            "additionalInformation": "Dimensions: 80\" x 40\" x 30\"\nMaterial: High-quality fabric\nAssembly required: Yes",
+                "priceId": "price_1P2XMU03YcH2K12qvjlrlBnI"
         },
         {
             "name": "Kitchen Table",
@@ -425,6 +484,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 10
             },
             "additionalInformation": "Dimensions: 48\" x 30\" x 28\"\nMaterial: Solid wood\nAssembly required: No"
+            ,"priceId": "price_1P2XTF03YcH2K12q0F1ZDpR7"
+
         },
         {
 
@@ -442,6 +503,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 8
             },
             "additionalInformation": "Dimensions: 36\" x 24\" x 72\"\nMaterial: Particle board\nAssembly required: Yes"
+            ,"priceId": "price_1P2XV703YcH2K12qpNtZghac"
         },
         {
             "name": "Queen Sized Bed",
@@ -458,6 +520,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 20
             },
             "additionalInformation": "Dimensions: 60\" x 80\" x 36\"\nMaterial: Solid wood\nAssembly required: Yes"
+            ,"priceId": "price_1P2XWG03YcH2K12qHTxQtkIs"
         },
         {
             "name": "Designer Table",
@@ -474,6 +537,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 18
             },
             "additionalInformation": "Dimensions: 36\" x 36\" x 18\"\nMaterial: MDF and metal\nAssembly required: No"
+            ,"priceId": "price_1P2XXX03YcH2K12qCCeDb7zG"
         },
         {
             "name": "Patio Table",
@@ -490,6 +554,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 25
             },
             "additionalInformation": "Dimensions: 48\" x 28\" x 24\"\nMaterial: Weather-resistant wood\nAssembly required: Yes"
+            ,"priceId": "price_1P2XYW03YcH2K12qaERV6BHt"
         },
         {
             "name": "Shelf",
@@ -506,6 +571,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 12
             },
             "additionalInformation": "Dimensions: 24\" x 12\" x 60\"\nMaterial: Particle board\nAssembly required: Yes"
+            ,"priceId": "price_1P2XZX03YcH2K12qeKm6r6Bj"
         },
         {
             "name": "Chair",
@@ -522,6 +588,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 22
             },
             "additionalInformation": "Dimensions: 24\" x 24\" x 36\"\nMaterial: Plastic and metal\nAssembly required: No"
+            ,"priceId": "price_1P2XaC03YcH2K12qns5PGnsJ"
         },
         {
             "name": "Marble Sink",
@@ -538,6 +605,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 30
             },
             "additionalInformation": "Dimensions: 36\" x 22\" x 8\"\nMaterial: Marble\nAssembly required: No"
+            ,"priceId": "price_1P2Xbh03YcH2K12q0YFAsnJX"
         },
         {
             "name": "Small Sofa",
@@ -554,6 +622,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 15
             },
             "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Fabric\nAssembly required: No"
+            ,"priceId": "price_1P2XcW03YcH2K12qmuBeCOre"
         },
         {
             "name": "Wooden Table",
@@ -570,6 +639,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 18
             },
             "additionalInformation": "Dimensions: 36\" x 24\" x 18\"\nMaterial: Solid wood\nAssembly required: Yes"
+            ,"priceId": "price_1P2XdX03YcH2K12qDFzXtW5n"
         },
         {
             "name": "Couch",
@@ -586,6 +656,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 20
             },
             "additionalInformation": "Dimensions: 72\" x 36\" x 30\"\nMaterial: Linen fabric\nAssembly required: No"
+            ,"priceId": "price_1P2Xg503YcH2K12qsUb6MLr9"
         },
         {
             "name": "Large Couch",
@@ -602,6 +673,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 25
             },
             "additionalInformation": "Dimensions: 90\" x 40\" x 36\"\nMaterial: Leather\nAssembly required: Yes"
+            ,"priceId": "price_1P2Xkq03YcH2K12qxAfC4dzP"
         },
         {
             "name": "Side Table",
@@ -618,6 +690,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 10
             },
             "additionalInformation": "Dimensions: 18\" x 18\" x 24\"\nMaterial: Wood\nAssembly required: No"
+            ,"priceId": "price_1P2XlX03YcH2K12q78Yv7Qc4"
         },
         {
             "name": "Sofa",
@@ -634,6 +707,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 15
             },
             "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Velvet\nAssembly required: No"
+            ,"priceId": "price_1P2XmB03YcH2K12qenNzgxzF"
         }
     ]
 
@@ -647,6 +721,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const imagesMany = document.querySelectorAll(".single-product-photo");
     const infoLink = document.querySelectorAll(".product-info-link");
     const block = document.querySelector(".block");
+    // This is a dummy value it will be changed when the next or prev button is clicked then it wil lbe addedd into the cart
+    let priceIdVariable = "price_1P2XaC03YcH2K12qns5PGnsJ";
 
     // THE JQUERY FORMAT IS $(selector).action()
     // $: Defines or accesses jQuery.
@@ -677,6 +753,7 @@ document.addEventListener("DOMContentLoaded", function () {
         productPrice.textContent = `Price:$${currentObj.price.old}-$${currentObj.price.new}`;
         productDescription.textContent = currentObj.description;
         reviewCount.textContent = `Customer reviews: ${currentObj.reviews.count}`;
+        priceIdVariable = currentObj.priceId;
         //adding the images
         imagesMany.forEach(function (image) {
             image.lastElementChild.src = currentObj.image;
@@ -830,21 +907,52 @@ document.addEventListener("DOMContentLoaded", function () {
         const price = newPricePart;
         //IMPORTANT //. This is because you want to get the current quantity value at the time the singlePageAdc button is clicked, not at the time the page loads.
         const quantityValue = parseInt(plusBtn.previousElementSibling.innerText);
-        console.log(quantityValue);
+        const priceId = priceIdVariable;
+        console.log(priceId);
+        // TODO: i need to add the price id here then add it to the obj iteminfo below to store in the shop obj
+        // the i will create a request using fetch api and send the data to authenticate to the server
 
+
+        //FIXME: I NEED TO CREATE A DIFFERENT FUNCTIONALITY TO GET THE PRICE ID FROM THE PRODUCT OBJ AND THEN STORE IT IN THE SHOPOBJ ARRAY
 
         //creating the object to store inside the json
         const itemInfo = {
             img: img,
             name: name,
             price: price,
-            quantity: quantityValue
+            quantity: quantityValue,
         };
         console.log("adc or single page is working ");
 
         //It then checks if the product already exists in the shopObj (which represents the shopping cart).
         //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
-                                                                                                                                 // FIXME: this is the error
+
+
+        // CREATING THE FUNCITONALITY TO ADD THE SINGLE PAGE ITEM TO THE ADCOBJARRAY
+
+        // if duplicate increase the quantity
+     const adcItemInfo = {
+            "itemName": name,
+            "itemQuantity": 1,
+            "productId" : priceId
+        }
+
+
+
+        // Check if item already exists in the array
+        const existantItemForadcObj = adcproductObj.items.find(function (obj){
+            return obj.itemName === adcItemInfo.itemName;
+        });
+        // for adcitemObj
+        if(existantItemForadcObj){
+            existantItemForadcObj.itemQuantity += 1 ;
+        }
+        else{
+            adcproductObj.items.push(adcItemInfo);
+        }
+
+        sessionStorage.setItem("adcObjArray", JSON.stringify(adcproductObj));
+
 
 
         // DUPLICATE
@@ -888,6 +996,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 maxlength: 10,
                 minlength: 2
             },
+            address:{
+                required: true,
+                maxlength: 50,
+                minlength: 2
+            },
             email: {
                 required: true,
                 email: true
@@ -912,6 +1025,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 required: "Please enter your last name",
                 maxlength: "Your last name must be at most 10 characters long",
                 minlength: "Your last name must be at least 2 characters long"
+            },
+            address:{
+                required: "Please enter your home address",
+                maxlength: "Your address must be at most 50 characters long",
+                minlength: "Your address must be at least 2 characters long"
             },
             email: {
                 required: "Please enter your email address",
@@ -953,7 +1071,8 @@ document.addEventListener("DOMContentLoaded", function () {
             "firstName": $("input[name='first']").val(),
             "lastName": $("input[name='last']").val(),
             "email": $("input[name='email']").val(),
-            "password": $("input[name='password']").val()
+            "password": $("input[name='password']").val(),
+            "address": $("input[name='address']").val()
         }
 
                  await fetch(url, {
@@ -968,8 +1087,10 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(response);
             return response.text();
         }).then(function (responseData) {
-            const userName = $("input[name='first']").val();
 
+
+
+            const userName = $("input[name='first']").val();
 
             console.log(responseData);
             showAlert(responseData);
@@ -990,6 +1111,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+
+
+    let loggedInUserEmail ;
+    let loggedInUserAddress ;
+
+    setTimeout(() => {
+        console.log(loggedInUserEmail);
+        console.log(loggedInUserAddress);
+    }, 22000);
+
+
+
     // No, the HTTP GET request does not typically have a body. According to the HTTP/1.1 specification, a GET request should not include a message body because the server will not use it. Instead, data sent to the server is appended to the URL as query parameters.
 
     async function userLoginRequest(url){
@@ -998,7 +1131,26 @@ document.addEventListener("DOMContentLoaded", function () {
                console.log(response);
            return response.text();
        }).then(function (responseData) {
+
+
+               // getting the data from the response to store in the local storage to send with teh checkout request
+
+               if(responseData.includes("Successfully")){
+                   let splitArray = responseData.split("-");
+                   let email = splitArray[1];
+                   let address = splitArray[2];
+                   loggedInUserAddress = address;
+                   loggedInUserEmail =email;
+
+                   sessionStorage.setItem('Email', loggedInUserEmail);
+                   sessionStorage.setItem("Address", loggedInUserAddress);
+               }
+
                console.log(responseData);
+
+
+
+
                if (responseData.includes("Successfully")) {
                    showAlert("Login Successfully");
                    // Redirect to the home page after the login is successful
@@ -1006,9 +1158,10 @@ document.addEventListener("DOMContentLoaded", function () {
                        window.location.href = 'index.html';
                    }, 5000);
 
+                   console.log(responseData);
         //Dynamically getting the first name
                    let responseParts = responseData.split(' '); // This splits the string into an array of words
-                   let lastName = responseParts[responseParts.length - 1];
+                   let lastName = responseParts[responseParts.length - 2];
 
                    sessionStorage.setItem('userName', `${lastName}`);
 
@@ -1028,15 +1181,16 @@ document.addEventListener("DOMContentLoaded", function () {
                    const responseString = "Bad Credentials";
                    showAlert(responseString);
 
+
                }
            })
            .catch(function(error) {
                const responseString = "Network Error";
                showAlert(responseString);
+               console.log(error);
                console.log("this catch is catching the error")
            });
     }
-
 
 
 
@@ -1196,12 +1350,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // API's //
-    // TODO:
-
-
-
 
 
 
@@ -1210,7 +1358,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // retrieving name from local storage to show it
     $(document).ready(function () {
         const userName = sessionStorage.getItem('userName');
-console.log(userName);
+
         // this is a ocmment
         if (!userName) {
             const signOutBtn = $(".signOutBtn");
@@ -1242,6 +1390,52 @@ console.log(userName);
         btnNameRemove();
         window.location.href = 'login.html';
     });
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //REQUEST TO SEND THE DATA OVER TO THE SERVER
+
+    // CREATING A SEPERATE FUNCTION FOR POST REQUEST
+    async function checkOutPostRequest(url) {
+
+
+        await fetch(url, {
+
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+                'Content-Type': 'application/json', // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
+            body: JSON.stringify(adcproductObj), // body data type must match "Content-Type" header
+        }).then(function (response) {
+            console.log(response);
+            return response.json();
+        }).then(function (responseData) {
+
+
+
+            if (responseData.url) {
+
+                window.location.href = responseData.url;
+                console.log(responseData.url)
+                console.log(responseData);
+            }
+        }).catch(function(){
+            const responseString = "Network Error";
+            showAlert(responseString);
+        })
+
+    }
+
+
+// using the checkout button to send the request to checkout
+    $(".checkOutBtn").on("click" , function(e){
+        checkOutPostRequest("http://localhost:8080/UserData/Stripe/Authenticate");
+    })
+
+
 
 
 })//FIXME: the end of dom content loaded dont write below it

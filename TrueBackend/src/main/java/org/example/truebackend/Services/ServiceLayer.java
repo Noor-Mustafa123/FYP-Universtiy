@@ -58,8 +58,10 @@ public class ServiceLayer {
             return "This is an admin";
         }
         else {
+            String emailOfUser = listOfEmails.getFirst().getEmail();
            String firstName = listOfEmails.getFirst().getFirstName();
-                return STR."Successfully logged in as \{firstName}";
+           String addressOfUser = listOfEmails.getFirst().getAddress();
+                return STR."Successfully logged in as \{firstName}-\{emailOfUser}-\{addressOfUser}";
         }
 }
 

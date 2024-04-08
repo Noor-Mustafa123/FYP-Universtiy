@@ -5,28 +5,40 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-@Table(name="User_Details")
+@Table(name = "User_Details")
 public class User1 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String firstName;
     private String lastName;
+    private String address;
     private String email;
     private String password;
 
-    public User1(String firstName, String lastName, String email, String password) {
+    public User1(String firstName, String lastName, String email, String password, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.address = address;
     }
-// This error is because your User1 class does not have a no-argument constructor. JPA requires that your entity classes have a no-arg constructor
+
+    // This error is because your User1 class does not have a no-argument constructor. JPA requires that your entity classes have a no-arg constructor
     public User1() {
+
     }
 
-    // Getters and Setters
 
+// Getters and Setters
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public Integer getId() {
         return id;

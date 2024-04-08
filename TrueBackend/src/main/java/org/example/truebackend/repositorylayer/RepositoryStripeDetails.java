@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RepositoryStripeDetails extends CrudRepository<UserInfoForStripe, Integer> {
-    List<UserInfoForStripe> findUserInfoForStripeByPriceId (String priceId);
+
     List<UserInfoForStripe> findUserInfoForStripeByEmail (String email);
 }

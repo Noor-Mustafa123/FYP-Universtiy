@@ -12,10 +12,7 @@ import com.stripe.param.ProductCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
-import org.example.truebackend.Models.ProductResponse;
-import org.example.truebackend.Models.User1;
-import org.example.truebackend.Models.UserInfoForStripe;
-import org.example.truebackend.Models.itemInfo;
+import org.example.truebackend.Models.*;
 import org.example.truebackend.Services.ServiceLayer;
 import org.example.truebackend.Services.StripeService;
 import org.slf4j.Logger;
@@ -29,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 
 import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.event;
 
@@ -157,21 +155,25 @@ public class ControllerLayer {
     @PostMapping("/Stripe/Authenticate")
     public ResponseEntity<String> stripeMethod(@RequestBody UserInfoForStripe userInfo) {
 //     creating object to add parameter
-        SessionCreateParams parameters = SessionCreateParams.builder()
+        SessionCreateParams.Builder parameters = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
-                .setCancelUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/login.html")
+                .setSuccessUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
+                .setCancelUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/login.html");
 //              TODO:  the line items to send to the stripe api to autenticate against is missing I hardcoded one for testing purposes
-                .addLineItem(
+//                use a foreach loop to iterate over each object in the list
+
+                for(EachProductInADC item : userInfo.getItems()){
+                    parameters.addLineItem(
                         SessionCreateParams.LineItem.builder()
-                                .setPrice("price_1P0EoP03YcH2K12qnyAv7O5s")
-                                .setQuantity(1L)
-                                .build())
-                .build();
+                                .setPrice(item.getProductId())
+                                .setQuantity(item.getItemQuantity())
+                                .build());
+                }
+              SessionCreateParams newParametersObj =   parameters.build();
         try {
 //        The Session.create(params) call is used to create a new session with the specified parameters. This call communicates with the Stripe API and returns a Session object.
-        Session sessionObj = Session.create(parameters);
+        Session sessionObj = Session.create(newParametersObj);
 
 //        I will only save the userData in the database only if  the payment intent is completed
 //
