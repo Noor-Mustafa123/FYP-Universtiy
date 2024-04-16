@@ -19,7 +19,7 @@
   <!-- header section -->
   <header id="header" class="header">
     <!-- start from here -->
-    <nav class="navbar-expand-lg navbar navbar-light">
+    <nav class="navbar-expand-lg navbar navbar-light fixed-top bg-dark">
       <!-- Logo -->
       <a href="index.html" class="navbar-brand">
         <img src="img/logo.png" alt="company logo" />
@@ -72,6 +72,7 @@
     <!--  justify-content-center aligns items horizontally center 
   align-items-center centers the items vertically -->
     <!-- banner for the website -->
+    <!--    THE BACKGROUND IMAGE IS FIXED BECAUSE WE ARE USING A CSS PROPERTY BACKGROUND ATTACHMENT AS FIXED ON THIS DIV-->
     <div class="banner d-flex align-items-center pl-lg-5 pl-3">
       <div>
         <h1 class="text-slanted text-capitalize mb-0">
@@ -713,7 +714,7 @@
               <!-- cart buttons -->
               <div class="d-flex my-2">
                 <span class="btn minus btn-black mx-1">-</span>
-                <span class="btn btn-black mx-1">4</span>
+                <span class="btn btn-black mx-1 modalItemQuantity">4</span>
                 <span class="btn plus btn-black mx-1">+</span>
               </div>
               <button class="btn btn-black my-2 mx-2">wishlist</button>

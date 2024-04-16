@@ -1,11 +1,9 @@
 package org.example.truebackend.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "List_ITEMS_Objects")
 public class EachProductInADC {
 
 
@@ -15,11 +13,34 @@ public class EachProductInADC {
     private String itemName;
     private Long itemQuantity;
     private String productId;
+    @ManyToOne
+    private UserInfoForStripe userObj;
 
+    public EachProductInADC( String itemName, Long itemQuantity, String productId, UserInfoForStripe userObj) {
+        this.itemName = itemName;
+        this.itemQuantity = itemQuantity;
+        this.productId = productId;
+        this.userObj = userObj;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public UserInfoForStripe getUserObj() {
+        return userObj;
+    }
+
+    public void setUserObj(UserInfoForStripe userObj) {
+        this.userObj = userObj;
+    }
 
     public EachProductInADC() {
     }
-
 
 
     public String getItemName() {

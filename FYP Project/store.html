@@ -18,7 +18,7 @@
   <!-- header section -->
   <header id="header" class="header">
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-dark">
       <a href="index.html" class="navbar-brand">
         <img src="img/logo.png" alt="company logo" />
       </a>
@@ -57,6 +57,7 @@
       </div>
     </nav>
     <!-- end of navbar -->
+    <!--    THE BACKGROUND IMAGE IS FIXED BECAUSE WE ARE USING A CSS PROPERTY BACKGROUND ATTACHMENT AS FIXED ON THIS DIV-->
     <div class="banner-store d-flex pl-3 pl-lg-5 align-items-center text-center justify-content-center">
       <div>
         <h1 class="text-slanted text-capitalize display-4 text-yellow">
@@ -161,7 +162,7 @@
           <!-- buttons -->
           <div class="row my-3">
             <div class="col-sm-6 mx-auto col d-flex justify-content-center flex-wrap">
-              <button type="button" class="btn btn-black my-2">Continue shipping</button>
+              <button type="button" class="btn btn-black my-2 EmptyCartBtn">Empty Cart</button>
               <button type="button" class="btn btn-yellow ml-2 my-2 checkOutBtn">checkout</button>
             </div>
           </div>
@@ -632,7 +633,7 @@
                 <!-- cart buttons -->
                 <div class="d-flex my-2">
                   <span class="btn minus btn-black mx-1">-</span>
-                  <span class="btn value btn-black mx-1">4</span>
+                  <span class="btn value btn-black mx-1 modalItemQuantity">4</span>
                   <span class="btn plus btn-black mx-1">+</span>
                 </div>
                 <button class="btn btn-black my-2 mx-2">wishlist</button>

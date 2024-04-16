@@ -112,6 +112,7 @@ public class ControllerLayer {
     @PostMapping("/Stripe/AddProduct")
     public ResponseEntity<ProductResponse> addNewProduct(@RequestBody itemInfo itemInfo) {
         try {
+// ProductCreateParams.builder() is creating a new instance of ProductCreateParams.Builder, which you can then use to set the properties of a new ProductCreateParams object and create it with the build method.
             ProductCreateParams Parameters = ProductCreateParams.builder()
                     .setName(itemInfo.getProductName())
                     .setDescription(itemInfo.getProductDesc())
@@ -128,7 +129,7 @@ public class ControllerLayer {
             Price price = Price.create(priceParams);
 
 
-//Created this DTO to transfer data as a response
+//Created this DTO to transfer data as a response this is an empty dto class which i am sending back as a response
             productResponse.setId(productObj.getId());
             productResponse.setName(productObj.getName());
             productResponse.setDescription(productObj.getDescription());
@@ -147,29 +148,34 @@ public class ControllerLayer {
 
 
 
-
-
-
 /////    TODO: DOUBT why am i creating two headers? understand how the request is being sent?
 
     @PostMapping("/Stripe/Authenticate")
     public ResponseEntity<String> stripeMethod(@RequestBody UserInfoForStripe userInfo) {
 //     creating object to add parameter
+// The SessionCreateParams.builder() method is a static factory method that returns an instance of the Builder class, which is a static inner class of SessionCreateParams.
+// FIXME: NOTE: this is a static factory method which is used to create another class "NOT" a factory object creational design pattern
+//  In Java, a static factory method is a static method that returns an instance of the class it's defined in or an instance of another class. The key characteristic of a static factory method is that it's a static method that creates and returns an object.
         SessionCreateParams.Builder parameters = SessionCreateParams.builder()
+//                these parameter are getting values from static methods
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
                 .setSuccessUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
                 .setCancelUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/login.html");
-//              TODO:  the line items to send to the stripe api to autenticate against is missing I hardcoded one for testing purposes
 //                use a foreach loop to iterate over each object in the list
 
+
+//        FIXME: there is a error in the product total on the stripe page it does not add the quantity of the items in the total meaning that it does not add more items in the total just single product price
                 for(EachProductInADC item : userInfo.getItems()){
+                    logger.info("This is the item name {} and amount for the product to be saved {}",item.getItemName(),item.getItemQuantity());
                     parameters.addLineItem(
                         SessionCreateParams.LineItem.builder()
                                 .setPrice(item.getProductId())
                                 .setQuantity(item.getItemQuantity())
-                                .build());
+                                .build() );
                 }
+        // FIXME: Note: this is a static factory method which is used to create another class "NOT" a factory object creational design
+//In Java, a static factory method is a static method that returns an instance of the class it's defined in or an instance of another class. The key characteristic of a static factory method is that it's a static method that creates and returns an object.
               SessionCreateParams newParametersObj =   parameters.build();
         try {
 //        The Session.create(params) call is used to create a new session with the specified parameters. This call communicates with the Stripe API and returns a Session object.
@@ -220,7 +226,6 @@ System.out.println("User Data Recieved");
                 System.out.println(PaymentIntent.toString());
                 System.out.println("User Data Saved");
             } else {
-                System.out.println("The If Condition is not passed");
                 System.out.println(STR."Other events ignored, Event type: \{event.getType()}");
             }
         }
@@ -243,25 +248,7 @@ System.out.println("User Data Recieved");
 }
 //TODO: currently just trying to get the link from the api to redirect to the payment page
 
-//Create a header for the request and add api key to it in the authenticaion field
-//Create the request
-//send the post request
 
-//   SessionCreateParams params =
-//                SessionCreateParams.builder()
-//                        .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
-//                        .setMode(SessionCreateParams.Mode.PAYMENT)
-//                        .setSuccessUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
-//                        .setCancelUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
-//                        .addLineItem(
-//                                SessionCreateParams.LineItem.builder()
-//                                        .setPrice("price_1P0EoP03YcH2K12qnyAv7O5s")
-//                                        .setQuantity(1L)
-//                                        .build())
-//                        .build();
-//
-//        Session session = Session.create(params);
-//        return ResponseEntity.ok(session.toJson());
 //////////////////////////////////////////////
 // Yes, you've got the flow mostly correct. Here's a step-by-step breakdown:
 //1 The client (JavaScript running in the browser) sends an HTTP request to the server. This request includes a body which contains the data to be sent to the server.

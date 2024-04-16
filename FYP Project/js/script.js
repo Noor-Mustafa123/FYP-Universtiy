@@ -56,6 +56,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const existantItem = shopObj.find(function (obj) {
                 return obj.name === itemInfo.name;
+
+
+
             });
             // for shop obj
             if (existantItem) {
@@ -64,8 +67,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 shopObj.push(itemInfo);
                 //adding the itemInfo to the object and making he name the key value pair
             }
-
+            // this is for sending the data over to the database
             sessionStorage.setItem("adcObjArray", JSON.stringify(adcproductObj));
+            // this obj is for displaying the items
             sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
             updateCart(shopObj);
             console.log("adcObjarray added to the session storage")
@@ -89,11 +93,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             while (ADCSection.firstChild) {
                 ADCSection.removeChild(ADCSection.firstChild);
-
             }
             // Iterate over each item in the shopObj
             // This is a for...in loop, which is used to iterate over the properties of an object. it executes code for each property of an object
             //key is hte name of the property which has the value {property: value}
+            // let id in shopObj: This part of the loop is saying, "for each property id in the object shopObj".
+            // let item = shopObj[id];: This line is accessing the value of the property id in the object shopObj and assigning it to the variable item.
             for (let id in shopObj) {
                 let item = shopObj[id];
                 // Add the HTML for each column in the row
@@ -262,6 +267,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const price = btn.parentElement.nextElementSibling.nextElementSibling.lastElementChild.textContent.trim();
             const parent = btn.parentElement.querySelector(".featured-store-link");
             const priceId = parent.dataset.productId;
+            const itemQuantity = $(".modalItemQuantity").text();
 
 
             //addinig add to cart functionality in the adc modal
@@ -271,9 +277,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         img: img,
                         name: name,
                         price: price,
-                        quantity: 1
+                        quantity: itemQuantity
                     };
-                    console.log("modal adc working ");
+
+
 
                     //It then checks if the product already exists in the shopObj (which represents the shopping cart).
                     //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
@@ -286,12 +293,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                     if (existantItem) {
                         existantItem.quantity += 1;
-                    } else {
+                    }
+                    else {
                         shopObj.push(itemInfo);
                         //adding the itemInfo to the object and making he name the key value pair
                     }
                     sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
-                    console.log("modal is working to the end")
+
                     updateCart(shopObj);
 
 
@@ -300,7 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 //     FOR THE PRODUCTOBJ FUNCTIONAITY
                     const adcItemInfo = {
                         "itemName": name,
-                        "itemQuantity": 1,
+                        "itemQuantity": itemQuantity,
                         "productId" : priceId
                     }
 
@@ -324,29 +332,15 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
 
-            // EVENTLISTNERS TO THE QUANTITY BTNS
-            document.querySelectorAll(".plus").forEach(function (btn) {
-                btn.addEventListener("click", function (e) {
-                    const middleSpan = btn.previousElementSibling;
-                    if (middleSpan) {
-                        let currentValue = parseInt(middleSpan.innerText);
-                        currentValue += 1;
-                        middleSpan.innerText = currentValue;
-                    }
-                });
-            });
 
 
-            document.querySelectorAll(".minus").forEach(function (btn) {
-                btn.addEventListener("click", function (e) {
-                    const middleSpan = btn.nextElementSibling;
-                    let currentValue = parseInt(middleSpan.innerText);
-                    if (currentValue > 0) {
-                        currentValue -= 1;
-                        middleSpan.innerText = currentValue;
-                    }
-                });
-            });
+
+
+
+
+
+
+
 
 
             //  UPDATE THE DATA IN THE MODAL
@@ -362,6 +356,44 @@ document.addEventListener("DOMContentLoaded", function () {
             // The Bootstrap modal has different states, and "show" is one of them, indicating that the modal should be displayed.
         })
     })
+
+
+
+    // EVENTLISTNERS TO THE QUANTITY BTNS
+    document.querySelectorAll(".plus").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+            const middleSpan = btn.previousElementSibling;
+            console.log(middleSpan.textContent);
+            console.log(middleSpan);
+            if (middleSpan) {
+                let currentValue = parseInt(middleSpan.innerText);
+
+                currentValue += 1;
+                middleSpan.innerText = currentValue;
+            }
+            console.log(middleSpan.textContent);
+        });
+    });
+    // FIXME: i moved the event listners outside of the zoom buttons the quantity buttons bug in the modal was happening because the event listeners were being added
+    // FIXME: every time a zoom button was clicked as the eventlisters were inside the zoom buttons eventlistenr loop so every time a zoom button was clicked a new event listenr was added which statcked them up causing a double on each modal item quanaity button
+
+    document.querySelectorAll(".minus").forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+            const middleSpan = btn.nextElementSibling;
+            let currentValue = parseInt(middleSpan.innerText);
+            console.log(middleSpan.textContent);
+            console.log(middleSpan);
+            if (currentValue > 0) {
+                currentValue -= 1;
+                middleSpan.innerText = currentValue;
+
+            }
+            console.log(middleSpan.textContent);
+
+        });
+    });
+
+
 
 
 //////////////////////////////////////////
@@ -886,7 +918,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
     //adding adc functionality to the add to cart button in the single product page
     // GIVE EACH MODAL DIFFERENT NAME AND PICTURE
@@ -907,6 +939,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const price = newPricePart;
         //IMPORTANT //. This is because you want to get the current quantity value at the time the singlePageAdc button is clicked, not at the time the page loads.
         const quantityValue = parseInt(plusBtn.previousElementSibling.innerText);
+        console.log(quantityValue);
         const priceId = priceIdVariable;
         console.log(priceId);
         // TODO: i need to add the price id here then add it to the obj iteminfo below to store in the shop obj
@@ -933,7 +966,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // if duplicate increase the quantity
      const adcItemInfo = {
             "itemName": name,
-            "itemQuantity": 1,
+            "itemQuantity": quantityValue,
             "productId" : priceId
         }
 
@@ -1436,6 +1469,15 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
 
+
+//creating the empty cart button functionality
+// this is first removing the data from the local storage then it is removing the data from the cart itself
+    $(".EmptyCartBtn").on("click",function(e){
+        sessionStorage.clear();
+        while (ADCSection.firstChild) {
+            ADCSection.removeChild(ADCSection.firstChild);
+        }
+    })
 
 
 })//FIXME: the end of dom content loaded dont write below it

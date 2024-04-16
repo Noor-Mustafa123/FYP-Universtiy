@@ -133,6 +133,7 @@ body {
 /* banner */
 .banner {
     min-height: calc(100vh - 101px);
+    /*HERE IS THE IMAGE FOR THE BACKGROUND IT IS BEING DONE USING CSS AND THE BACKGOUND FIX PROPERTY AS WELL*/
     background: url(../img/pageBcg/bannerBcg.jpeg);
     background-position: center center;
     background-size: cover;

@@ -1,5 +1,6 @@
-package org.example.truebackend.Models;
+package org.example.truebackend.repositorylayer;
 
+import org.example.truebackend.Models.User1;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
