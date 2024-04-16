@@ -267,7 +267,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const price = btn.parentElement.nextElementSibling.nextElementSibling.lastElementChild.textContent.trim();
             const parent = btn.parentElement.querySelector(".featured-store-link");
             const priceId = parent.dataset.productId;
-            const itemQuantity = $(".modalItemQuantity").text();
+            // the item quantity is returning a string so i convert it to parseInt
+            const itemQuantity = parseInt($(".modalItemQuantity").text(), 10);
 
 
             //addinig add to cart functionality in the adc modal
@@ -320,7 +321,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                     // for adcitemObj
                     if(existantItemForadcObj){
-                        existantItemForadcObj.itemQuantity += 1 ;
+                        existantItemForadcObj.itemQuantity += 1;
                     }
                     else{
                         adcproductObj.items.push(adcItemInfo);
@@ -329,6 +330,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     sessionStorage.setItem("adcObjArray", JSON.stringify(adcproductObj));
 
                 });
+
+
+
+
+
+
+
             });
 
 
