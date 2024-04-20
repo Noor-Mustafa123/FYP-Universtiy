@@ -1,5 +1,6 @@
 package org.example.truebackend.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,8 @@ public class EachProductInADC {
     private String itemName;
     private Long itemQuantity;
     private String productId;
+//    The @JsonManagedReference annotation is the forward part of the relationship and @JsonBackReference is the back part of the relationship. Jackson will serialize the entity with @JsonManagedReference normally and will omit the field annotated with @JsonBackReference.
+    @JsonBackReference
     @ManyToOne
     private UserInfoForStripe userObj;
 

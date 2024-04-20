@@ -1,7 +1,7 @@
 package org.example.truebackend.Controllers;
 
 
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
 import com.stripe.model.*;
@@ -11,8 +11,10 @@ import com.stripe.param.PriceCreateParams;
 import com.stripe.param.ProductCreateParams;
 import com.stripe.param.checkout.SessionCreateParams;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.mapper.Mapper;
 import org.apache.coyote.Response;
 import org.example.truebackend.Models.*;
+import org.example.truebackend.Services.OrderService;
 import org.example.truebackend.Services.ServiceLayer;
 import org.example.truebackend.Services.StripeService;
 import org.slf4j.Logger;
@@ -22,10 +24,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.event;
@@ -50,15 +49,17 @@ public class ControllerLayer {
 
     private UserInfoForStripe userInfo;
 
+    @Autowired
+    private OrderService orderService;
+
     private static final String signingSecret = "whsec_5c941243c40ad457e7f9e698617a5d31777f96ccfbe233b91abf8b80b0485c62";
 
 /////////////////////////////////////////////////////////
 //    FOR BETTER ERROR LOGGING AND MORE ROBUST IMPORT A LIBRARY
 
-//    The Factory Pattern is about creating an object from one of several possible classes that share a common super class or interface, based on some input parameters. It’s useful when you don’t know ahead of time what class object you need
+    //    The Factory Pattern is about creating an object from one of several possible classes that share a common super class or interface, based on some input parameters. It’s useful when you don’t know ahead of time what class object you need
 //    The Builder Pattern, on the other hand, is about constructing a complex object step by step. It’s particularly useful when an object needs to be created with many possible configuration
-  private static final Logger logger = LoggerFactory.getLogger(ControllerLayer.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(ControllerLayer.class);
 
 
     // the parameter in the getmapping is a path vairable which allows you to pass
@@ -107,8 +108,6 @@ public class ControllerLayer {
     }
 
 
-
-
     @PostMapping("/Stripe/AddProduct")
     public ResponseEntity<ProductResponse> addNewProduct(@RequestBody itemInfo itemInfo) {
         try {
@@ -138,14 +137,11 @@ public class ControllerLayer {
 
             return ResponseEntity.ok(productResponse);
 
-        }
-        catch (StripeException e) {
+        } catch (StripeException e) {
             logger.error("An error occurred: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-
 
 
 /////    TODO: DOUBT why am i creating two headers? understand how the request is being sent?
@@ -153,6 +149,7 @@ public class ControllerLayer {
     @PostMapping("/Stripe/Authenticate")
     public ResponseEntity<String> stripeMethod(@RequestBody UserInfoForStripe userInfo) {
 //     creating object to add parameter
+
 // The SessionCreateParams.builder() method is a static factory method that returns an instance of the Builder class, which is a static inner class of SessionCreateParams.
 // FIXME: NOTE: this is a static factory method which is used to create another class "NOT" a factory object creational design pattern
 //  In Java, a static factory method is a static method that returns an instance of the class it's defined in or an instance of another class. The key characteristic of a static factory method is that it's a static method that creates and returns an object.
@@ -166,58 +163,53 @@ public class ControllerLayer {
 
 
 //        FIXME: there is a error in the product total on the stripe page it does not add the quantity of the items in the total meaning that it does not add more items in the total just single product price
-                for(EachProductInADC item : userInfo.getItems()){
-                    logger.info("This is the item name {} and amount for the product to be saved {}",item.getItemName(),item.getItemQuantity());
-                    parameters.addLineItem(
-                        SessionCreateParams.LineItem.builder()
-                                .setPrice(item.getProductId())
-                                .setQuantity(item.getItemQuantity())
-                                .build() );
-                }
+        for (EachProductInADC item : userInfo.getItems()) {
+            logger.info("This is the item name {} and amount for the product to be saved {}", item.getItemName(), item.getItemQuantity());
+            parameters.addLineItem(
+                    SessionCreateParams.LineItem.builder()
+                            .setPrice(item.getProductId())
+                            .setQuantity(item.getItemQuantity())
+                            .build());
+        }
         // FIXME: Note: this is a static factory method which is used to create another class "NOT" a factory object creational design
 //In Java, a static factory method is a static method that returns an instance of the class it's defined in or an instance of another class. The key characteristic of a static factory method is that it's a static method that creates and returns an object.
-              SessionCreateParams newParametersObj =   parameters.build();
+        SessionCreateParams newParametersObj = parameters.build();
         try {
 //        The Session.create(params) call is used to create a new session with the specified parameters. This call communicates with the Stripe API and returns a Session object.
-        Session sessionObj = Session.create(newParametersObj);
+            Session sessionObj = Session.create(newParametersObj);
 
 //        I will only save the userData in the database only if  the payment intent is completed
 //
             this.userInfo = userInfo;
-System.out.println("User Data Recieved");
+            System.out.println("User Data Recieved");
 //         The Session object is then converted to a JSON string using the toJson() method.
-        return ResponseEntity.ok(sessionObj.toJson());
-        }
-        catch (StripeException e){
+            return ResponseEntity.ok(sessionObj.toJson());
+        } catch (StripeException e) {
             logger.error("An error occurred: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
 
-
-//    I have activated the endpoint as a webhook
+    //    I have activated the endpoint as a webhook
 //    now i make a controleller method that when i locally trigger an event in case of that specific event that method dosee that specific thing
     @PostMapping("/webhook")
-    public void paymentSuccessEventHandler(@RequestBody String payload , HttpServletRequest request) {
+    public void paymentSuccessEventHandler(@RequestBody String payload, HttpServletRequest request) {
         String headerSignature = request.getHeader("Stripe-Signature");
-        Event event= null;
+        Event event = null;
         try {
-            event = Webhook.constructEvent(payload,headerSignature,signingSecret);
+            event = Webhook.constructEvent(payload, headerSignature, signingSecret);
 //            System.out.println(event);
         } catch (SignatureVerificationException e) {
             logger.error("this is the authentication error in the webhook event creating ", e);
             throw new RuntimeException(e);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             logger.error("this is the exception occurred while creating an event ", e);
-        };
+        }
+        ;
 //TODO: replace the runtime exceptions with the real response entity expetions so that if real the end user can see them
 
-//        how is the Event object created without a constructor
-//        chat gpt says first construct the event object first which takes some parameters
-//        then check for exceptions
-//        what is this stripe-signature passed as an argument to the getHeader method of the request?
+
         try {
 //            THREE EVENTS are taking place so only one is accepted other ones are ignored
             if (event.getType().equals("payment_intent.succeeded")) {
@@ -228,9 +220,8 @@ System.out.println("User Data Recieved");
             } else {
                 System.out.println(STR."Other events ignored, Event type: \{event.getType()}");
             }
-        }
-        catch(Exception e){
-            logger.error("AN exception occurred in the if else statement",e);
+        } catch (Exception e) {
+            logger.error("AN exception occurred in the if else statement", e);
         }
 
 //        then get the object from the session?
@@ -238,11 +229,13 @@ System.out.println("User Data Recieved");
 //        why are we returning a response entity and to whom?
 
     }
-
-
-
-
-
+    @GetMapping("/OrderDetails")
+    public ResponseEntity<String> OrderDetailsMethod() {
+          String ordersJson =  orderService.processOrders();
+//   FIXME: the items value i am getting is empty find the reason for that
+        logger.info("This is the object that we are getting to send back to the client {}", ordersJson);
+          return ResponseEntity.ok(ordersJson);
+    }
 
 
 }

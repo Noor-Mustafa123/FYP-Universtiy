@@ -1,8 +1,10 @@
 package org.example.truebackend.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,8 +21,13 @@ public class UserInfoForStripe {
 //    the cascade = CascadeType.ALL which means that any operation (including deletion) performed on a UserInfoForStripe entity will be cascaded to the associated EachProductInADC entities.
 //    So, if you delete a UserInfoForStripe entity, all the associated EachProductInADC entities will be deleted as wel due to the cascade property being in the userinfoforstripe entity
 // When you fetch a UserInfoForStripe entity from the database, JPA will immediately fetch all the associated EachProductInADC entities as well, instead of waiting until you access the items collection. This is done to avoid LazyInitializationException which occurs when you try to access a lazily-loaded collection outside of the Hibernate Session.
+//  TO STOP INFINTE RECURSION:  The @JsonManagedReference annotation is the forward part of the relationship and @JsonBackReference is the back part of the relationship. Jackson will serialize the entity with @JsonManagedReference normally and will omit the field annotated with @JsonBackReference.
+    @JsonManagedReference
     @OneToMany(mappedBy = "userObj" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<EachProductInADC> items;
+    private List<EachProductInADC> items ;
+
+
+
 
     public List<EachProductInADC> getItems() {
         return items;

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     // DOM ITEMS
+
     const featuredSection = document.querySelectorAll(".featured");
     const addToCartBtns = document.querySelectorAll(".featured-store-link")
 
@@ -33,23 +34,21 @@ document.addEventListener("DOMContentLoaded", function () {
             // DUPLICATE
 
             // if duplicate increase the quantity
-          const adcItemInfo = {
+            const adcItemInfo = {
                 "itemName": item.querySelector(".texas").textContent.trim(),
                 "itemQuantity": 1,
-                "productId" : e.currentTarget.dataset.productId
+                "productId": e.currentTarget.dataset.productId
             }
-
 
 
             // Check if item already exists in the array
-            const existantItemForadcObj = adcproductObj.items.find(function (obj){
+            const existantItemForadcObj = adcproductObj.items.find(function (obj) {
                 return obj.itemName === adcItemInfo.itemName;
             });
             // for adcitemObj
-            if(existantItemForadcObj){
-                existantItemForadcObj.itemQuantity += 1 ;
-            }
-            else{
+            if (existantItemForadcObj) {
+                existantItemForadcObj.itemQuantity += 1;
+            } else {
                 adcproductObj.items.push(adcItemInfo);
             }
 
@@ -58,11 +57,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 return obj.name === itemInfo.name;
 
 
-
             });
             // for shop obj
             if (existantItem) {
-                existantItem.quantity += 1;
+                existantItem.quantity += itemInfo.quantity;
             } else {
                 shopObj.push(itemInfo);
                 //adding the itemInfo to the object and making he name the key value pair
@@ -108,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <img src="${item.img}" alt="" class="img-fluid">
                 </div>
                 <div class="col-10 mx-auto col-md-4">
-                    <p class="text-uppercase">${item.name}</p>
+                    <p class="text-uppercase itemName">${item.name}</p>
                 </div>
                 <div class="col-10 mx-auto col-md-2">
                     <p class="text-uppercase">${item.price}</p>
@@ -116,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="col-10 mx-auto col-md-2">
                 <div class="d-flex justify-content-center align-items-center">
                 <span class="btn btn-black mx-1 quantity-minus" data-id="${id}">-</span>
-                <span class="btn btn-black mx-1 quantity">${item.quantity}</span>
+                <span class="btn btn-black mx-1 quantity itemQuantity">${item.quantity}</span>
                 <span class="btn btn-black mx-1 quantity-plus" data-id="${id}">+</span>
               </div>
                 </div>
@@ -140,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let totalPrice = 0;
 
             for (let id in shopObj) {
-                // HERE IN THIS OBJECT FORIN LOOP IT IS GETTING AN ARRAY AS AN OBJECT SO HERE THE ID IS THE INDEX OF THE OBJECTIN THE ARRAY AND THE
+                // HERE IN THIS OBJECT FORIN LOOP IT IS GETTING AN ARRAY AS AN OBJECT SO HERE THE ID IS THE INDEX OF THE OBJECT IN THE ARRAY AND THE
                 // ITEM IS THE CURRENT OBJEECT MATCHIGN THE INDEX
                 let item = shopObj[id];
 
@@ -190,11 +188,22 @@ document.addEventListener("DOMContentLoaded", function () {
             // adding event listner to plus button
             ADCSection.querySelectorAll(".quantity-plus").forEach(function (btn) {
                 btn.addEventListener("click", function (e) {
-                    const id = btn.dataset.id; // it is coming from the code above in the update cart this gets the name
+                    const id = btn.dataset.id;// it is coming from the html being dynamically being added above in the update cart this gets the name
+
                     const jsonInfo = shopObj[id]; // this gets the whole object the whole json of the item
                     jsonInfo.quantity += 1;
+                    // it is replacing the existing value at the location of the key which is shopObj
                     sessionStorage.setItem('shopObj', JSON.stringify(shopObj));
-                    updateCart(shopObj); //why is this being used because still htese evnt listners are inside the scope of this funciton
+                    updateCart(shopObj); //are calling these function inside its decleration becaue the event listeners are called after the function itself is ran so it is ok
+
+                    //Making functionality to increase quantity in the adcObjArray as well
+                    const itemNameInTheCart = ADCSection.querySelector(".itemName").textContent;
+                    const itemQuantityInTheCart = ADCSection.querySelector(".itemQuantity").textContent;
+                    const existantItem = adcproductObj.items.find(function (item) {
+                        return itemNameInTheCart == item.itemName;
+                    });
+                    existantItem.itemQuantity = itemQuantityInTheCart;
+                    sessionStorage.setItem('adcObjArray', JSON.stringify(adcproductObj));
                 });
             })
             ADCSection.querySelectorAll(".quantity-minus").forEach(function (btn) {
@@ -209,6 +218,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         // The event listener updates the shopObj.
                         // The updateCart function is called with the updated shopObj.
                         // updateCart clears the cart's HTML, generates the updated HTML for the cart, and recalculates the totals based on the modified shopObj.
+                        //Making functionality to increase quantity in the adcObjArray as well
+                        const itemNameInTheCart = ADCSection.querySelector(".itemName").textContent;
+                        const itemQuantityInTheCart = ADCSection.querySelector(".itemQuantity").textContent;
+                        const existantItem = adcproductObj.items.find(function (item) {
+                            return itemNameInTheCart == item.itemName;
+                        });
+                        existantItem.itemQuantity = itemQuantityInTheCart;
+                        sessionStorage.setItem('adcObjArray', JSON.stringify(adcproductObj));
                     }
                 });
             })
@@ -282,7 +299,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     };
 
 
-
                     //It then checks if the product already exists in the shopObj (which represents the shopping cart).
                     //If it does, it increments the quantity of that product by 1. If it doesn’t, it adds the itemInfo object to the shopObj.
 
@@ -294,8 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                     if (existantItem) {
                         existantItem.quantity += 1;
-                    }
-                    else {
+                    } else {
                         shopObj.push(itemInfo);
                         //adding the itemInfo to the object and making he name the key value pair
                     }
@@ -304,26 +319,22 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateCart(shopObj);
 
 
-
-
-                //     FOR THE PRODUCTOBJ FUNCTIONAITY
+                    //     FOR THE PRODUCTOBJ FUNCTIONAITY
                     const adcItemInfo = {
                         "itemName": name,
                         "itemQuantity": itemQuantity,
-                        "productId" : priceId
+                        "productId": priceId
                     }
-
 
 
                     // Check if item already exists in the array
-                    const existantItemForadcObj = adcproductObj.items.find(function (obj){
+                    const existantItemForadcObj = adcproductObj.items.find(function (obj) {
                         return obj.itemName === adcItemInfo.itemName;
                     });
                     // for adcitemObj
-                    if(existantItemForadcObj){
+                    if (existantItemForadcObj) {
                         existantItemForadcObj.itemQuantity += 1;
-                    }
-                    else{
+                    } else {
                         adcproductObj.items.push(adcItemInfo);
                     }
 
@@ -332,23 +343,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
 
-
-
-
-
-
             });
-
-
-
-
-
-
-
-
-
-
-
 
 
             //  UPDATE THE DATA IN THE MODAL
@@ -364,7 +359,6 @@ document.addEventListener("DOMContentLoaded", function () {
             // The Bootstrap modal has different states, and "show" is one of them, indicating that the modal should be displayed.
         })
     })
-
 
 
     // EVENTLISTNERS TO THE QUANTITY BTNS
@@ -400,8 +394,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         });
     });
-
-
 
 
 //////////////////////////////////////////
@@ -507,7 +499,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 15
             },
             "additionalInformation": "Dimensions: 80\" x 40\" x 30\"\nMaterial: High-quality fabric\nAssembly required: Yes",
-                "priceId": "price_1P2XMU03YcH2K12qvjlrlBnI"
+            "priceId": "price_1P2XMU03YcH2K12qvjlrlBnI"
         },
         {
             "name": "Kitchen Table",
@@ -524,7 +516,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 10
             },
             "additionalInformation": "Dimensions: 48\" x 30\" x 28\"\nMaterial: Solid wood\nAssembly required: No"
-            ,"priceId": "price_1P2XTF03YcH2K12q0F1ZDpR7"
+            , "priceId": "price_1P2XTF03YcH2K12q0F1ZDpR7"
 
         },
         {
@@ -543,7 +535,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 8
             },
             "additionalInformation": "Dimensions: 36\" x 24\" x 72\"\nMaterial: Particle board\nAssembly required: Yes"
-            ,"priceId": "price_1P2XV703YcH2K12qpNtZghac"
+            , "priceId": "price_1P2XV703YcH2K12qpNtZghac"
         },
         {
             "name": "Queen Sized Bed",
@@ -560,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 20
             },
             "additionalInformation": "Dimensions: 60\" x 80\" x 36\"\nMaterial: Solid wood\nAssembly required: Yes"
-            ,"priceId": "price_1P2XWG03YcH2K12qHTxQtkIs"
+            , "priceId": "price_1P2XWG03YcH2K12qHTxQtkIs"
         },
         {
             "name": "Designer Table",
@@ -577,7 +569,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 18
             },
             "additionalInformation": "Dimensions: 36\" x 36\" x 18\"\nMaterial: MDF and metal\nAssembly required: No"
-            ,"priceId": "price_1P2XXX03YcH2K12qCCeDb7zG"
+            , "priceId": "price_1P2XXX03YcH2K12qCCeDb7zG"
         },
         {
             "name": "Patio Table",
@@ -594,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 25
             },
             "additionalInformation": "Dimensions: 48\" x 28\" x 24\"\nMaterial: Weather-resistant wood\nAssembly required: Yes"
-            ,"priceId": "price_1P2XYW03YcH2K12qaERV6BHt"
+            , "priceId": "price_1P2XYW03YcH2K12qaERV6BHt"
         },
         {
             "name": "Shelf",
@@ -611,7 +603,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 12
             },
             "additionalInformation": "Dimensions: 24\" x 12\" x 60\"\nMaterial: Particle board\nAssembly required: Yes"
-            ,"priceId": "price_1P2XZX03YcH2K12qeKm6r6Bj"
+            , "priceId": "price_1P2XZX03YcH2K12qeKm6r6Bj"
         },
         {
             "name": "Chair",
@@ -628,7 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 22
             },
             "additionalInformation": "Dimensions: 24\" x 24\" x 36\"\nMaterial: Plastic and metal\nAssembly required: No"
-            ,"priceId": "price_1P2XaC03YcH2K12qns5PGnsJ"
+            , "priceId": "price_1P2XaC03YcH2K12qns5PGnsJ"
         },
         {
             "name": "Marble Sink",
@@ -645,7 +637,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 30
             },
             "additionalInformation": "Dimensions: 36\" x 22\" x 8\"\nMaterial: Marble\nAssembly required: No"
-            ,"priceId": "price_1P2Xbh03YcH2K12q0YFAsnJX"
+            , "priceId": "price_1P2Xbh03YcH2K12q0YFAsnJX"
         },
         {
             "name": "Small Sofa",
@@ -662,7 +654,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 15
             },
             "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Fabric\nAssembly required: No"
-            ,"priceId": "price_1P2XcW03YcH2K12qmuBeCOre"
+            , "priceId": "price_1P2XcW03YcH2K12qmuBeCOre"
         },
         {
             "name": "Wooden Table",
@@ -679,7 +671,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 18
             },
             "additionalInformation": "Dimensions: 36\" x 24\" x 18\"\nMaterial: Solid wood\nAssembly required: Yes"
-            ,"priceId": "price_1P2XdX03YcH2K12qDFzXtW5n"
+            , "priceId": "price_1P2XdX03YcH2K12qDFzXtW5n"
         },
         {
             "name": "Couch",
@@ -696,7 +688,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 20
             },
             "additionalInformation": "Dimensions: 72\" x 36\" x 30\"\nMaterial: Linen fabric\nAssembly required: No"
-            ,"priceId": "price_1P2Xg503YcH2K12qsUb6MLr9"
+            , "priceId": "price_1P2Xg503YcH2K12qsUb6MLr9"
         },
         {
             "name": "Large Couch",
@@ -713,7 +705,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 25
             },
             "additionalInformation": "Dimensions: 90\" x 40\" x 36\"\nMaterial: Leather\nAssembly required: Yes"
-            ,"priceId": "price_1P2Xkq03YcH2K12qxAfC4dzP"
+            , "priceId": "price_1P2Xkq03YcH2K12qxAfC4dzP"
         },
         {
             "name": "Side Table",
@@ -730,7 +722,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 10
             },
             "additionalInformation": "Dimensions: 18\" x 18\" x 24\"\nMaterial: Wood\nAssembly required: No"
-            ,"priceId": "price_1P2XlX03YcH2K12q78Yv7Qc4"
+            , "priceId": "price_1P2XlX03YcH2K12q78Yv7Qc4"
         },
         {
             "name": "Sofa",
@@ -747,7 +739,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 "count": 15
             },
             "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Velvet\nAssembly required: No"
-            ,"priceId": "price_1P2XmB03YcH2K12qenNzgxzF"
+            , "priceId": "price_1P2XmB03YcH2K12qenNzgxzF"
         }
     ]
 
@@ -772,8 +764,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // taget btns
     const $nextBtn = $(".next-btn");
     const $prevBtn = $(".prev-btn");
-
-
 
 
     // currentIndex
@@ -822,7 +812,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             });
         });
-    //     Moving this out of the forEachstatment
+        //     Moving this out of the forEachstatment
 
 
         // Trigger click event on the current link button
@@ -865,7 +855,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentId = e.currentTarget.id; // Update the currentId variable
 
 
-
                 if (currentId === 'description') {
                     block.textContent = productObj[currentProductIndex].description;
                 } else if (currentId === 'additional') {
@@ -886,8 +875,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('description').click();
 
 
-});
-
+    });
 
 
     //adding the quantity counter (maybe Before? the above functionality)
@@ -920,10 +908,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
-
-
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -972,33 +956,30 @@ document.addEventListener("DOMContentLoaded", function () {
         // CREATING THE FUNCITONALITY TO ADD THE SINGLE PAGE ITEM TO THE ADCOBJARRAY
 
         // if duplicate increase the quantity
-     const adcItemInfo = {
+        const adcItemInfo = {
             "itemName": name,
             "itemQuantity": quantityValue,
-            "productId" : priceId
+            "productId": priceId
         }
-
 
 
         // Check if item already exists in the array
-        const existantItemForadcObj = adcproductObj.items.find(function (obj){
+        const existantItemForadcObj = adcproductObj.items.find(function (obj) {
             return obj.itemName === adcItemInfo.itemName;
         });
         // for adcitemObj
-        if(existantItemForadcObj){
-            existantItemForadcObj.itemQuantity += 1 ;
-        }
-        else{
+        if (existantItemForadcObj) {
+            existantItemForadcObj.itemQuantity += 1;
+        } else {
             adcproductObj.items.push(adcItemInfo);
         }
 
         sessionStorage.setItem("adcObjArray", JSON.stringify(adcproductObj));
 
 
-
         // DUPLICATE
         // if duplicate increase the quantity
-        const existantItem = shopObj.find(function(obj){
+        const existantItem = shopObj.find(function (obj) {
             return obj.name === itemInfo.name;
         });
         if (existantItem) {
@@ -1011,14 +992,7 @@ document.addEventListener("DOMContentLoaded", function () {
         updateCart(shopObj);
 
 
-
     });
-
-
-
-
-
-
 
 
     // }
@@ -1037,7 +1011,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 maxlength: 10,
                 minlength: 2
             },
-            address:{
+            address: {
                 required: true,
                 maxlength: 50,
                 minlength: 2
@@ -1067,7 +1041,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 maxlength: "Your last name must be at most 10 characters long",
                 minlength: "Your last name must be at least 2 characters long"
             },
-            address:{
+            address: {
                 required: "Please enter your home address",
                 maxlength: "Your address must be at most 50 characters long",
                 minlength: "Your address must be at least 2 characters long"
@@ -1116,7 +1090,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "address": $("input[name='address']").val()
         }
 
-                 await fetch(url, {
+        await fetch(url, {
 
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             headers: {
@@ -1128,7 +1102,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(response);
             return response.text();
         }).then(function (responseData) {
-
 
 
             const userName = $("input[name='first']").val();
@@ -1144,97 +1117,90 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = 'index.html';
                 }, 6000)
             }
-        }).catch(function(){
-         const responseString = "Network Error";
-         showAlert(responseString);
+        }).catch(function () {
+            const responseString = "Network Error";
+            showAlert(responseString);
         })
 
     }
 
 
-
-
-    let loggedInUserEmail ;
-    let loggedInUserAddress ;
-
-    setTimeout(() => {
-        console.log(loggedInUserEmail);
-        console.log(loggedInUserAddress);
-    }, 22000);
-
+    let loggedInUserEmail;
+    let loggedInUserAddress;
 
 
     // No, the HTTP GET request does not typically have a body. According to the HTTP/1.1 specification, a GET request should not include a message body because the server will not use it. Instead, data sent to the server is appended to the URL as query parameters.
 
-    async function userLoginRequest(url){
-       await fetch (url)
-           .then(function (response) {
-               console.log(response);
-           return response.text();
-       }).then(function (responseData) {
+    async function userLoginRequest(url) {
+        await fetch(url)
+            .then(function (response) {
+                return response.text();
+            }).then(async function (responseData) {
 
 
-               // getting the data from the response to store in the local storage to send with teh checkout request
+                // getting the data from the response to store in the local storage to send with teh checkout request
 
-               if(responseData.includes("Successfully")){
-                   let splitArray = responseData.split("-");
-                   let email = splitArray[1];
-                   let address = splitArray[2];
-                   loggedInUserAddress = address;
-                   loggedInUserEmail =email;
+                if (responseData.includes("Successfully")) {
+                    let splitArray = responseData.split("-");
+                    let email = splitArray[1];
+                    let address = splitArray[2];
+                    loggedInUserAddress = address;
+                    loggedInUserEmail = email;
 
-                   sessionStorage.setItem('Email', loggedInUserEmail);
-                   sessionStorage.setItem("Address", loggedInUserAddress);
-               }
-
-               console.log(responseData);
+                    sessionStorage.setItem('Email', loggedInUserEmail);
+                    sessionStorage.setItem("Address", loggedInUserAddress);
+                }
 
 
+                if (responseData.includes("Successfully")) {
+                    showAlert("Login Successfully");
+                    // Redirect to the home page after the login is successful
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 5000);
 
+                    console.log(responseData);
+                    //Dynamically getting the first name
+                    let responseParts = responseData.split(' '); // This splits the string into an array of words
+                    let lastName = responseParts[responseParts.length - 2];
 
-               if (responseData.includes("Successfully")) {
-                   showAlert("Login Successfully");
-                   // Redirect to the home page after the login is successful
-                   setTimeout(() => {
-                       window.location.href = 'index.html';
-                   }, 5000);
+                    sessionStorage.setItem('userName', `${lastName}`);
 
-                   console.log(responseData);
-        //Dynamically getting the first name
-                   let responseParts = responseData.split(' '); // This splits the string into an array of words
-                   let lastName = responseParts[responseParts.length - 2];
+                } else if (responseData.includes("admin")) {
+                    showAlert("Welcome Admin")
 
-                   sessionStorage.setItem('userName', `${lastName}`);
+                    sessionStorage.setItem('userName', "Noor");
 
-               }
-               else if(responseData.includes("admin")){
-                   showAlert("Welcome Admin")
+                    // setTimeout(() => {
+                    //     window.location.href = 'index.html';
+                    // }, 5000);
 
-                   sessionStorage.setItem('userName', "Noor");
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                   setTimeout(() => {
-                       window.location.href = 'index.html';
-                   }, 5000);
-               }
+                    //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
+                    await fetch("http://localhost:8080/UserData/OrderDetails")
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (responseData) {
+                            sessionStorage.setItem("responseJson", JSON.stringify(responseData));
+                            showDataOfOrders();
+                            showDataInAdminPanel();
+                        })
+                } else {
+                    // Show an error message if the login wasn't successful
+                    const responseString = "Bad Credentials";
+                    showAlert(responseString);
 
-                    else {
-                   // Show an error message if the login wasn't successful
-                   const responseString = "Bad Credentials";
-                   showAlert(responseString);
-
-
-               }
-           })
-           .catch(function(error) {
-               const responseString = "Network Error";
-               showAlert(responseString);
-               console.log(error);
-               console.log("this catch is catching the error")
-           });
+                }
+            })
+            .catch(function (error) {
+                const responseString = "Network Error";
+                showAlert(responseString);
+                console.log(error);
+                console.log("this catch is catching the error")
+            });
     }
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1371,14 +1337,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Add your AJAX request here if you want to submit the form data to the server
 
-        userLoginRequest(`http://localhost:8080/UserData/login?email=${userEmail}&password=${userPassword}`);
-
+            userLoginRequest(`http://localhost:8080/UserData/login?email=${userEmail}&password=${userPassword}`);
 
 
             // Prevent form submission so the page doesn't reload
             return false;
-        }
-        else if ($("form")) {
+        } else if ($("form")) {
             // If the form is not valid
 
             // Show a toast notification for unsuccessful submission
@@ -1388,11 +1352,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return false;
         }
     });
-
-
-
-
-
 
 
     ///////////////////////////////////////////////
@@ -1409,16 +1368,18 @@ document.addEventListener("DOMContentLoaded", function () {
             const element = $("<span></span>").addClass("mt-1 mr-2 nameSpan");
             element.text(userName);
             element.insertBefore(".signOutBtn");
-        //     adding name to the admin dashboard after signup
+            //     adding name to the admin dashboard after signup
             const adminElement = $("#dropdownMenuButton");
             adminElement.text(`Hello, ${userName}`)
         }
-        if(userName=="Noor"){
-        // setting the adminpanel link in the homepage navbar
-       let ul = $(".homePageUl")
-            ul.each(function(){$(this).append('<li class="nav-item mx-2"><a href="AdminDashboard.html" class="nav-link">Admin Panel</a></li>');
+        if (userName == "Noor") {
+            // setting the adminpanel link in the homepage navbar
+            let ul = $(".homePageUl")
+            ul.each(function () {
+                    $(this).append('<li class="nav-item mx-2"><a href="AdminDashboard.html" class="nav-link">Admin Panel</a></li>');
+                }
+            )
         }
-        )}
     });
 
     function btnNameRemove() {
@@ -1431,8 +1392,6 @@ document.addEventListener("DOMContentLoaded", function () {
         btnNameRemove();
         window.location.href = 'login.html';
     });
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1456,14 +1415,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }).then(function (responseData) {
 
 
-
             if (responseData.url) {
 
                 window.location.href = responseData.url;
                 console.log(responseData.url)
                 console.log(responseData);
             }
-        }).catch(function(){
+        }).catch(function () {
             const responseString = "Network Error";
             showAlert(responseString);
         })
@@ -1472,20 +1430,54 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // using the checkout button to send the request to checkout
-    $(".checkOutBtn").on("click" , function(e){
+    $(".checkOutBtn").on("click", function (e) {
         checkOutPostRequest("http://localhost:8080/UserData/Stripe/Authenticate");
     })
 
 
-
 //creating the empty cart button functionality
 // this is first removing the data from the local storage then it is removing the data from the cart itself
-    $(".EmptyCartBtn").on("click",function(e){
+    $(".EmptyCartBtn").on("click", function (e) {
         sessionStorage.clear();
         while (ADCSection.firstChild) {
             ADCSection.removeChild(ADCSection.firstChild);
         }
     })
+
+
+//     function to show the details of the orders in the admin dashboard
+    function showDataOfOrders() {
+        const responseJson = JSON.parse(sessionStorage.getItem("responseJson"));
+        console.log(responseJson);
+    }
+
+
+    //function to show the data recieved about the orders fron the server in the admin panel
+    function showDataInAdminPanel() {
+        const responseJson = JSON.parse(sessionStorage.getItem("responseJson"));
+        const tableElement = document.querySelector(".tableOfOrderData");
+
+        while (tableElement.firstChild) {
+            tableElement.removeChild(tableElement.firstChild);
+        }
+
+        const items = responseJson[0].items;
+
+        items.forEach(function(item){
+            const html = `<tr>
+                                        <th scope="row">${item.id}</th>
+                                        <td>${item.itemName}</td>
+                                        <td>${responseJson[0].email}</td>
+                                        <td>${item.itemQuantity}</td>
+                                        <td>${responseJson[0].address}</td>
+                                    </tr>`
+            tableElement.innerHTML += html;
+        })
+    }
+
+
+
+
 
 
 })//FIXME: the end of dom content loaded dont write below it
