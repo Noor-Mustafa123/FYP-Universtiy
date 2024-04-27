@@ -1478,8 +1478,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-
-
 })//FIXME: the end of dom content loaded dont write below it
 
 

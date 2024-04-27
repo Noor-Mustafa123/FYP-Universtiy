@@ -53,13 +53,13 @@ public class ServiceLayer {
         else if (listOfPasswords.isEmpty()) {
                 return "Password is incorrect";
         }
-        else if(listOfEmails.getFirst().getEmail().equals("mustafanoor715@gmail.com")){
+        else if(listOfEmails.get(0).getEmail().equals("mustafanoor715@gmail.com")){
             return "This is an admin";
         }
         else {
-            String emailOfUser = listOfEmails.getFirst().getEmail();
-           String firstName = listOfEmails.getFirst().getFirstName();
-           String addressOfUser = listOfEmails.getFirst().getAddress();
+            String emailOfUser = listOfEmails.get(0).getEmail();
+           String firstName = listOfEmails.get(0).getFirstName();
+           String addressOfUser = listOfEmails.get(0).getAddress();
             return "Successfully logged in as " + firstName + "-" + emailOfUser + "-" + addressOfUser;
         }
 }
