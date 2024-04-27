@@ -10,5 +10,6 @@ RUN npm install
 
 FROM openjdk:17.0.1-jdk-slim
 COPY --from=build target/TrueBackend-0.0.1-SNAPSHOT.jar TrueBackend.jar
+COPY --from=frontend /app/node_modules ./node_modules
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","TrueBackend.jar"]
