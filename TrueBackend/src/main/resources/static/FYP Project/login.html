@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FYP Project</title>
+<!-- fontawesome css -->
+<link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+<!-- Bootstrap css -->
+<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+ <!-- css -->
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+  <header id="header" class="header">
+    <!-- start from here -->
+    <nav class="navbar-expand-lg navbar navbar-light ">
+      <!-- Logo -->
+      <a href="../TrueBackend/src/index.html" class="navbar-brand">
+        <img src="img/logo.png" alt="company logo" />
+      </a>
+      <!-- making the collapsable section -->
+      <!-- the navbar makes when applied to a button makes it dissapear on larger screens -->
+      <!-- the data-toggle points to bootstrap that this button toggles the navigation menu  -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
+        <i class="fas fa-bars"></i>
+      </button>
+      <!-- collapsible menu -->
+      <!-- The collapse class hides the content on smaller screens until toggled by the button -->
+      <!-- navbar-collapse applies some additional styles. -->
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item mx-2">
+            <a href="../index.html" class="nav-link nav-active ">Home</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a href="products.html" class="nav-link">Products</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a href="singleproduct.html" class="nav-link">Single Product</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a href="store.html" class="nav-link">Store</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- the container for icons at the right side  -->
+      <div class="navbar-icons d-lg-flex d-none ">
+        <!-- navicon are custom css classes -->
+        <!-- single icon -->
+        <a href="store.html" class="navbar-icon mx-2 navbar-cart-icon">
+          <i class="fas fa-shopping-cart"></i>
+          <div class="cart-items">2</div>
+        </a>
+        <a href="SignUp.html" class="navbar-icon mx-2 navbar-user-icon userIcon">
+          <i class="fas fa-user"></i>
+        </a>
+        <button type="button" class="btn btn-danger mr-1 signOutBtn">Sign Out</button>
+        <!-- end of  single icon -->
+      </div>
+    </nav>
+
+
+  </header>
+
+  <!--  ==========================================================================           
+ *
+ *    LOGIN PAGE
+ *
+ *==========================================================================  -->
+  <div class="alertContainer  d-flex justify-content-center "></div>
+
+  <section>
+    <div class="container">
+      <div class="row mt-5">
+        <div class="col-lg-4 m-auto bg-light login"> <!--this m-auto is keeping the container horizontally centered-->
+          <h2 class="text-center pt-3 pb-1">Login</h2>
+          <p class="text-center fs-1 pb-3">Login back into your account</p>
+          <!-- input sections -->
+          <!-- the form tag will be used to send the data to the backend through http request -->
+          <form class="loginForm" action="#">
+            <div class="input-group mb-3">
+              <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+              <input type="text" class="form-control" placeholder="Email Address" name="email"> 
+              
+            </div>
+            <div class="input-group mb-4">
+              <span class="input-group-text"><i class="fa fa-lock"></i></span>
+              <input type="password" class="form-control" placeholder="Password" name="password">
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success btn-block mb-3">Login</button>
+              <p class="text-center">Don't have an account? <a href="SignUp.html">Sign Up Here</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  
+
+  <!-- Add your additional JavaScript, if needed -->
+
+  <!-- jQuery -->
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <!-- jQuery Validation Plugin -->
+<script src="../node_modules/jquery-validation/dist/jquery.validate.js"></script>
+<script src="../node_modules/jquery-validation/dist/additional-methods.js"></script>
+<script>
+    $(document).ready(function() {
+        if(jQuery().validate) {
+            console.log("jQuery Validate is loaded");
+        } else {
+            console.log("jQuery Validate is not loaded");
+        }
+    });
+</script>
+<!-- Bootstrap JS -->
+<script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- FontAwesome JS -->
+<script src="../node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+<!-- Custom js -->
+<script src="js/script.js"></script>
+
+
+</body>
+
+</html>
