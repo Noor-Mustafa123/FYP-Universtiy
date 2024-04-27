@@ -10,6 +10,6 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
-                .addResourceLocations("../../../../../");
+                .addResourceLocations("file:FYP-Universtiy/FYP Project");
     }
 }
