@@ -17,7 +17,7 @@ public class big {
        Optional<Integer> maxNumber = numberInStream.max(Integer::compare);
        if(maxNumber.isPresent()){
            Integer max= maxNumber.get();
-            System.out.print(STR."LargestNumber is \{max}");
+            System.out.print(STR."LargestNumber is " +max);
        }
        else{
            System.out.print("list is empty");

@@ -60,7 +60,7 @@ public class ServiceLayer {
             String emailOfUser = listOfEmails.getFirst().getEmail();
            String firstName = listOfEmails.getFirst().getFirstName();
            String addressOfUser = listOfEmails.getFirst().getAddress();
-                return STR."Successfully logged in as \{firstName}-\{emailOfUser}-\{addressOfUser}";
+            return "Successfully logged in as " + firstName + "-" + emailOfUser + "-" + addressOfUser;
         }
 }
 
