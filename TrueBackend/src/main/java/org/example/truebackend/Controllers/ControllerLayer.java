@@ -219,7 +219,7 @@ public class ControllerLayer {
                 System.out.println(PaymentIntent.toString());
                 System.out.println("User Data Saved");
             } else {
-                System.out.println(STR."Other events ignored, Event type:" +event.getType());
+                System.out.println("Other events ignored, Event type:" +event.getType());
             }
         } catch (Exception e) {
             logger.error("AN exception occurred in the if else statement", e);
