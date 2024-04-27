@@ -20,5 +20,12 @@ C:/Users/Noor Mustafa/FYP-Universtiy/untitled/src/main/resources/hibernate.cfg.x
       <jdbc-url>jdbc:sqlserver://fyp-sql-database.database.windows.net:1433;database=Fyp-Sql-Database</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="FreeSqlDatabase" uuid="14b90ed6-6aa1-46c7-9d3d-9af745e9ddb6">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://sql6.freesqldatabase.com:3306/sql6701601</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
