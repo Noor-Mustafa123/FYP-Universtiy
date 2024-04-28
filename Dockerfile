@@ -5,7 +5,7 @@ RUN mvn clean package -DskipTests
 # Stage 2: Install Node.js and npm
 FROM node:14 AS frontend
 WORKDIR /app
-COPY ./package.json ./package-lock.json ./
+COPY ./TrueBackend/src/main/resources/package.json ./TrueBackend/src/main/resources/package-lock.json ./
 RUN npm install
 
 FROM openjdk:17.0.1-jdk-slim
