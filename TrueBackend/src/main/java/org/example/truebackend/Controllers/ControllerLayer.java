@@ -33,7 +33,7 @@ import static org.springframework.web.servlet.mvc.method.annotation.SseEmitter.e
 @RestController
 @RequestMapping("/UserData")
 //The error you're encountering is related to Cross-Origin Resource Sharing (CORS), a security feature implemented in web browsers to prevent requests to different domains, protocols, or ports than the one from which the current document originated.  In your case, the JavaScript code running on your page (originating from http://localhost:63342) is trying to fetch data from http://localhost:8080/UserData/PUser1, which is considered a different origin because it's on a different port.
-@CrossOrigin(origins = {"https://ecommercefypuniversity.000webhostapp.com", "https://fyp-universtiy-production.up.railway.app"})
+@CrossOrigin(origins = {"https://ecommercefypuniversity.000webhostapp.com","http://localhost:63342", "https://fyp-universtiy-production.up.railway.app"})
 public class ControllerLayer {
 
 
