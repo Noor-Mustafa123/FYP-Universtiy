@@ -1178,7 +1178,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    await fetch("http://localhost:8080/UserData/OrderDetails")
+                    await fetch("https://fyp-universtiy-production.up.railway.app/UserData/OrderDetails")
                         .then(function (response) {
                             return response.json();
                         })
@@ -1337,7 +1337,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Add your AJAX request here if you want to submit the form data to the server
 
-            userLoginRequest(`http://localhost:8080/UserData/login?email=${userEmail}&password=${userPassword}`);
+            userLoginRequest(`https://fyp-universtiy-production.up.railway.app/UserData/login?email=${userEmail}&password=${userPassword}`);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1431,7 +1431,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // using the checkout button to send the request to checkout
     $(".checkOutBtn").on("click", function (e) {
-        checkOutPostRequest("http://localhost:8080/UserData/Stripe/Authenticate");
+        checkOutPostRequest("https://fyp-universtiy-production.up.railway.app/UserData/Stripe/Authenticate");
     })
 
 
