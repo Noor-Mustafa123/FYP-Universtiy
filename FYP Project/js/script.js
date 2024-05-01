@@ -1268,7 +1268,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if ($(".form").valid()) {
 
 
-            newUserPostRequest("http://localhost:8080/UserData/PUser1");
+            newUserPostRequest("https://fyp-universtiy-production.up.railway.app/UserData/PUser1");
 
             // Show a toast notification for successful submission
             console.log('Form submitted successfully.');
