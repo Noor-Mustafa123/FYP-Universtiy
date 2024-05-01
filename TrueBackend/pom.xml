@@ -37,7 +37,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.26</version>
+        </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
@@ -87,9 +91,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>21</source>
-                    <target>21</target>
-                    <compilerArgs>--enable-preview</compilerArgs>
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
     <!--place it here-->
@@ -99,25 +102,27 @@
                 <version>2.13.0</version>
                 <configuration>
                     <schemaVersion>V2</schemaVersion>
-                    <resourceGroup>fypVM</resourceGroup>
-                    <appName>fypServerVirtua</appName>
+                    <resourceGroup>FypServerAppServicePlan</resourceGroup>
+                    <appName>FypServer2</appName>
                     <region>East Asia</region>
+                    <pricingTier>F1</pricingTier>
                     <runtime>
                         <os>windows</os>
-                        <javaVersion>jre8</javaVersion>
-                        <webContainer>java8</webContainer>
+                        <javaVersion>java 17</javaVersion>
                     </runtime>
                     <deployment>
                         <resources>
                             <resource>
-                                <directory>${project.basedir}/src/main/resources</directory>
-                                <targetPath>C:/Backend</targetPath>
+                                <directory>${project.basedir}\target</directory>
+                                <targetPath>D:/home/site/wwwroot/</targetPath>
                                 <includes>
-                                    <include>*.jar</include>
+                                    <include>.jar</include>
                                 </includes>
                             </resource>
                         </resources>
+
                     </deployment>
+
                 </configuration>
             </plugin>
 <!--            the maven surefire plugin used for testing purposes -->
