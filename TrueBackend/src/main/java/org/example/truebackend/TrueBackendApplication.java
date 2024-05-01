@@ -23,12 +23,15 @@ public class TrueBackendApplication {
 
     Logger logger = LoggerFactory.getLogger(TrueBackendApplication.class);
     public static void main(String[] args) {
+        System.out.println("the springboot application is running in the main method");
         Stripe.apiKey = "sk_test_51OzjOa03YcH2K12qrrOmhM1qo5Xumk3NbQfpBQCJfJ7ROQ0whGIoZ68xIplVRXtPWH5o4JoAqAy3HF8Vy7Zgxrse00l9bGziJm";
         SpringApplication.run(TrueBackendApplication.class, args);
 //        ApplicationContext context = SpringApplication.run(TrueBackendApplication.class, args);
 //        TrueBackendApplication application = context.getBean(TrueBackendApplication.class);
 //        application.run();
     }
+
+
 //    public void run() {
 //        // Create the PracticeStudentEntity object
 //        PracticeStudentEntity studentEntity = new PracticeStudentEntity();
