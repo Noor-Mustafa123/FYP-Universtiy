@@ -1114,7 +1114,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 sessionStorage.setItem('userName', userName);
                 // Redirect to the home page after the POST request is completed
                 setTimeout(function () {
-                    window.location.href = 'index.html';
+                    window.location.href = '../index.html';
                 }, 6000)
             }
         }).catch(function () {
@@ -1156,12 +1156,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     showAlert("Login Successfully");
                     // Redirect to the home page after the login is successful
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = '../index.html';
                     }, 5000);
 
                     console.log(responseData);
                     //Dynamically getting the first name
                     let responseParts = responseData.split(' '); // This splits the string into an array of words
+
                     let lastName = responseParts[responseParts.length - 2];
 
                     sessionStorage.setItem('userName', `${lastName}`);
@@ -1171,9 +1172,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     sessionStorage.setItem('userName', "Noor");
 
-                    // setTimeout(() => {
-                    //     window.location.href = 'index.html';
-                    // }, 5000);
+                    setTimeout(() => {
+                        window.location.href = 'AdminDashboard.html';
+                    }, 5000);
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1372,6 +1373,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const adminElement = $("#dropdownMenuButton");
             adminElement.text(`Hello, ${userName}`)
         }
+
+
+
+
         if (userName == "Noor") {
             // setting the adminpanel link in the homepage navbar
             let ul = $(".homePageUl")
@@ -1380,6 +1385,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             )
         }
+
+
+
+
     });
 
     function btnNameRemove() {
@@ -1390,7 +1399,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     $('.signOutBtn').on('click', function () {
         btnNameRemove();
-        window.location.href = 'login.html';
+        window.location.href = 'FYP%20Project/login.html';
     });
 
 
