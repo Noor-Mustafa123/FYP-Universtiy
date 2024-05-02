@@ -1173,8 +1173,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     sessionStorage.setItem('userName', "Noor");
 
                     setTimeout(() => {
+
                         window.location.href = 'AdminDashboard.html';
-                    }, 5000);
+
+                    }, 4000);
+
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1185,8 +1189,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         })
                         .then(function (responseData) {
                             sessionStorage.setItem("responseJson", JSON.stringify(responseData));
-                            showDataOfOrders();
-                            showDataInAdminPanel();
                         })
                 } else {
                     // Show an error message if the login wasn't successful
@@ -1202,6 +1204,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("this catch is catching the error")
             });
     }
+
+
+
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1391,16 +1396,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    function btnNameRemove() {
-        sessionStorage.removeItem("userName");
-        $('.nameSpan').remove();
 
-    }
-
-    $('.signOutBtn').on('click', function () {
-        btnNameRemove();
-        window.location.href = 'FYP%20Project/login.html';
-    });
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1454,35 +1450,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
 
-//     function to show the details of the orders in the admin dashboard
-    function showDataOfOrders() {
-        const responseJson = JSON.parse(sessionStorage.getItem("responseJson"));
-        console.log(responseJson);
-    }
 
-
-    //function to show the data recieved about the orders fron the server in the admin panel
-    function showDataInAdminPanel() {
-        const responseJson = JSON.parse(sessionStorage.getItem("responseJson"));
-        const tableElement = document.querySelector(".tableOfOrderData");
-
-        while (tableElement.firstChild) {
-            tableElement.removeChild(tableElement.firstChild);
-        }
-
-        const items = responseJson[0].items;
-
-        items.forEach(function(item){
-            const html = `<tr>
-                                        <th scope="row">${item.id}</th>
-                                        <td>${item.itemName}</td>
-                                        <td>${responseJson[0].email}</td>
-                                        <td>${item.itemQuantity}</td>
-                                        <td>${responseJson[0].address}</td>
-                                    </tr>`
-            tableElement.innerHTML += html;
-        })
-    }
 
 
 
@@ -1492,6 +1460,86 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+// MOVED THE FUNCTIONS OUTSIDE THE DOMCONTENTLOADED BECAUES OF THE SCOPE ISSUE WHEN CALLING INSIDE A DIFFERENT DOMCONTENTLOAEDED AND NO ONE DOMECONTENTEVENTLISTENER CANNOT BE PUT INSIDE ANTOHER ONE
 
+//     function to show the details of the orders in the admin dashboard
+function showDataOfOrders() {
+
+    const responseJson = JSON.parse(sessionStorage.getItem("responseJson"));
+    console.log(responseJson);
+    console.log("the functions inside this event handler is runnign ")
+
+
+}
+
+
+//function to show the data recieved about the orders fron the server in the admin panel
+function showDataInAdminPanel() {
+    const responseJson = JSON.parse(sessionStorage.getItem("responseJson"));
+    const tableElement = document.querySelector(".tableOfOrderData");
+
+    while (tableElement.firstChild) {
+        tableElement.removeChild(tableElement.firstChild);
+    }
+
+    const items = responseJson[0].items;
+
+    items.forEach(function(item){
+        const html = `<tr>
+                                        <th scope="row">${item.id}</th>
+                                        <td>${item.itemName}</td>
+                                        <td>${responseJson[0].email}</td>
+                                        <td>${item.itemQuantity}</td>
+                                        <td>${responseJson[0].address}</td>
+                                    </tr>`
+        tableElement.innerHTML += html;
+    })
+}
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Check if the current page is AdminDashboard.html
+    if (window.location.href.endsWith('AdminDashboard.html')) {
+        showDataOfOrders();
+        showDataInAdminPanel();
+        console.log("this function is running");
+    }
+});
+
+
+
+
+
+
+
+
+
+
+function btnNameRemove() {
+    sessionStorage.removeItem("userName");
+    $('.nameSpan').remove();
+
+}
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Check if the current page is index.html
+    if (window.location.href.endsWith('index.html')) {
+        $('.signOutBtn').on('click', function () {
+            btnNameRemove();
+            // Use a path that works from index.html
+            window.location.href = 'FYP%20Project/login.html';
+        });
+    } else {
+        // For all other pages
+        $('.signOutBtn').on('click', function () {
+            btnNameRemove();
+            // Use a path that works from other pages
+            window.location.href = 'login.html';
+        });
+    }
+});
 
 

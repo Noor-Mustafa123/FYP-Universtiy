@@ -158,8 +158,8 @@ public class ControllerLayer {
 //                these parameter are getting values from static methods
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/index.html")
-                .setCancelUrl("http://localhost:63342/FYP-Universtiy/FYP%20Project/login.html");
+                .setSuccessUrl("https://ecommercefypuniversity.000webhostapp.com/index.html")
+                .setCancelUrl("https://ecommercefypuniversity.000webhostapp.com/index.html");
 //                use a foreach loop to iterate over each object in the list
 
 
