@@ -5,7 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bootstrap project-4 | E-commerce Project</title>
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="Manifest.json"  crossorigin="use-credentials">
+  <link rel="shortcut icon" href="favicon.ico"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!--  A manifest file, typically named manifest.json, is a simple JSON file that tells the browser about your web application and how it should behave when 'installed' on the user's mobile device or desktop.  A typical manifest file includes information about the app name, app short name, start URL, icons, background color, display mode, orientation, and scope.-->
+  <!-- fontawesome css -->
+
    <!-- fontawesome css -->
    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
    <!-- Bootstrap css -->
@@ -25,6 +30,7 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
         <i class="fas fa-bars"></i>
       </button>
+
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="navbar-nav mx-auto homePageUl">
           <li class="nav-item mx-2 ">
@@ -36,11 +42,15 @@
           <li class="nav-item mx-2 ">
             <a href="singleproduct.html" class="nav-link">Single Product</a>
           </li>
-          <li class="nav-item mx-2 nav-active">
+          <li class="nav-item mx-2 ">
             <a href="store.html" class="nav-link">Store</a>
+          </li>
+          <li class="nav-item mx-2 nav-active">
+            <a href="orderPage.html" class="nav-link">Orders</a>
           </li>
         </ul>
       </div>
+
       <!-- the container for icons at the right side  -->
       <div class="navbar-icons d-lg-flex d-none ">
         <!-- navicon are custom css classes -->
@@ -661,6 +671,7 @@
 <script src="../node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
 <!-- Custom js -->
 <script src="js/script.js"></script>
+
 </body>
 
 </html>

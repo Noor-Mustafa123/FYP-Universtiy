@@ -1,3 +1,4 @@
+let loggedInUserEmail2 = sessionStorage.getItem("Email");
 document.addEventListener("DOMContentLoaded", function () {
     // DOM ITEMS
 
@@ -238,8 +239,15 @@ document.addEventListener("DOMContentLoaded", function () {
     $(document).ready(function () {
         updateCart(shopObj);
     });
+    //
+    // $(document).ready(function () {
+    //     if (window.location.href.endsWith('orderPage.html')) {
+    //         showDataOnOrderPage();
+    //         console.log("the show data on orderpage function is running");
+    //     }
+    // });
 
-
+    // console.log(userHasLoggedIn);
     // NEXT PART
 
 ////////////////////////////////////////////////////////
@@ -483,265 +491,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // JSON FOR THE SINGLE PRODUCT PAGE
 
 
-    const productObj = [
-        {
-            "name": "Luxury Couch",
-            "price": {
-                "old": 2000,
-                "new": 1500
-            },
-            "category": "livingroom",
-            "color": "black",
-            "image": "img/img-products/product-7.png",
-            "description": "Premium luxury couch for your living room. Elegant design and comfortable seating.",
-            "reviews": {
-                "rating": 4.5,
-                "count": 15
-            },
-            "additionalInformation": "Dimensions: 80\" x 40\" x 30\"\nMaterial: High-quality fabric\nAssembly required: Yes",
-            "priceId": "price_1P2XMU03YcH2K12qvjlrlBnI"
-        },
-        {
-            "name": "Kitchen Table",
-            "price": {
-                "old": 600,
-                "new": 499
-            },
-            "category": "kitchen",
-            "color": "yellow",
-            "image": "img/img-products/product-8.png",
-            "description": "Stylish kitchen table for family gatherings and meals.",
-            "reviews": {
-                "rating": 4.2,
-                "count": 10
-            },
-            "additionalInformation": "Dimensions: 48\" x 30\" x 28\"\nMaterial: Solid wood\nAssembly required: No"
-            , "priceId": "price_1P2XTF03YcH2K12q0F1ZDpR7"
 
-        },
-        {
-
-            "name": "Cupboard",
-            "price": {
-                "old": 300,
-                "new": 250
-            },
-            "category": "kitchen",
-            "color": "yellow",
-            "image": "img/img-products/product-9.png",
-            "description": "Spacious cupboard for your kitchen storage needs.",
-            "reviews": {
-                "rating": 4.0,
-                "count": 8
-            },
-            "additionalInformation": "Dimensions: 36\" x 24\" x 72\"\nMaterial: Particle board\nAssembly required: Yes"
-            , "priceId": "price_1P2XV703YcH2K12qpNtZghac"
-        },
-        {
-            "name": "Queen Sized Bed",
-            "price": {
-                "old": 2500,
-                "new": 2000
-            },
-            "category": "bedroom",
-            "color": "red",
-            "image": "img/img-products/product-3.png",
-            "description": "Luxurious queen-sized bed for a comfortable night's sleep.",
-            "reviews": {
-                "rating": 4.8,
-                "count": 20
-            },
-            "additionalInformation": "Dimensions: 60\" x 80\" x 36\"\nMaterial: Solid wood\nAssembly required: Yes"
-            , "priceId": "price_1P2XWG03YcH2K12qHTxQtkIs"
-        },
-        {
-            "name": "Designer Table",
-            "price": {
-                "old": 500,
-                "new": 480
-            },
-            "category": "livingroom",
-            "color": "white",
-            "image": "img/img-products/product-10.png",
-            "description": "Elegant designer table to enhance your living room decor.",
-            "reviews": {
-                "rating": 4.7,
-                "count": 18
-            },
-            "additionalInformation": "Dimensions: 36\" x 36\" x 18\"\nMaterial: MDF and metal\nAssembly required: No"
-            , "priceId": "price_1P2XXX03YcH2K12qCCeDb7zG"
-        },
-        {
-            "name": "Patio Table",
-            "price": {
-                "old": 800,
-                "new": 600
-            },
-            "category": "patio",
-            "color": "white",
-            "image": "img/img-products/product-11.png",
-            "description": "Sturdy patio table for outdoor gatherings and relaxation.",
-            "reviews": {
-                "rating": 4.6,
-                "count": 25
-            },
-            "additionalInformation": "Dimensions: 48\" x 28\" x 24\"\nMaterial: Weather-resistant wood\nAssembly required: Yes"
-            , "priceId": "price_1P2XYW03YcH2K12qaERV6BHt"
-        },
-        {
-            "name": "Shelf",
-            "price": {
-                "old": 400,
-                "new": 350
-            },
-            "category": "bedroom",
-            "color": "white",
-            "image": "img/img-products/product-12.png",
-            "description": "Versatile shelf for organizing your bedroom essentials.",
-            "reviews": {
-                "rating": 4.3,
-                "count": 12
-            },
-            "additionalInformation": "Dimensions: 24\" x 12\" x 60\"\nMaterial: Particle board\nAssembly required: Yes"
-            , "priceId": "price_1P2XZX03YcH2K12qeKm6r6Bj"
-        },
-        {
-            "name": "Chair",
-            "price": {
-                "old": 200,
-                "new": 150
-            },
-            "category": "patio",
-            "color": "black",
-            "image": "img/img-products/product-1.png",
-            "description": "Comfortable chair for your patio relaxation.",
-            "reviews": {
-                "rating": 4.4,
-                "count": 22
-            },
-            "additionalInformation": "Dimensions: 24\" x 24\" x 36\"\nMaterial: Plastic and metal\nAssembly required: No"
-            , "priceId": "price_1P2XaC03YcH2K12qns5PGnsJ"
-        },
-        {
-            "name": "Marble Sink",
-            "price": {
-                "old": 800,
-                "new": 750
-            },
-            "category": "bathroom",
-            "color": "white",
-            "image": "img/img-products/product-13.png",
-            "description": "Elegant marble sink for your bathroom upgrade.",
-            "reviews": {
-                "rating": 4.9,
-                "count": 30
-            },
-            "additionalInformation": "Dimensions: 36\" x 22\" x 8\"\nMaterial: Marble\nAssembly required: No"
-            , "priceId": "price_1P2Xbh03YcH2K12q0YFAsnJX"
-        },
-        {
-            "name": "Small Sofa",
-            "price": {
-                "old": 200,
-                "new": 175
-            },
-            "category": "livingroom",
-            "color": "yellow",
-            "image": "img/img-products/product-14.png",
-            "description": "Cozy small sofa perfect for compact living spaces.",
-            "reviews": {
-                "rating": 4.2,
-                "count": 15
-            },
-            "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Fabric\nAssembly required: No"
-            , "priceId": "price_1P2XcW03YcH2K12qmuBeCOre"
-        },
-        {
-            "name": "Wooden Table",
-            "price": {
-                "old": 100,
-                "new": 75
-            },
-            "category": "patio",
-            "color": "yellow",
-            "image": "img/img-products/product-15.png",
-            "description": "Durable wooden table for your patio setup.",
-            "reviews": {
-                "rating": 4.5,
-                "count": 18
-            },
-            "additionalInformation": "Dimensions: 36\" x 24\" x 18\"\nMaterial: Solid wood\nAssembly required: Yes"
-            , "priceId": "price_1P2XdX03YcH2K12qDFzXtW5n"
-        },
-        {
-            "name": "Couch",
-            "price": {
-                "old": 1000,
-                "new": 800
-            },
-            "category": "livingroom",
-            "color": "white",
-            "image": "img/img-products/product-6.png",
-            "description": "Classic couch for a stylish and comfortable living room.",
-            "reviews": {
-                "rating": 4.6,
-                "count": 20
-            },
-            "additionalInformation": "Dimensions: 72\" x 36\" x 30\"\nMaterial: Linen fabric\nAssembly required: No"
-            , "priceId": "price_1P2Xg503YcH2K12qsUb6MLr9"
-        },
-        {
-            "name": "Large Couch",
-            "price": {
-                "old": 1200,
-                "new": 1000
-            },
-            "category": "livingroom",
-            "color": "yellow",
-            "image": "img/img-products/product-5.png",
-            "description": "Spacious couch for large living rooms. Ultimate comfort for the whole family.",
-            "reviews": {
-                "rating": 4.7,
-                "count": 25
-            },
-            "additionalInformation": "Dimensions: 90\" x 40\" x 36\"\nMaterial: Leather\nAssembly required: Yes"
-            , "priceId": "price_1P2Xkq03YcH2K12qxAfC4dzP"
-        },
-        {
-            "name": "Side Table",
-            "price": {
-                "old": 500,
-                "new": 300
-            },
-            "category": "bedroom",
-            "color": "blue",
-            "image": "img/img-products/product-4.png",
-            "description": "Compact side table for your bedroom essentials.",
-            "reviews": {
-                "rating": 4.0,
-                "count": 10
-            },
-            "additionalInformation": "Dimensions: 18\" x 18\" x 24\"\nMaterial: Wood\nAssembly required: No"
-            , "priceId": "price_1P2XlX03YcH2K12q78Yv7Qc4"
-        },
-        {
-            "name": "Sofa",
-            "price": {
-                "old": 400,
-                "new": 250
-            },
-            "category": "bedroom",
-            "color": "blue",
-            "image": "img/img-products/product-2.png",
-            "description": "Modern sofa for your bedroom with a touch of elegance.",
-            "reviews": {
-                "rating": 4.3,
-                "count": 15
-            },
-            "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Velvet\nAssembly required: No"
-            , "priceId": "price_1P2XmB03YcH2K12qenNzgxzF"
-        }
-    ]
 
 
     // target those elements in which to change the data
@@ -1126,8 +876,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     let loggedInUserEmail;
+    // console.log(loggedInUserEmail)
     let loggedInUserAddress;
-
 
     // No, the HTTP GET request does not typically have a body. According to the HTTP/1.1 specification, a GET request should not include a message body because the server will not use it. Instead, data sent to the server is appended to the URL as query parameters.
 
@@ -1155,19 +905,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (responseData.includes("Successfully")) {
                     showAlert("Login Successfully");
                     // Redirect to the home page after the login is successful
+                    //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
+                    await fetch("https://fyp-universtiy-production.up.railway.app/UserData/OrderDetails")
+
+                        .then(function (response) {
+                            return response.json();
+                        })
+                        .then(function (responseData) {
+                            sessionStorage.setItem("responseJson", JSON.stringify(responseData));
+                        })
+
                     setTimeout(() => {
                         window.location.href = '../index.html';
                     }, 5000);
 
                     console.log(responseData);
                     //Dynamically getting the first name
-                    let responseParts = responseData.split(' '); // This splits the string into an array of words
+                    let responseParts = responseData.split('-'); // This splits the string into an array of words
 
-                    let lastName = responseParts[responseParts.length - 2];
+                    console.log(responseParts)
+                    // FIXME: there is a bug while showing the name match it
 
-                    sessionStorage.setItem('userName', `${lastName}`);
+                    let lastName = responseParts[responseParts.length - 3];
 
-                } else if (responseData.includes("admin")) {
+                    let lastNameSplit = lastName.split(' ');
+
+                 let veryLastName =    lastNameSplit[lastNameSplit.length - 1];
+
+                    sessionStorage.setItem('userName', `${veryLastName}`);
+
+                }
+
+                else if (responseData.includes("admin")) {
                     showAlert("Welcome Admin")
 
                     sessionStorage.setItem('userName', "Noor");
@@ -1177,7 +946,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         window.location.href = 'AdminDashboard.html';
 
                     }, 4000);
-
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1194,7 +962,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     // Show an error message if the login wasn't successful
                     const responseString = "Bad Credentials";
                     showAlert(responseString);
-
                 }
             })
             .catch(function (error) {
@@ -1204,9 +971,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("this catch is catching the error")
             });
     }
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1380,8 +1144,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-
-
         if (userName == "Noor") {
             // setting the adminpanel link in the homepage navbar
             let ul = $(".homePageUl")
@@ -1392,11 +1154,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-
-
     });
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1449,6 +1207,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     })
 
+// PWA CAHCHING
+
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/service-worker.js', {scope: './'})
+                .then(function (registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function (err) {
+                    // registration failed :(
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
+    }
+
+
 
 
 
@@ -1456,6 +1230,283 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 })//FIXME: the end of dom content loaded dont write below it
+
+
+
+
+const productObj = [
+    {
+        "name": "Luxury Couch",
+        "price": {
+            "old": 2000,
+            "new": 1500
+        },
+        "category": "livingroom",
+        "color": "black",
+        "image": "img/img-products/product-7.png",
+        "description": "Premium luxury couch for your living room. Elegant design and comfortable seating.",
+        "reviews": {
+            "rating": 4.5,
+            "count": 15
+        },
+        "additionalInformation": "Dimensions: 80\" x 40\" x 30\"\nMaterial: High-quality fabric\nAssembly required: Yes",
+        "priceId": "price_1P2XMU03YcH2K12qvjlrlBnI"
+    },
+    {
+        "name": "Kitchen Table",
+        "price": {
+            "old": 600,
+            "new": 499
+        },
+        "category": "kitchen",
+        "color": "yellow",
+        "image": "img/img-products/product-8.png",
+        "description": "Stylish kitchen table for family gatherings and meals.",
+        "reviews": {
+            "rating": 4.2,
+            "count": 10
+        },
+        "additionalInformation": "Dimensions: 48\" x 30\" x 28\"\nMaterial: Solid wood\nAssembly required: No"
+        , "priceId": "price_1P2XTF03YcH2K12q0F1ZDpR7"
+
+    },
+    {
+
+        "name": "Cupboard",
+        "price": {
+            "old": 300,
+            "new": 250
+        },
+        "category": "kitchen",
+        "color": "yellow",
+        "image": "img/img-products/product-9.png",
+        "description": "Spacious cupboard for your kitchen storage needs.",
+        "reviews": {
+            "rating": 4.0,
+            "count": 8
+        },
+        "additionalInformation": "Dimensions: 36\" x 24\" x 72\"\nMaterial: Particle board\nAssembly required: Yes"
+        , "priceId": "price_1P2XV703YcH2K12qpNtZghac"
+    },
+    {
+        "name": "Queen Size Bed",
+        "price": {
+            "old": 2500,
+            "new": 2000
+        },
+        "category": "bedroom",
+        "color": "red",
+        "image": "img/img-products/product-3.png",
+        "description": "Luxurious queen-sized bed for a comfortable night's sleep.",
+        "reviews": {
+            "rating": 4.8,
+            "count": 20
+        },
+        "additionalInformation": "Dimensions: 60\" x 80\" x 36\"\nMaterial: Solid wood\nAssembly required: Yes"
+        , "priceId": "price_1P2XWG03YcH2K12qHTxQtkIs"
+    },
+    {
+        "name": "Designer Table",
+        "price": {
+            "old": 500,
+            "new": 480
+        },
+        "category": "livingroom",
+        "color": "white",
+        "image": "img/img-products/product-10.png",
+        "description": "Elegant designer table to enhance your living room decor.",
+        "reviews": {
+            "rating": 4.7,
+            "count": 18
+        },
+        "additionalInformation": "Dimensions: 36\" x 36\" x 18\"\nMaterial: MDF and metal\nAssembly required: No"
+        , "priceId": "price_1P2XXX03YcH2K12qCCeDb7zG"
+    },
+    {
+        "name": "Patio Table",
+        "price": {
+            "old": 800,
+            "new": 600
+        },
+        "category": "patio",
+        "color": "white",
+        "image": "img/img-products/product-11.png",
+        "description": "Sturdy patio table for outdoor gatherings and relaxation.",
+        "reviews": {
+            "rating": 4.6,
+            "count": 25
+        },
+        "additionalInformation": "Dimensions: 48\" x 28\" x 24\"\nMaterial: Weather-resistant wood\nAssembly required: Yes"
+        , "priceId": "price_1P2XYW03YcH2K12qaERV6BHt"
+    },
+    {
+        "name": "Shelf",
+        "price": {
+            "old": 400,
+            "new": 350
+        },
+        "category": "bedroom",
+        "color": "white",
+        "image": "img/img-products/product-12.png",
+        "description": "Versatile shelf for organizing your bedroom essentials.",
+        "reviews": {
+            "rating": 4.3,
+            "count": 12
+        },
+        "additionalInformation": "Dimensions: 24\" x 12\" x 60\"\nMaterial: Particle board\nAssembly required: Yes"
+        , "priceId": "price_1P2XZX03YcH2K12qeKm6r6Bj"
+    },
+    {
+        "name": "Chair",
+        "price": {
+            "old": 200,
+            "new": 150
+        },
+        "category": "patio",
+        "color": "black",
+        "image": "img/img-products/product-1.png",
+        "description": "Comfortable chair for your patio relaxation.",
+        "reviews": {
+            "rating": 4.4,
+            "count": 22
+        },
+        "additionalInformation": "Dimensions: 24\" x 24\" x 36\"\nMaterial: Plastic and metal\nAssembly required: No"
+        , "priceId": "price_1P2XaC03YcH2K12qns5PGnsJ"
+    },
+    {
+        "name": "Marble Sink",
+        "price": {
+            "old": 800,
+            "new": 750
+        },
+        "category": "bathroom",
+        "color": "white",
+        "image": "img/img-products/product-13.png",
+        "description": "Elegant marble sink for your bathroom upgrade.",
+        "reviews": {
+            "rating": 4.9,
+            "count": 30
+        },
+        "additionalInformation": "Dimensions: 36\" x 22\" x 8\"\nMaterial: Marble\nAssembly required: No"
+        , "priceId": "price_1P2Xbh03YcH2K12q0YFAsnJX"
+    },
+    {
+        "name": "Small Sofa",
+        "price": {
+            "old": 200,
+            "new": 175
+        },
+        "category": "livingroom",
+        "color": "yellow",
+        "image": "img/img-products/product-14.png",
+        "description": "Cozy small sofa perfect for compact living spaces.",
+        "reviews": {
+            "rating": 4.2,
+            "count": 15
+        },
+        "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Fabric\nAssembly required: No"
+        , "priceId": "price_1P2XcW03YcH2K12qmuBeCOre"
+    },
+    {
+        "name": "Wooden Table",
+        "price": {
+            "old": 100,
+            "new": 75
+        },
+        "category": "patio",
+        "color": "yellow",
+        "image": "img/img-products/product-15.png",
+        "description": "Durable wooden table for your patio setup.",
+        "reviews": {
+            "rating": 4.5,
+            "count": 18
+        },
+        "additionalInformation": "Dimensions: 36\" x 24\" x 18\"\nMaterial: Solid wood\nAssembly required: Yes"
+        , "priceId": "price_1P2XdX03YcH2K12qDFzXtW5n"
+    },
+    {
+        "name": "Couch",
+        "price": {
+            "old": 1000,
+            "new": 800
+        },
+        "category": "livingroom",
+        "color": "white",
+        "image": "img/img-products/product-6.png",
+        "description": "Classic couch for a stylish and comfortable living room.",
+        "reviews": {
+            "rating": 4.6,
+            "count": 20
+        },
+        "additionalInformation": "Dimensions: 72\" x 36\" x 30\"\nMaterial: Linen fabric\nAssembly required: No"
+        , "priceId": "price_1P2Xg503YcH2K12qsUb6MLr9"
+    },
+    {
+        "name": "Large Couch",
+        "price": {
+            "old": 1200,
+            "new": 1000
+        },
+        "category": "livingroom",
+        "color": "yellow",
+        "image": "img/img-products/product-5.png",
+        "description": "Spacious couch for large living rooms. Ultimate comfort for the whole family.",
+        "reviews": {
+            "rating": 4.7,
+            "count": 25
+        },
+        "additionalInformation": "Dimensions: 90\" x 40\" x 36\"\nMaterial: Leather\nAssembly required: Yes"
+        , "priceId": "price_1P2Xkq03YcH2K12qxAfC4dzP"
+    },
+    {
+        "name": "Side Table",
+        "price": {
+            "old": 500,
+            "new": 300
+        },
+        "category": "bedroom",
+        "color": "blue",
+        "image": "img/img-products/product-4.png",
+        "description": "Compact side table for your bedroom essentials.",
+        "reviews": {
+            "rating": 4.0,
+            "count": 10
+        },
+        "additionalInformation": "Dimensions: 18\" x 18\" x 24\"\nMaterial: Wood\nAssembly required: No"
+        , "priceId": "price_1P2XlX03YcH2K12q78Yv7Qc4"
+    },
+    {
+        "name": "Sofa",
+        "price": {
+            "old": 400,
+            "new": 250
+        },
+        "category": "bedroom",
+        "color": "blue",
+        "image": "img/img-products/product-2.png",
+        "description": "Modern sofa for your bedroom with a touch of elegance.",
+        "reviews": {
+            "rating": 4.3,
+            "count": 15
+        },
+        "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Velvet\nAssembly required: No"
+        , "priceId": "price_1P2XmB03YcH2K12qenNzgxzF"
+    }
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1481,25 +1532,26 @@ function showDataInAdminPanel() {
     while (tableElement.firstChild) {
         tableElement.removeChild(tableElement.firstChild);
     }
+    responseJson.forEach(function (orderPackage) {
 
-    const items = responseJson[0].items;
 
-    items.forEach(function(item){
-        const html = `<tr>
+        const items = orderPackage.items;
+
+        items.forEach(function (item) {
+            const html = `<tr>
                                         <th scope="row">${item.id}</th>
                                         <td>${item.itemName}</td>
-                                        <td>${responseJson[0].email}</td>
+                                        <td>${orderPackage.email}</td>
                                         <td>${item.itemQuantity}</td>
-                                        <td>${responseJson[0].address}</td>
+                                        <td>${orderPackage.address}</td>
                                     </tr>`
-        tableElement.innerHTML += html;
+            tableElement.innerHTML += html;
+        })
     })
 }
 
 
-
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function (e) {
     // Check if the current page is AdminDashboard.html
     if (window.location.href.endsWith('AdminDashboard.html')) {
         showDataOfOrders();
@@ -1509,14 +1561,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-
-
-
-
-
-
-
-
 function btnNameRemove() {
     sessionStorage.removeItem("userName");
     $('.nameSpan').remove();
@@ -1524,7 +1568,7 @@ function btnNameRemove() {
 }
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // Check if the current page is index.html
     if (window.location.href.endsWith('index.html')) {
         $('.signOutBtn').on('click', function () {
@@ -1543,3 +1587,77 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Check if the current page is index.html
+    if (window.location.href.endsWith('orderPage.html')) {
+        const orderPageSection = $(".orderPageSection");
+
+        function showDataOnOrderPage() {
+            console.log("the function is running")
+            if (orderPageSection.length) {
+                orderPageSection.empty();
+            }
+                console.log("the adc section clear log is working");
+
+                const responseData = JSON.parse(sessionStorage.getItem("responseJson"));
+
+                $.each(responseData, function(index, eachOrder) {
+
+                    console.log(eachOrder.email);
+                    console.log(loggedInUserEmail2);
+
+
+                    if (eachOrder.email == loggedInUserEmail2) {
+
+                        console.log("the condition inside showdataonorderpage is being passed ");
+
+                        $.each(eachOrder.items, function(index, item) {
+                            /////////////////////////////////////////////
+                            let imagePath;
+                            productObj.forEach(function(obj){
+                                if(obj.name==item.itemName){
+                                   imagePath = obj.image;
+                                }
+                            })
+
+                            // Add the HTML for each column in the row
+                            const html = `
+                            <div class=" col-10 mx-auto col-md-2 my-3">
+                                <img src="${imagePath}" alt="" class="img-fluid">
+                            </div>
+                            <div class="col-10 mx-auto col-md-4">
+                                <p class="text-uppercase itemName">${item.itemName}</p>
+                            </div>
+                            <div class="col-10 mx-auto col-md-2">
+                                <p class="text-uppercase">${item.id}</p>
+                            </div>
+                            <div class="col-10 mx-auto col-md-2">
+                                 <p class="text-uppercase">${item.itemQuantity}</p>
+                            </div>
+                             <div class="col-10 mx-auto col-md-2 subTotal">
+                                      <p class="text-uppercase">"Out for Delivery"</p>    
+                              </div>
+`;
+
+                            orderPageSection.append(html);
+                        });
+
+                    }
+                    else {
+                        console.log("the amail does not match");
+                    }
+                });
+
+        }
+        setTimeout(showDataOnOrderPage,1000)
+
+    } else {
+        // For all other pages
+        console.log("the order page is not opened ")
+    }
+});
+
+// FIXME:i have to fix the bug in the name of the user by spliting the string  further one step
+// FIXME: some products are not added in the productObj add them in the productObj
