@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FYP Project</title>
@@ -16,6 +17,18 @@
  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <!-- custom css -->
   <link rel="stylesheet" href="FYP%20Project/css/style.css">
+<!--  <script src="//www.socialintents.com/api/chat/socialintents.1.3.js#2c9fa6c38f49e945018f72027af72bd5" async="async"></script>-->
+    <script id="interaxai-widget-config">
+        window.INTERAX_AI = {
+            id: "664288f12dafbad83f78cb6c",
+            theme: "light",
+        };
+        const _interaxAI=async()=>{const t=await fetch(`https://interaxai.com
+/api/embed/version?widgetId=${INTERAX_AI.id}`).then((t=>t.text())),
+            e=document.createElement("script");e.id="interaxai-widget-script",
+            e.src=`https://cdn.jsdelivr.net/gh/interaxai/cdn@${t}/dist/bundle.js`,
+            document.head.appendChild(e)};_interaxAI();
+    </script>
 </head>
 
 
@@ -262,7 +275,7 @@
 
 
 
-
+  <div id="interaxai-widget"></div>
 
 
 
