@@ -64,7 +64,30 @@ public class ServiceLayer {
         }
 }
 
+    public String resetPassword(String email,String password){
+//        List of obj with matching emails
+        List<User1> listOfEmails = repoObj.findByEmail(email);
 
+
+        if(listOfEmails.isEmpty()){
+            return "The Email and password do not exist Please sign up with a new account";
+        }
+        else if (listOfEmails.isEmpty()) {
+            return "Email does not exist";
+        }
+        else if(listOfEmails.get(0).getEmail().equals(email)){
+            User1 user = listOfEmails.get(0);
+            user.setPassword(password);
+            repoObj.save(user);
+            return "The password has been reset sucessfully";
+        }
+        else {
+            String emailOfUser = listOfEmails.get(0).getEmail();
+            String firstName = listOfEmails.get(0).getFirstName();
+            String addressOfUser = listOfEmails.get(0).getAddress();
+            return "Successfully logged in  and the text is changing as " + "-" + firstName + "-" + emailOfUser + "-" + addressOfUser;
+        }
+    }
 
 }
 

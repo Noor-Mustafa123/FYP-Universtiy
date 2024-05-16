@@ -239,8 +239,33 @@ public class ControllerLayer {
     }
 
 
+
+
+    //TODO: I will send a post request from the front end to th server which will include email and password of the account to reset
+// TODO: I will then take that request and overwrite data in the database matching the email and overwrite the password
+
+    @PostMapping("/resetPassword")
+ public ResponseEntity<String> passwordResetFunction(@RequestBody PasswordResetModal ResetModal) {
+
+   String Email = ResetModal.getEmail();
+   String Password = ResetModal.getPassword();
+
+  String serviceResponse =  serviceObj.resetPassword(Email,Password);
+
+// TODO: Create a POST endpoint in your controller that accepts an object of ResetPasswordModal as a request body.
+        //---- create the modal which will get the data from the request
+// TODO: In the service layer, use the email from the ResetPasswordModal object to find the existing User1 entity from the database.
+        //---- get the email from the request body modal and use it to check the database for matching email entity
+// TODO: If the User1 entity is found, update its password field with the password from the ResetPasswordModal object.
+        //----use the getter and the setter method to set the user email to new
+// TODO: Save the updated User1 entity back to the database.
+        //----use the spring data jpa method to save the entity again
+
+    }
+
+
 }
-//TODO: currently just trying to get the link from the api to redirect to the payment page
+
 
 
 //////////////////////////////////////////////

@@ -1229,6 +1229,113 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    // this is the reset password form functionality when it is validated it sends a post request to the database
+
+
+
+    $(".resetForm").validate({
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            password: {
+                required: true,
+                minlength: 6  // You can set the minimum length for the password
+            },
+            repeatPassword: {
+                required: true,
+                minlength:6,
+                equalTo: "[name='password']"  // This ensures the repeat password is the same as the password
+            }
+        },
+        messages: {
+            email: {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address"
+            },
+            password: {
+                required: "Please enter your password",
+                minlength: "Your password must be at least 6 characters Long"
+            },
+            repeatPassword:{
+                required: "Please enter your password",
+                minlength: "Your password must be at least 6 characters Long",
+                equalTo: "The password does not match"
+            }
+        },
+        errorElement: "span",
+        errorPlacement: function (error, element) {
+            // Place error message below the input field
+            error.addClass("invalid-feedback");
+            element.closest(".input-group").append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+            // Add is-invalid class to the input field on validation error
+            $(element).addClass("is-invalid");
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            // Remove is-invalid class from the input field on validation success
+            $(element).removeClass("is-invalid");
+        }
+    });
+
+
+    $(".resetForm").on("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission behavior
+        // Check if the form is valid
+        // The $("form") selector in jQuery selects all the <form> elements in the HTML of the currently loaded webpage. that is why we didnt use a .for selecting a class name
+
+        if ($(".resetForm").valid()) {
+            // If the form is valid
+            const userEmail = $("input[name='email']").val();
+            const userPassword = $("input[name='password']").val();
+
+            // Add your AJAX request here if you want to submit the form data to the server
+
+            userLoginRequest(`https://fyp-universtiy-production.up.railway.app/UserData/login?email=${userEmail}&password=${userPassword}`);
+
+
+            // Prevent form submission so the page doesn't reload
+            return false;
+        } else if ($("form")) {
+            // If the form is not valid
+
+            // Show a toast notification for unsuccessful submission
+            console.log('Form submission failed. Please check your inputs.');
+
+            // Prevent form submission so the page doesn't reload
+            return false;
+        }
+    });
+
+    ///////////////////////////////////////////////////////////////////////////
+
+
+
+  async function passwordResetRequest(url) {
+      let userInfo = {
+          "email": $("input[name='email']").val(),// it will look for the current loaded html page for the elements
+          "password": $("input[name='password']").val()
+      }
+
+      await fetch(url, {method: 'POST', // *GET, POST, PUT, DELETE, etc.
+          headers: {
+          'Content-Type': 'application/json', // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
+      body: JSON.stringify(userInfo), // body data type must match "Content-Type" header)}
+  }).then()
+  //     TODO: write the return data after the completing of the request on the backend
+
+  }
+
+
 })//FIXME: the end of dom content loaded dont write below it
 
 
