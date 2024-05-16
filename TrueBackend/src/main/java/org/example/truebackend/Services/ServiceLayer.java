@@ -70,22 +70,16 @@ public class ServiceLayer {
 
 
         if(listOfEmails.isEmpty()){
-            return "The Email and password do not exist Please sign up with a new account";
-        }
-        else if (listOfEmails.isEmpty()) {
-            return "Email does not exist";
+            return "The Email does not exist in the database";
         }
         else if(listOfEmails.get(0).getEmail().equals(email)){
             User1 user = listOfEmails.get(0);
             user.setPassword(password);
             repoObj.save(user);
-            return "The password has been reset sucessfully";
+            return "The password has been reset successfully";
         }
         else {
-            String emailOfUser = listOfEmails.get(0).getEmail();
-            String firstName = listOfEmails.get(0).getFirstName();
-            String addressOfUser = listOfEmails.get(0).getAddress();
-            return "Successfully logged in  and the text is changing as " + "-" + firstName + "-" + emailOfUser + "-" + addressOfUser;
+            return "there is an error in the database";
         }
     }
 

@@ -1017,7 +1017,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (responseString.includes("Successfully") || responseString.includes("Admin")) {
             alertContainer.html(successTemplateString);
-        } else {
+        }
+        else if(responseString.includes("successfully")){
+            alertContainer.html(successTemplateString);
+        }
+        else {
             alertContainer.html(failureTemplateString)
         }
         // Remove the alert after 3 seconds
@@ -1298,7 +1302,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Add your AJAX request here if you want to submit the form data to the server
 
-            userLoginRequest(`https://fyp-universtiy-production.up.railway.app/UserData/login?email=${userEmail}&password=${userPassword}`);
+            passwordResetRequest(`https://fyp-universtiy-production.up.railway.app/UserData/resetPassword`);
+            // passwordResetRequest(`http://localhost:8080/UserData/resetPassword`);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1330,7 +1335,23 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
       body: JSON.stringify(userInfo), // body data type must match "Content-Type" header)}
-  }).then()
+  }).then(function(response){
+      console.log(response);
+      return response.text();
+      }).then(function(responseData){
+          if(responseData.includes("successfully")){
+              const responseString = "password reset successfully";
+              showAlert(responseString);
+          }
+          else if(responseData.includes("exist")){
+              const responseString = "The email does not exist in the database";
+              showAlert(responseString);
+          }
+          else {
+            const responseString =   "Network error";
+          showAlert(responseString);
+          }
+      })
   //     TODO: write the return data after the completing of the request on the backend
 
   }

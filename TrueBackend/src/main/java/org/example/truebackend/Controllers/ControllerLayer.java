@@ -250,7 +250,9 @@ public class ControllerLayer {
    String Email = ResetModal.getEmail();
    String Password = ResetModal.getPassword();
 
-  String serviceResponse =  serviceObj.resetPassword(Email,Password);
+  String serviceResponseString =  serviceObj.resetPassword(Email,Password);
+   return ResponseEntity.ok(serviceResponseString);
+
 
 // TODO: Create a POST endpoint in your controller that accepts an object of ResetPasswordModal as a request body.
         //---- create the modal which will get the data from the request
