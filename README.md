@@ -1,2 +1,2 @@
 # FYP-Universtiy
-Our furniture e-commerce website is built as a Progressive Web App (PWA)
+Our furniture e-commerce application is built as a Progressive Web App (PWA)
