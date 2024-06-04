@@ -23,7 +23,7 @@ public class UserInfoForStripe {
 // When you fetch a UserInfoForStripe entity from the database, JPA will immediately fetch all the associated EachProductInADC entities as well, instead of waiting until you access the items collection. This is done to avoid LazyInitializationException which occurs when you try to access a lazily-loaded collection outside of the Hibernate Session.
 //  TO STOP INFINTE RECURSION:  The @JsonManagedReference annotation is the forward part of the relationship and @JsonBackReference is the back part of the relationship. Jackson will serialize the entity with @JsonManagedReference normally and will omit the field annotated with @JsonBackReference.
     @JsonManagedReference
-    @OneToMany(mappedBy = "userObj" , cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany( mappedBy = "userObj" , cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     private List<EachProductInADC> items ;
 
 
