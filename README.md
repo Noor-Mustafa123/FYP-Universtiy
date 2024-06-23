@@ -1,17 +1,22 @@
 # FYP-University
 
 E-commerce Web Application with Integrated Chatbot
+
 Project Overview
+
 This project is an advanced e-commerce web application developed as a Final Year Project. The application aims to provide a seamless shopping experience with a unique feature: an integrated chatbot that enhances user interaction by providing instant answers to queries based on the application's dataset.
 
 Frontend
 Technologies Used: Bootstrap, HTML, CSS, JavaScript
+
 Features:
 Responsive design using Bootstrap for a seamless experience across devices.
 Dynamic UI components created with HTML, CSS, and JavaScript.
+
 Backend
 Technologies Used: Java Spring Boot
 Database: MySQL
+
 Features:
 Robust backend developed with Java Spring Boot for efficient data handling and business logic implementation.
 MySQL database for reliable data storage and retrieval.
