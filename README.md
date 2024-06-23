@@ -2,7 +2,7 @@
 
 E-commerce Web Application with Integrated Chatbot
 
-Project Overview
+##Project Overview
 
 This project is an advanced e-commerce web application developed as a Final Year Project. The application aims to provide a seamless shopping experience with a unique feature: an integrated chatbot that enhances user interaction by providing instant answers to queries based on the application's dataset.
 
