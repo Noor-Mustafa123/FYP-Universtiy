@@ -23,9 +23,9 @@ public class ServiceLayer {
         //these are query methods which are taking the object as parameters
         List<User1> listOfNames = repoObj.findByFirstName(entityObj.getFirstName());
         List<User1> listOfEmails = repoObj.findByEmail(entityObj.getEmail());
+
         if (!listOfNames.isEmpty() && !listOfEmails.isEmpty()) {
             return "Name and Email already Exists!";
-
         }
         else if (!listOfEmails.isEmpty()) {
             return "This Email is already used";
@@ -37,6 +37,7 @@ public class ServiceLayer {
             repoObj.save(entityObj);
             return "Data saved Successfully";
         }
+
     }
 
     public String authenticateUser(String email,String password){

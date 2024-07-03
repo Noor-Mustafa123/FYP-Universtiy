@@ -906,7 +906,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     showAlert("Login Successfully");
                     // Redirect to the home page after the login is successful
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    await fetch("https://fyp-universtiy-production.up.railway.app/UserData/OrderDetails")
+                    await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails")
 
                         .then(function (response) {
                             return response.json();
@@ -951,7 +951,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    await fetch("https://fyp-universtiy-production.up.railway.app/UserData/OrderDetails")
+                    await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails")
                         .then(function (response) {
                             return response.json();
                         })
@@ -1042,7 +1042,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if ($(".form").valid()) {
 
 
-            newUserPostRequest("https://fyp-universtiy-production.up.railway.app/UserData/PUser1");
+            newUserPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/UserData/PUser1");
 
             // Show a toast notification for successful submission
             console.log('Form submitted successfully.');
@@ -1111,7 +1111,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Add your AJAX request here if you want to submit the form data to the server
 
-            userLoginRequest(`https://fyp-universtiy-production.up.railway.app/UserData/login?email=${userEmail}&password=${userPassword}`);
+            userLoginRequest(`https://fyp-universtiy-production-4f96.up.railway.app/UserData/login?email=${userEmail}&password=${userPassword}`);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1198,7 +1198,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // using the checkout button to send the request to checkout
     $(".checkOutBtn").on("click", function (e) {
-        checkOutPostRequest("https://fyp-universtiy-production.up.railway.app/UserData/Stripe/Authenticate");
+        checkOutPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/UserData/Stripe/Authenticate");
     })
 
 
@@ -1302,7 +1302,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Add your AJAX request here if you want to submit the form data to the server
 
-            passwordResetRequest(`https://fyp-universtiy-production.up.railway.app/UserData/resetPassword`);
+            passwordResetRequest(`https://fyp-universtiy-production-4f96.up.railway.app/UserData/resetPassword`);
             // passwordResetRequest(`http://localhost:8080/UserData/resetPassword`);
 
 
