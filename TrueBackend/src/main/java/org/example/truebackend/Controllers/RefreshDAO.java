@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package org.example.truebackend.Controllers;
 
 
@@ -15,21 +14,3 @@ import lombok.NoArgsConstructor;
 public class RefreshDAO {
     String refreshToken;
 }
-=======
-package org.example.truebackend.Controllers;
-
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-
-public class RefreshDAO {
-    String refreshToken;
-}
->>>>>>> origin/main
