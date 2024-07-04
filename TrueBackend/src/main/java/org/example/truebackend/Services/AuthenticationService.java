@@ -88,7 +88,7 @@ public class AuthenticationService {
        System.out.println(authObj.isAuthenticated());
 //        get the users details from the database matching and generet tokens and return it to the user
         List<User> userList = userRepo.findByEmail(loginRequest.getEmail());
-        User user = userList.getFirst();
+        User user = userList.get(0);
 
         String jwtToken = jwtService.generateToken(user);
         String jwtRefreshToken = jwtService.generateRefreshToken(user);

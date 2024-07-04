@@ -135,7 +135,7 @@ public class JwtTokenService {
 
         TokenEntity tokenObj = null;
        if(!listOfTokens.isEmpty()){
-         tokenObj = listOfTokens.getFirst();
+         tokenObj = listOfTokens.get(0);
            }
         return tokenObj;
     }

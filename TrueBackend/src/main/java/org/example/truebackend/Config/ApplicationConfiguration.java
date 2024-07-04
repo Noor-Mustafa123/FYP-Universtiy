@@ -34,7 +34,7 @@ public class ApplicationConfiguration {
     public UserDetailsService userDetailsService() {
         return username -> {
             List<User> userList = repository.findByEmail(username);
-            return userList.getFirst();
+            return userList.get(0);
         };
     }
 
