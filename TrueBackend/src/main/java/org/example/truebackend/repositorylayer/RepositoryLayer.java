@@ -1,16 +1,17 @@
 package org.example.truebackend.repositorylayer;
 
+import org.example.truebackend.Models.User;
 import org.example.truebackend.Models.User1;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface RepositoryLayer extends CrudRepository<User1,Integer> {
-//  this is a custom querymethod written by These methods are used to perform operations on your database. it will be automatically implemented by spring data jpa
-    List<User1> findByFirstName(String name);
-    List<User1> findByEmail(String email);
-    List<User1> findByPassword(String password);
+public interface RepositoryLayer extends CrudRepository<User,Integer> {
+//  this is a custom query method written by These methods are used to perform operations on your database. it will be automatically implemented by spring data jpa
+    List<User> findByFirstName(String name);
+    List<User> findByEmail(String email);
+    List<User> findByPassword(String password);
     //The findByFirstName(String Name) method in your RepositoryLayer interface is designed to return a List<User1> because it's expected to return all the User1 objects from the database where the firstName matches the provided Name parameter.
 }
 

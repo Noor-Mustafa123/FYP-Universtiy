@@ -832,6 +832,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // CREATING A SEPERATE FUNCTION FOR POST REQUEST
     async function newUserPostRequest(url) {
+
         let newUserInfo = {
             "firstName": $("input[name='first']").val(),
             "lastName": $("input[name='last']").val(),
@@ -839,6 +840,10 @@ document.addEventListener("DOMContentLoaded", function () {
             "password": $("input[name='password']").val(),
             "address": $("input[name='address']").val()
         }
+
+        // ! check why the name being sent is null
+
+        console.log($("input[name='first']").val());
 
         await fetch(url, {
 
@@ -850,16 +855,36 @@ document.addEventListener("DOMContentLoaded", function () {
             body: JSON.stringify(newUserInfo), // body data type must match "Content-Type" header
         }).then(function (response) {
             console.log(response);
-            return response.text();
+            return response.json();
         }).then(function (responseData) {
 
-
-            const userName = $("input[name='first']").val();
-
             console.log(responseData);
-            showAlert(responseData);
+            console.log(responseData.errorString);
+            showAlert(responseData.errorString);
 
-            if (responseData.includes("successfully")) {
+            //* setting the access token to the session storage and placing checks to check if the value already exists then remove it then add the new access token
+            //TODO: Make setup that the accessToken is use to login next
+
+             if(!sessionStorage.getItem("accessToken")){
+        sessionStorage.setItem("accessToken",JSON.stringify(responseData.accessToken));
+         responseData.refreshToken;
+            }
+            else{
+                sessionStorage.removeItem("accessToken");
+                sessionStorage.setItem("accessToken",JSON.stringify(responseData.accessToken));
+            }
+
+            if(!sessionStorage.getItem("refreshToken")){
+                sessionStorage.setItem("refreshToken",JSON.stringify(responseData.accessToken));
+                responseData.refreshToken;
+            }
+            else{
+                sessionStorage.removeItem("refreshToken");
+                sessionStorage.setItem("refreshToken",JSON.stringify(responseData.accessToken));
+            }
+
+
+            if (responseData.errorString.indexOf("successfully")!== -1) {
                 // Store the username in localStorage
                 sessionStorage.setItem('userName', userName);
                 // Redirect to the home page after the POST request is completed
@@ -867,7 +892,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = '../index.html';
                 }, 6000)
             }
-        }).catch(function () {
+        }).catch(function (e) {
+            console.log(e);
             const responseString = "Network Error";
             showAlert(responseString);
         })
@@ -1015,10 +1041,11 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </div>`;
 
-        if (responseString.includes("Successfully") || responseString.includes("Admin")) {
+
+        if (responseString.indexOf("Successfully") !== -1 || responseString.indexOf("Admin") !== -1) {
             alertContainer.html(successTemplateString);
         }
-        else if(responseString.includes("successfully")){
+        else if(responseString.indexOf("successfully") !== -1){
             alertContainer.html(successTemplateString);
         }
         else {
@@ -1042,7 +1069,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if ($(".form").valid()) {
 
 
-            newUserPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/UserData/PUser1");
+            // newUserPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/api/v1/auth/register");
+            newUserPostRequest("http://localhost:8080/api/v1/auth/register");
 
             // Show a toast notification for successful submission
             console.log('Form submitted successfully.');

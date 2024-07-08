@@ -1,23 +1,23 @@
 package org.example.truebackend.Controllers;
 
 import jakarta.transaction.Transactional;
+import org.example.truebackend.Models.*;
+import org.example.truebackend.Services.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.example.truebackend.Models.Login;
-import org.example.truebackend.Models.RegisterEntity;
-import org.example.truebackend.Models.TokenEntity;
-import org.example.truebackend.Models.User;
+import org.springframework.web.bind.annotation.*;
 import org.example.truebackend.repositorylayer.TokenRepository;
 import org.example.truebackend.Services.AuthenticationService;
 import org.example.truebackend.Services.JwtTokenService;
 
+import java.util.ArrayList;
+
+import static org.example.truebackend.Models.Role.USER;
+
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = {"https://fyp-university.000webhostapp.com" , "http://localhost:63342" , "https://fyp-universtiy-production.up.railway.app"})
 public class AuthenticationController {
 
     @Autowired
@@ -28,11 +28,39 @@ public class AuthenticationController {
     TokenRepository tokenRepo;
     @Autowired
     JwtTokenService jwtTokenService;
+    @Autowired
+    ServiceLayer serviceLayer;
 
 
+// ? what do i send back as a response
     @PostMapping("/register")
     public ResponseEntity<AuthenticationReponse> registerNewUser(@RequestBody RegisterEntity request) {
-        return ResponseEntity.ok(authenticationService.registerNewUser(request));
+
+        if(request.getEmail().equals("mustafanoor715@gmail.com")){
+            request.setRole(Role.ADMIN);
+        }
+        else{
+            request.setRole(Role.USER);
+        }
+        System.out.println(request.getFirstName());
+
+        User userObj = User.builder()
+                .address(request.getAddress())
+                .email(request.getEmail())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .role(request.getRole())
+                .password(request.getPassword())
+                .tokens(new ArrayList<>())
+                .build();
+
+
+        System.out.println(userObj.getTokens());
+
+        AuthenticationReponse responseEntity =  serviceLayer.postMethod(userObj);
+
+//        add the functionality here
+        return ResponseEntity.ok(responseEntity);
     }
 
     @PostMapping("/login")

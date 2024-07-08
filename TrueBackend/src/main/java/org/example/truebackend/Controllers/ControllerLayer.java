@@ -71,6 +71,11 @@ public class ControllerLayer {
 //   return new User1(1,"Noor","mustafanoor715@gmail.com");
     }
 
+
+
+//    ! CURRENTLY WORKING ON THIS USER LOGIN \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
     @GetMapping("/login")
     public ResponseEntity<String> getUserloinData(@RequestParam String email, @RequestParam String password) {
         String loginMethodOutput = serviceObj.authenticateUser(email, password);
@@ -78,18 +83,33 @@ public class ControllerLayer {
     }
 
 
-    @PostMapping("/PUser1")
-// This error message is indicating that the method is expecting a return type of String, but it's actually returning a ResponseEntity<String>.
-    public ResponseEntity<String> postMethod(@RequestBody User1 UserObj) {
+//    ! CURRENTLY WORKING ON THIS USER LOGIN   /////////////////////////////////
 
-        this.userObj = UserObj;
-        String postMethodOutput = serviceObj.postMethod(UserObj);
 
-//  In this code, ResponseEntity.ok(result) creates a ResponseEntity with a 200 OK status and the result string as the body. The @PostMapping annotation is used to map HTTP POST requests onto this method. The @RequestBody annotation is used to bind the HTTP request body with a domain object in method parameter.
-        return ResponseEntity.ok(postMethodOutput);
-//   The ResponseEntity class in Spring Framework is used to represent the entire HTTP response. You can control anything that goes into it: status code, headers, and body.
 
-    }
+
+
+
+
+//    ! CURRENTLY WORKING ON THIS USER REGISTRATION  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+//    @PostMapping("/PUser1")
+//// This error message is indicating that the method is expecting a return type of String, but it's actually returning a ResponseEntity<String>.
+//    public ResponseEntity<String> postMethod(@RequestBody User1 UserObj) {
+//
+//        this.userObj = UserObj;
+//        String postMethodOutput = serviceObj.postMethod(UserObj);
+//
+////  In this code, ResponseEntity.ok(result) creates a ResponseEntity with a 200 OK status and the result string as the body. The @PostMapping annotation is used to map HTTP POST requests onto this method. The @RequestBody annotation is used to bind the HTTP request body with a domain object in method parameter.
+//        return ResponseEntity.ok(postMethodOutput);
+////   The ResponseEntity class in Spring Framework is used to represent the entire HTTP response. You can control anything that goes into it: status code, headers, and body.
+//
+//    }
+
+
+//    ! CURRENTLY WORKING ON THIS USER REGISTRATION    //////////////////////////////////
+
 
 
     //    Update mapping
@@ -254,6 +274,14 @@ public class ControllerLayer {
 
 
     }
+
+    //adding a test methdo in the controller layer for testing the spring security
+    @PostMapping("/testMethod")
+    public ResponseEntity<Void> testMethod(){
+        System.out.println("the test method in the controllerlayer of fyp is hitting");
+        return ResponseEntity.ok(null);
+    }
+
 
 
 }

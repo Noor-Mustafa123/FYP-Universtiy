@@ -36,24 +36,15 @@ public class AuthenticationService {
     // method to save user to the database
     // create an entity named token which will have a one-to-many relationship with user entity then save both to the datbase
 
-    public AuthenticationReponse registerNewUser(RegisterEntity registerRequest) {
-//        creating an object of the entity of the user
+    public AuthenticationReponse registerNewUser(User userObj) {
 
-        var UserObj = new User();
-        UserObj.setEmail(registerRequest.getEmail());
-        UserObj.setFirstname(registerRequest.getFirstname());
-        UserObj.setLastname(registerRequest.getLastname());
-        UserObj.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        UserObj.setRole(registerRequest.getRole());
-
-
-        var token = jwtService.generatedToken(UserObj);
-        var refreshToken = jwtService.generateRefreshToken(UserObj);
+        var token = jwtService.generatedToken(userObj);
+        var refreshToken = jwtService.generateRefreshToken(userObj);
         int length = refreshToken.length();
         System.out.println("The length of the string is: " + length);
         //        creating the object of the token entity to save it
         var TokenObj = TokenEntity.builder()
-                .user(UserObj)
+                .user(userObj)
                 .revoked(false)
                 .expired(false)
                 .token(token)
@@ -61,12 +52,15 @@ public class AuthenticationService {
                 .refreshToken(refreshToken)
                 .build();
 
-
-        UserObj.getTokens().add(TokenObj);
-        userRepo.save(UserObj);
+        System.out.println(userObj);
+        userObj.getTokens().add(TokenObj);
+        userRepo.save(userObj);
 
         authenticationReponse.setJwtToken(token);
         authenticationReponse.setRefreshToken(refreshToken);
+
+        System.out.println("hello this print is working");
+        System.out.println(authenticationReponse.getJwtToken());
 
         tokenRepo.save(TokenObj);
 

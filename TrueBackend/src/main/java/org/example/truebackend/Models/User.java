@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,10 +25,11 @@ public class User implements UserDetails {
     private Integer id;
 
 
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
+    private String address;
 
     // the annotation is specific to the jpa for the persistence of the role data to the database
     @Enumerated(EnumType.STRING)
