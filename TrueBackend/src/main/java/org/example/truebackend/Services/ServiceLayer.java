@@ -1,6 +1,7 @@
 package org.example.truebackend.Services;
 
 import org.example.truebackend.Controllers.AuthenticationReponse;
+import org.example.truebackend.Models.Login;
 import org.example.truebackend.Models.User;
 import org.example.truebackend.repositorylayer.RepositoryLayer;
 import org.example.truebackend.Models.User1;
@@ -50,30 +51,66 @@ public class ServiceLayer {
 
     }
 
-    public String authenticateUser(String email,String password){
+
+
+
+
+
+
+
+
+
+//first check the user Object from the database
+//    if it exists then use the authenticate user methdo to generete a new user
+    public AuthenticationReponse authenticateUser(String email,String password){
 //        List of obj with matching emails
         List<User> listOfEmails = repoObj.findByEmail(email);
         List<User> listOfPasswords = repoObj.findByPassword(password);
+//set the response authentication response entity to be returned wit hteh set detailos
+
+        AuthenticationReponse authenticationReponse = new AuthenticationReponse();
 
         if(listOfEmails.isEmpty() && listOfPasswords.isEmpty()){
-                return "The Email and password do not exist Please sign up with a new account";
+             authenticationReponse.setErrorString("The Email and password do not exist Please sign up with a new account");
+                return authenticationReponse;
         }
         else if (listOfEmails.isEmpty()) {
-                return "Email does not exist";
+            authenticationReponse.setErrorString("Email does not exist");
+                return authenticationReponse;
         }
         else if (listOfPasswords.isEmpty()) {
-                return "Password is incorrect";
+            authenticationReponse.setErrorString("Password is incorrect");
+            return authenticationReponse;
         }
         else if(listOfEmails.get(0).getEmail().equals("mustafanoor715@gmail.com")){
-            return "This is an admin";
+            authenticationReponse.setErrorString("This is an admin");
+            return authenticationReponse;
         }
         else {
             String emailOfUser = listOfEmails.get(0).getEmail();
            String firstName = listOfEmails.get(0).getFirstName();
            String addressOfUser = listOfEmails.get(0).getAddress();
-            return "Successfully logged in  and the text is changing as " + "-" + firstName + "-" + emailOfUser + "-" + addressOfUser;
+          Login loginObj = Login.builder()
+                    .email(emailOfUser)
+                    .password(password)
+                    .build();
+            return authenticationService.authenticateUser(loginObj);
         }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public String resetPassword(String email,String password){
 //        List of obj with matching emails

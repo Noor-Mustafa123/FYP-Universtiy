@@ -75,12 +75,12 @@ public class ControllerLayer {
 
 //    ! CURRENTLY WORKING ON THIS USER LOGIN \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-
-    @GetMapping("/login")
-    public ResponseEntity<String> getUserloinData(@RequestParam String email, @RequestParam String password) {
-        String loginMethodOutput = serviceObj.authenticateUser(email, password);
-        return ResponseEntity.ok(loginMethodOutput);
-    }
+//
+//    @GetMapping("/login")
+//    public ResponseEntity<AuthenticationReponse> getUserLoginData(@RequestParam String email, @RequestParam String password) {
+//        AuthenticationReponse loginMethodOutput = serviceObj.authenticateUser(email, password);
+//        return ResponseEntity.ok(loginMethodOutput);
+//    }
 
 
 //    ! CURRENTLY WORKING ON THIS USER LOGIN   /////////////////////////////////
@@ -91,7 +91,7 @@ public class ControllerLayer {
 
 
 
-//    ! CURRENTLY WORKING ON THIS USER REGISTRATION  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//     CURRENTLY WORKING ON THIS USER REGISTRATION  \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 
 //    @PostMapping("/PUser1")
@@ -108,7 +108,7 @@ public class ControllerLayer {
 //    }
 
 
-//    ! CURRENTLY WORKING ON THIS USER REGISTRATION    //////////////////////////////////
+//     CURRENTLY WORKING ON THIS USER REGISTRATION    //////////////////////////////////
 
 
 
@@ -226,8 +226,7 @@ public class ControllerLayer {
             throw new RuntimeException(e);
         } catch (Exception e) {
             logger.error("this is the exception occurred while creating an event ", e);
-        }
-        ;
+        };
 //TODO: replace the runtime exceptions with the real response entity expetions so that if real the end user can see them
 
 

@@ -63,9 +63,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(responseEntity);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthenticationReponse> loginUser(@RequestBody Login loginObj) {
-        return ResponseEntity.ok(authenticationService.authenticateUser(loginObj));
+
+//     WORK ON THE SECOND API ////////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/login")
+    public ResponseEntity<AuthenticationReponse> getUserLoginData(@RequestParam String email, @RequestParam String password) {
+        AuthenticationReponse loginMethodOutput = serviceLayer                                                                                                                 .authenticateUser(email, password);
+        return ResponseEntity.ok(loginMethodOutput);
     }
 
 

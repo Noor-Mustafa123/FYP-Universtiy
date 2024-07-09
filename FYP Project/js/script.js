@@ -866,7 +866,7 @@ document.addEventListener("DOMContentLoaded", function () {
             //TODO: Make setup that the accessToken is use to login next
 
              if(!sessionStorage.getItem("accessToken")){
-        sessionStorage.setItem("accessToken",JSON.stringify(responseData.accessToken));
+        sessionStorage.setItem("accessToken",JSON.stringify(responseData.access_token));
          responseData.refreshToken;
             }
             else{
@@ -907,17 +907,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // No, the HTTP GET request does not typically have a body. According to the HTTP/1.1 specification, a GET request should not include a message body because the server will not use it. Instead, data sent to the server is appended to the URL as query parameters.
 
-    async function userLoginRequest(url) {
-        await fetch(url)
+
+
+
+
+
+    async function userLoginRequest(url,email,password) {
+
+        let loginInfoObject = {
+            "email": email,// it will look for the current loaded html page for the elements
+            "password": password
+        }
+
+        await fetch(url,
+            {
+                method: "POST",
+                headers:{
+                   'Content-Type': 'application/json'
+                },
+                body:JSON.stringify(loginInfoObject)
+            }
+            )
             .then(function (response) {
-                return response.text();
+                return response.json();
             }).then(async function (responseData) {
 
 
                 // getting the data from the response to store in the local storage to send with teh checkout request
 
-                if (responseData.includes("Successfully")) {
-                    let splitArray = responseData.split("-");
+                if (responseData.errorString.indexOf("Successfully")!== -1) {
+                    let splitArray = responseData.errorString.split("-");
                     let email = splitArray[1];
                     let address = splitArray[2];
                     loggedInUserAddress = address;
@@ -925,15 +944,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     sessionStorage.setItem('Email', loggedInUserEmail);
                     sessionStorage.setItem("Address", loggedInUserAddress);
+                    sessionStorage.removeItem("accessToken");
+                    sessionStroage.setItem("accessToken",responseData.access_token)
+
+                    sessionStorage.removeItem("refreshToken");
+                    sessionStroage.setItem("refreshToken",responseData.refresh_token)
+
+
                 }
 
 
-                if (responseData.includes("Successfully")) {
+                if (responseData.errorString.indexOf("Successfully") !== -1) {
                     showAlert("Login Successfully");
                     // Redirect to the home page after the login is successful
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails")
-
+                    // await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails")
+                    await fetch("https://localhost:8080/UserData/OrderDetails")
                         .then(function (response) {
                             return response.json();
                         })
@@ -975,9 +1001,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// ! Ill have to send a request for the orderDetails but that link is not allowed by the filter so ill have to add the jwt token in as well to pass the checks
 
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails")
+                    await fetch("https://loader/UserData/OrderDetails")
                         .then(function (response) {
                             return response.json();
                         })
@@ -1139,7 +1166,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Add your AJAX request here if you want to submit the form data to the server
 
-            userLoginRequest(`https://fyp-universtiy-production-4f96.up.railway.app/UserData/login?email=${userEmail}&password=${userPassword}`);
+            // userLoginRequest(`https://fyp--universtiyproduction-4f96.up.railway.app/UserData/login`,userEmail,userPassword);
+
+            userLoginRequest(`https://localhost:8080/api/v1/auth/login`,userEmail,userPassword);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1199,8 +1228,8 @@ document.addEventListener("DOMContentLoaded", function () {
         await fetch(url, {
 
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json', // 'Content-Type': 'application/x-www-form-urlencoded',
+                headers: {
+                    'Content-Type': 'application/json', // 'Content-Type': 'application/x-www-form-urlencoded',
             },
             //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
             body: JSON.stringify(adcproductObj), // body data type must match "Content-Type" header
@@ -1649,19 +1678,6 @@ const productObj = [
         , "priceId": "price_1P2XmB03YcH2K12qenNzgxzF"
     }
 ]
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
