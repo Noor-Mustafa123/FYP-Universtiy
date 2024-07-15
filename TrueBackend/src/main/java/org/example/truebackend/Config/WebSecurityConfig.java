@@ -57,6 +57,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((httpRequest) -> {
                     httpRequest.requestMatchers(WHITE_LIST_URL).permitAll()
                             .requestMatchers("/api/v1/auth/register").permitAll()//Explicitly allowing the register endpoint
+                            .requestMatchers("/UserData/resetPassword").permitAll()
                             .requestMatchers("/api/v1/auth/login").permitAll()//Explicitly allowing the login endpoint
                             .requestMatchers("/api/v1/auth/authenticate").permitAll()//explicitly allowing the authenticate plugin for testing purposes
 // This means that any user with the ADMIN or MANAGER role can access any endpoint under /api/v1/management/**.
@@ -76,7 +77,7 @@ public class WebSecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-                
+
 
 
 //                http

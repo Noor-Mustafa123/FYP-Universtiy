@@ -251,6 +251,7 @@ public class ControllerLayer {
     }
     @GetMapping("/OrderDetails")
     public ResponseEntity<String> OrderDetailsMethod() {
+        System.out.println("The order details controller method has been hit sucessfully");
           String ordersJson =  orderService.processOrders();
 //   FIXME: the items value i am getting is empty find the reason for that
         logger.info("This is the object that we are getting to send back to the client {}", ordersJson);

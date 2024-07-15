@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,7 @@ import org.example.truebackend.Services.JwtTokenService;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Objects;
 
 @Configuration
@@ -40,7 +43,8 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
             "/configuration/security",
             "/swagger-ui/**",
             "/webjars/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/UserData/resetPassword"
     };
     @Autowired
     private AntPathMatcher pathMatcher;
@@ -51,8 +55,6 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 //   ? Check the error comment on the userRepo method call in the method to see the reason for this annotation
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//    TODO: check if the token is present and is of bearer type
-//    TODO: get the subject email or username and match it with the database
 
 
 
@@ -93,8 +95,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
         }
 
         String token = tokenObj.getToken();
-        System.out.println(token);
-        System.out.println(jwt);
+
 
 
 //  ! add a revoked or expired check to not get the expired token from the database
@@ -102,7 +103,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
 
 
         if (Objects.equals(token, jwt)) {
-            filterChain.doFilter(request, response);
+
             System.out.println("The token matched successfully");
 
 
@@ -111,11 +112,26 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
             if (SecurityContextHolder.getContext().getAuthentication() == null && email != null) {
 
                 if (!tokenObj.isRevoked() && !tokenObj.isExpired()) {
+//                    UserDetails userDetails = new UserPrincipal(user);
                     UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-                    UsernamePasswordAuthenticationToken authenticationObj = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities());
+
+
+//    In this specific part of your code, you are not performing the authentication process again. Instead, you are using the UserDetailsService to load the UserDetails for the user, and then creating a UsernamePasswordAuthenticationToken with these details. This token is then set in the SecurityContextHolder.  The reason you don't need to authenticate the user again here is because this code is part of a filter that processes incoming requests. At this point in the code, you have already verified the JWT token and confirmed that it is valid and corresponds to a valid user. Therefore, you can assume that the user is authenticated.
+                    System.out.println(userDetails.toString());
+                    System.out.println(userDetails.getAuthorities());
+//   The UsernamePasswordAuthenticationToken is then used to set the Authentication in the SecurityContextHolder, which makes the user's authentication details available throughout your application for the duration of the request.
+                    UsernamePasswordAuthenticationToken authenticationObj = new UsernamePasswordAuthenticationToken(userDetails, null,userDetails.getAuthorities());
                     authenticationObj.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationObj);
+                    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                    String currentPrincipalName = authentication.getName();
+                    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+                    System.out.println("Current principal name: " + currentPrincipalName);
+                    System.out.println("Current principal authorities: " + authorities);
                     System.out.println("added to security context");
+
+                    filterChain.doFilter(request, response);
                 } else {
                     System.out.println("token is expired or revoked");
                 }
@@ -126,15 +142,9 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
        else {
             System.out.println("Token does not match");
         }
-        filterChain.doFilter(request, response);
+
     }
 
-//        Checks:
-//        If the securitycontext is already null
-//        if the list of the returned user objects and the tokens are expired or not ?
-//        I will need to get the tokens separate
-
-//        I will need the object of the authentication object to pass into the spring  security contexxt
 
 //doing this because webConfiguration does not work on custom filters so we are overriding this method which makes the filter ignore specific paths
     @Override

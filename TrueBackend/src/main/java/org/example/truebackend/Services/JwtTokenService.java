@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.example.truebackend.repositorylayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.example.truebackend.Models.TokenEntity;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -41,6 +43,53 @@ public class JwtTokenService {
     public String generateToken(UserDetails userDetails) {
         return generatedToken(userDetails);
     }
+
+
+//
+//
+//
+//    public String generatedToken(UserDetails userDetails) {
+//        Map<String, Object> claimsMap = new HashMap<String, Object>();
+//
+//        // Extract roles and permissions from authorities
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .filter(grantedAuthority -> grantedAuthority.getAuthority().startsWith("ROLE_"))
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toList());
+//
+//        List<String> permissions = userDetails.getAuthorities().stream()
+//                .filter(grantedAuthority -> !grantedAuthority.getAuthority().startsWith("ROLE_"))
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toList());
+//
+//        // Add roles and permissions to claims
+//        claimsMap.put("role", roles);
+//        claimsMap.put("permissions", permissions);
+//
+//        return buildToken(claimsMap, userDetails, expiration);
+//    }
+//
+//    public String generateRefreshToken(UserDetails userDetails) {
+//        Map<String, Object> claimsMap = new HashMap<String, Object>();
+//
+//        // Extract roles and permissions from authorities
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .filter(grantedAuthority -> grantedAuthority.getAuthority().startsWith("ROLE_"))
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toList());
+//
+//        List<String> permissions = userDetails.getAuthorities().stream()
+////                this  condition is checking if the granted authority name does not starts with ROLE_
+//                .filter(grantedAuthority -> !grantedAuthority.getAuthority().startsWith("ROLE_"))
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toList());
+//
+//        // Add roles and permissions to claims
+//        claimsMap.put("role", roles);
+//        claimsMap.put("permissions", permissions);
+//
+//        return buildToken(claimsMap, userDetails, refreshTokenExpiration);
+//    }
 
 
     public String generatedToken(UserDetails userDetails) {
@@ -134,28 +183,29 @@ public class JwtTokenService {
 
 
         TokenEntity tokenObj = null;
-       if(!listOfTokens.isEmpty()){
-         tokenObj = listOfTokens.get(0);
-           }
+        if (!listOfTokens.isEmpty()) {
+            tokenObj = listOfTokens.get(0);
+        }
         return tokenObj;
     }
 
-    public boolean isTokenExpired(Claims claims){
-      return claims.getExpiration().before(new Date());
+    public boolean isTokenExpired(Claims claims) {
+        return claims.getExpiration().before(new Date());
     }
 
 
-
-    public TokenEntity isTokenValid(String refreshToken) throws Exception{
+    public TokenEntity isTokenValid(String refreshToken) throws Exception {
         List<TokenEntity> tokenList = tokenRepo.findTokenEntitiesByRefreshToken(refreshToken);
         if (tokenList.isEmpty()) {
             throw new Exception("No token found"); // or throw new Exception("No token found");
         }
+        TokenEntity token = tokenList.get(0);
+        if (!token.expired) {
             return tokenList.get(0);
-
+        } else {
+            throw new Exception("Refresh Token is expired relogin");
+        }
     }
-
-
 
 
 // method to handle expiry of token

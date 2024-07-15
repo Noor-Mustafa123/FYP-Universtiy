@@ -6,10 +6,12 @@ import org.example.truebackend.Services.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.example.truebackend.repositorylayer.TokenRepository;
 import org.example.truebackend.Services.AuthenticationService;
 import org.example.truebackend.Services.JwtTokenService;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 
@@ -17,7 +19,7 @@ import static org.example.truebackend.Models.Role.USER;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = {"https://fyp-university.000webhostapp.com" , "http://localhost:63342" , "https://fyp-universtiy-production.up.railway.app"})
+@CrossOrigin(origins = {"https://fyp-university.000webhostapp.com", "http://localhost:63342", "https://fyp-universtiy-production.up.railway.app"})
 public class AuthenticationController {
 
     @Autowired
@@ -30,19 +32,24 @@ public class AuthenticationController {
     JwtTokenService jwtTokenService;
     @Autowired
     ServiceLayer serviceLayer;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    TokenEntity tokenObj;
 
 
-// ? what do i send back as a response
+    // ? what do i send back as a response
     @PostMapping("/register")
     public ResponseEntity<AuthenticationReponse> registerNewUser(@RequestBody RegisterEntity request) {
 
-        if(request.getEmail().equals("mustafanoor715@gmail.com")){
+        if (request.getEmail().equals("mustafanoor715@gmail.com")) {
             request.setRole(Role.ADMIN);
-        }
-        else{
+        } else {
             request.setRole(Role.USER);
         }
         System.out.println(request.getFirstName());
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+
 
         User userObj = User.builder()
                 .address(request.getAddress())
@@ -50,14 +57,14 @@ public class AuthenticationController {
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .role(request.getRole())
-                .password(request.getPassword())
+                .password(encodedPassword)
                 .tokens(new ArrayList<>())
                 .build();
 
 
         System.out.println(userObj.getTokens());
 
-        AuthenticationReponse responseEntity =  serviceLayer.postMethod(userObj);
+        AuthenticationReponse responseEntity = serviceLayer.postMethod(userObj);
 
 //        add the functionality here
         return ResponseEntity.ok(responseEntity);
@@ -66,9 +73,14 @@ public class AuthenticationController {
 
 //     WORK ON THE SECOND API ////////////////////////////////////////////////////////////////////////////
 
-    @GetMapping("/login")
-    public ResponseEntity<AuthenticationReponse> getUserLoginData(@RequestParam String email, @RequestParam String password) {
-        AuthenticationReponse loginMethodOutput = serviceLayer                                                                                                                 .authenticateUser(email, password);
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationReponse> getUserLoginData(@RequestBody Login login) {
+        String email = login.getEmail();
+        String password = login.getPassword();
+        AuthenticationReponse loginMethodOutput = serviceLayer.authenticateUser(email, password);
+        System.out.println(loginMethodOutput.getJwtToken());
+        System.out.println(loginMethodOutput.getErrorString());
+        System.out.println(loginMethodOutput.getRefreshToken());
         return ResponseEntity.ok(loginMethodOutput);
     }
 
@@ -77,9 +89,17 @@ public class AuthenticationController {
     @Transactional
     public ResponseEntity<AuthenticationReponse> refreshOldToken(@RequestBody RefreshDAO refreshEntity) throws Exception {
         //validate the token?
-        System.out.println("refresh contorller was hit");
+        System.out.println("refresh controller was hit");
+        try {
+            tokenObj = jwtTokenService.isTokenValid(refreshEntity.refreshToken);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthenticationReponse
+                    .builder()
+                    .errorString("Session Expired Please Login Again")
+                    .build()
+            );
+        }
 
-        TokenEntity tokenObj = jwtTokenService.isTokenValid(refreshEntity.refreshToken);
         if (!tokenObj.refreshToken.equals(refreshEntity.refreshToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }

@@ -491,9 +491,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // JSON FOR THE SINGLE PRODUCT PAGE
 
 
-
-
-
     // target those elements in which to change the data
     const mainImage = document.getElementById("main-image");
     const productName = document.querySelector(".name-product");
@@ -865,26 +862,27 @@ document.addEventListener("DOMContentLoaded", function () {
             //* setting the access token to the session storage and placing checks to check if the value already exists then remove it then add the new access token
             //TODO: Make setup that the accessToken is use to login next
 
-             if(!sessionStorage.getItem("accessToken")){
-        sessionStorage.setItem("accessToken",JSON.stringify(responseData.access_token));
-         responseData.refreshToken;
-            }
-            else{
-                sessionStorage.removeItem("accessToken");
-                sessionStorage.setItem("accessToken",JSON.stringify(responseData.accessToken));
-            }
+            console.log(responseData.access_token);
+            console.log(responseData.refresh_token);
 
-            if(!sessionStorage.getItem("refreshToken")){
-                sessionStorage.setItem("refreshToken",JSON.stringify(responseData.accessToken));
+            if (!sessionStorage.getItem("accessToken")) {
+                sessionStorage.setItem("accessToken", JSON.stringify(responseData.access_token));
                 responseData.refreshToken;
+            } else {
+                sessionStorage.removeItem("accessToken");
+                sessionStorage.setItem("accessToken", JSON.stringify(responseData.access_token));
             }
-            else{
+
+            if (!sessionStorage.getItem("refreshToken")) {
+                sessionStorage.setItem("refreshToken", JSON.stringify(responseData.refresh_token));
+                responseData.refreshToken;
+            } else {
                 sessionStorage.removeItem("refreshToken");
-                sessionStorage.setItem("refreshToken",JSON.stringify(responseData.accessToken));
+                sessionStorage.setItem("refreshToken", JSON.stringify(responseData.refresh_token));
             }
 
 
-            if (responseData.errorString.indexOf("successfully")!== -1) {
+            if (responseData.errorString.indexOf("successfully") !== -1) {
                 // Store the username in localStorage
                 sessionStorage.setItem('userName', userName);
                 // Redirect to the home page after the POST request is completed
@@ -908,11 +906,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // No, the HTTP GET request does not typically have a body. According to the HTTP/1.1 specification, a GET request should not include a message body because the server will not use it. Instead, data sent to the server is appended to the URL as query parameters.
 
 
-
-
-
-
-    async function userLoginRequest(url,email,password) {
+    async function userLoginRequest(url, email, password) {
 
         let loginInfoObject = {
             "email": email,// it will look for the current loaded html page for the elements
@@ -922,20 +916,22 @@ document.addEventListener("DOMContentLoaded", function () {
         await fetch(url,
             {
                 method: "POST",
-                headers:{
-                   'Content-Type': 'application/json'
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                body:JSON.stringify(loginInfoObject)
+                body: JSON.stringify(loginInfoObject)
             }
-            )
+        )
             .then(function (response) {
                 return response.json();
             }).then(async function (responseData) {
 
-
+                console.log("first request is hit");
                 // getting the data from the response to store in the local storage to send with teh checkout request
-
-                if (responseData.errorString.indexOf("Successfully")!== -1) {
+                console.log(responseData.errorString);
+                console.log(responseData.access_token)
+                console.log(responseData.refresh_token);
+                if (responseData.errorString.indexOf("Successfully") !== -1) {
                     let splitArray = responseData.errorString.split("-");
                     let email = splitArray[1];
                     let address = splitArray[2];
@@ -945,27 +941,50 @@ document.addEventListener("DOMContentLoaded", function () {
                     sessionStorage.setItem('Email', loggedInUserEmail);
                     sessionStorage.setItem("Address", loggedInUserAddress);
                     sessionStorage.removeItem("accessToken");
-                    sessionStroage.setItem("accessToken",responseData.access_token)
+                    sessionStorage.setItem("accessToken", responseData.access_token)
 
                     sessionStorage.removeItem("refreshToken");
-                    sessionStroage.setItem("refreshToken",responseData.refresh_token)
+                    sessionStorage.setItem("refreshToken", responseData.refresh_token)
 
 
                 }
 
+                let accessToken = sessionStorage.getItem("accessToken");
+                let refreshToken = sessionStorage.getItem("refreshToken");
 
                 if (responseData.errorString.indexOf("Successfully") !== -1) {
                     showAlert("Login Successfully");
                     // Redirect to the home page after the login is successful
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
                     // await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails")
-                    await fetch("https://localhost:8080/UserData/OrderDetails")
+
+                    await fetch("http://localhost:8080/UserData/OrderDetails", {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "Authorization": "Bearer " + accessToken
+                        }
+                    })
                         .then(function (response) {
+                            console.log("2nd request is hit");
+                            if (!response.ok) {
+                                return response.text()
+                                    .then(function (responseText) {
+                                        throw new Error(responseText);
+                                    })
+                            }
                             return response.json();
                         })
                         .then(function (responseData) {
                             sessionStorage.setItem("responseJson", JSON.stringify(responseData));
                         })
+                        .catch(function (error) {
+                            const responseString = error.message;
+
+                            showAlert(responseString);
+                            console.log(error);
+                            console.log("this catch is catching the error")
+                        });
+
 
                     setTimeout(() => {
                         window.location.href = '../index.html';
@@ -982,16 +1001,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     let lastNameSplit = lastName.split(' ');
 
-                 let veryLastName =    lastNameSplit[lastNameSplit.length - 1];
+                    let veryLastName = lastNameSplit[lastNameSplit.length - 1];
 
                     sessionStorage.setItem('userName', `${veryLastName}`);
 
-                }
-
-                else if (responseData.includes("admin")) {
+                } else if (responseData.errorString.indexOf("admin") !== -1) {
+                    console.log("the admin condition has been hit and entered");
                     showAlert("Welcome Admin")
-
                     sessionStorage.setItem('userName', "Noor");
+                    sessionStorage.removeItem("accessToken");
+                    sessionStorage.setItem("accessToken", responseData.access_token)
+                    sessionStorage.removeItem("refreshToken");
+                    sessionStorage.setItem("refreshToken", responseData.refresh_token)
+
+
+                    // reseting the value of the accessToken and the refreshToken variables after the condition is passed
+                    accessToken = sessionStorage.getItem("accessToken");
+                    console.log("the accessToken variables values have been reset");
+                    refreshToken = sessionStorage.getItem("refreshToken");
+
+
 
                     setTimeout(() => {
 
@@ -1001,15 +1030,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// ! Ill have to send a request for the orderDetails but that link is not allowed by the filter so ill have to add the jwt token in as well to pass the checks
+// ! Ill have to send a request for the orderDetails but that link is not allowed by the filter so ill have to add the jwt token in as well to ps
 
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    await fetch("https://loader/UserData/OrderDetails")
+                    await fetch("http://localhost:8080/UserData/OrderDetails", {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "Authorization": "Bearer " + accessToken
+                        }
+                    })
                         .then(function (response) {
+                            console.log("3rd request request is hit");
+                            if (!response.ok) {
+                                return response.text()
+                                    .then(function (responseText) {
+                                        throw new Error(responseText);
+                                    })
+                            }
                             return response.json();
                         })
                         .then(function (responseData) {
                             sessionStorage.setItem("responseJson", JSON.stringify(responseData));
+                        })
+                        .catch(function (error) {
+                            console.log("this print is coming from the orderdetails endpoint")
+                            console.log(error);
+                            console.log(error.message);
+                            const responseString = error.message;
+                            showAlert(responseString);
                         })
                 } else {
                     // Show an error message if the login wasn't successful
@@ -1017,8 +1065,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     showAlert(responseString);
                 }
             })
+            //
             .catch(function (error) {
-                const responseString = "Network Error";
+                const responseString = error.message;
+
                 showAlert(responseString);
                 console.log(error);
                 console.log("this catch is catching the error")
@@ -1069,13 +1119,13 @@ document.addEventListener("DOMContentLoaded", function () {
 </div>`;
 
 
-        if (responseString.indexOf("Successfully") !== -1 || responseString.indexOf("Admin") !== -1) {
+        if (responseString.indexOf("Successfully") != -1 || responseString.indexOf("Admin") != -1) {
             alertContainer.html(successTemplateString);
-        }
-        else if(responseString.indexOf("successfully") !== -1){
+        } else if (responseString.indexOf("successfully") !== -1) {
             alertContainer.html(successTemplateString);
-        }
-        else {
+        } else if (responseString.indexOf("Expired") != -1) {
+            alertContainer.html(failureTemplateString);
+        } else {
             alertContainer.html(failureTemplateString)
         }
         // Remove the alert after 3 seconds
@@ -1085,6 +1135,58 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     }
+
+
+
+
+
+
+
+    async function sendRefreshRequest(Url) {
+        const refreshToken = sessionStorage.getItem("refreshToken");
+        fetch(Url, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": "Bearer " + refreshToken
+            },
+            body: JSON.stringify(refreshToken)
+        })
+            .then(function (response) {
+                if (!response.ok) {
+             const message =  "Session Expired Please Login Again";
+                    return Promise.reject(new Error(message));
+                }
+                return response.json();
+            })
+            .then(function (responseData) {
+                const refreshToken = responseData.refresh_token;
+                const accessToken = responseData.access_token;
+
+                sessionStorage.removeItem("accessToken");
+                sessionStorage.setItem("accessToken", accessToken)
+
+                sessionStorage.removeItem("refreshToken");
+                sessionStorage.setItem("refreshToken", refreshToken)
+
+                console.log("the refreshRequest is sucessfull new accessToken has been set");
+            })
+            .catch(function (errorMessage) {
+                console.log("this is error showing from the refreshRequest");
+                console.log(errorMessage);
+                showAlert(errorMessage);
+
+            })
+    }
+
+
+
+
+
+
+
+
+
 
 
     //SUBMISSION
@@ -1168,7 +1270,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // userLoginRequest(`https://fyp--universtiyproduction-4f96.up.railway.app/UserData/login`,userEmail,userPassword);
 
-            userLoginRequest(`https://localhost:8080/api/v1/auth/login`,userEmail,userPassword);
+            userLoginRequest(`http://localhost:8080/api/v1/auth/login`, userEmail, userPassword);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1218,22 +1320,69 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+
+
+
+
+
+
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //REQUEST TO SEND THE DATA OVER TO THE SERVER
 
     // CREATING A SEPERATE FUNCTION FOR POST REQUEST
+
+
     async function checkOutPostRequest(url) {
+        if(adcproductObj.email == null){
+            console.log('adcproductObj email or name is empty');
+            showAlert("please login for ordering products")
+            return;
+        }
 
 
         await fetch(url, {
 
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    'Content-Type': 'application/json', // 'Content-Type': 'application/x-www-form-urlencoded',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': "Bearer " + sessionStorage.getItem("accessToken")
+
             },
             //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
             body: JSON.stringify(adcproductObj), // body data type must match "Content-Type" header
-        }).then(function (response) {
+        })
+            .then(async function (response) {
+
+            if (response.status == 401) {
+                // request for the new token has been made now hopefully the new token is saved
+                await sendRefreshRequest("http://localhost:8080/api/v1/auth/refresh");
+
+
+                const response = await fetch(url, {
+
+                    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': "Bearer " + sessionStorage.getItem("accessToken")
+                    },
+                    //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
+                    body: JSON.stringify(adcproductObj), // body data type must match "Content-Type" header
+                })
+
+                // after this the promise will be resolvd or rejected no other ocde will be executed below
+                return await response.json()
+
+            }
+
+
+            if (response.status == 403) {
+                const errorMessage = "You don't have the authority to access this functionality please login or sign up";
+                showAlert(errorMessage);
+                return Promise.reject(new Error(errorMessage));
+            }
+
+
             console.log(response);
             return response.json();
         }).then(function (responseData) {
@@ -1245,17 +1394,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(responseData.url)
                 console.log(responseData);
             }
-        }).catch(function () {
-            const responseString = "Network Error";
-            showAlert(responseString);
         })
+            .catch(function(error){
+                console.log(error.message);
+            })
+
 
     }
 
 
+
+
+
+
+
 // using the checkout button to send the request to checkout
     $(".checkOutBtn").on("click", function (e) {
-        checkOutPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/UserData/Stripe/Authenticate");
+        // checkOutPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/UserData/Stripe/Authenticate");
+        checkOutPostRequest("http://localhost:8080/UserData/Stripe/Authenticate");
+
     })
 
 
@@ -1284,19 +1441,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
-
-
-
-
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
-
     // this is the reset password form functionality when it is validated it sends a post request to the database
-
 
 
     $(".resetForm").validate({
@@ -1311,7 +1459,7 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             repeatPassword: {
                 required: true,
-                minlength:6,
+                minlength: 6,
                 equalTo: "[name='password']"  // This ensures the repeat password is the same as the password
             }
         },
@@ -1324,7 +1472,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 required: "Please enter your password",
                 minlength: "Your password must be at least 6 characters Long"
             },
-            repeatPassword:{
+            repeatPassword: {
                 required: "Please enter your password",
                 minlength: "Your password must be at least 6 characters Long",
                 equalTo: "The password does not match"
@@ -1359,8 +1507,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Add your AJAX request here if you want to submit the form data to the server
 
-            passwordResetRequest(`https://fyp-universtiy-production-4f96.up.railway.app/UserData/resetPassword`);
-            // passwordResetRequest(`http://localhost:8080/UserData/resetPassword`);
+            // passwordResetRequest(`https://fyp-universtiy-production-4f96.up.railway.app/UserData/resetPassword`);
+            passwordResetRequest(`http://localhost:8080/UserData/resetPassword`);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1379,44 +1527,73 @@ document.addEventListener("DOMContentLoaded", function () {
     ///////////////////////////////////////////////////////////////////////////
 
 
+    async function passwordResetRequest(url) {
+        let userInfo = {
+            "email": $("input[name='email']").val(),// it will look for the current loaded html page for the elements
+            "password": $("input[name='password']").val()
+        }
 
-  async function passwordResetRequest(url) {
-      let userInfo = {
-          "email": $("input[name='email']").val(),// it will look for the current loaded html page for the elements
-          "password": $("input[name='password']").val()
-      }
 
-      await fetch(url, {method: 'POST', // *GET, POST, PUT, DELETE, etc.
-          headers: {
-          'Content-Type': 'application/json', // 'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
-      body: JSON.stringify(userInfo), // body data type must match "Content-Type" header)}
-  }).then(function(response){
-      console.log(response);
-      return response.text();
-      }).then(function(responseData){
-          if(responseData.includes("successfully")){
-              const responseString = "password reset successfully";
-              showAlert(responseString);
-          }
-          else if(responseData.includes("exist")){
-              const responseString = "The email does not exist in the database";
-              showAlert(responseString);
-          }
-          else {
-            const responseString =   "Network error";
-          showAlert(responseString);
-          }
-      })
-  //     TODO: write the return data after the completing of the request on the backend
 
-  }
+        await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            headers: {
+
+                'Content-Type': 'application/json', // 'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': "Bearer " + sessionStorage.getItem("accessToken")
+            },
+            //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
+            body: JSON.stringify(userInfo), // body data type must match "Content-Type" header)}
+        }).then(async function (response) {
+
+
+
+
+            if (response.status == 401) {
+                // request for the new token has been made now hopefully the new token is saved
+                await sendRefreshRequest("http://localhost:8080/api/v1/auth/refresh");
+
+
+                const response = await fetch(url, {
+
+                    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': "Bearer " + sessionStorage.getItem("accessToken")
+                    },
+                    //  The JSON.stringify() method in JavaScript converts a JavaScript object into a JSON string. This is necessary because HTTP is a text-based protocol, so you can only send text over HTTP. By converting the data object into a JSON string with JSON.stringify(data), you are able to send the data as text over HTTP. On the server side, you would then parse this JSON string back into an object to use it.
+                    body: JSON.stringify(adcproductObj), // body data type must match "Content-Type" header
+                })
+
+                // after this the promise will be resolvd or rejected no other ocde will be executed below
+                return await response.json()
+
+            }
+
+
+
+
+            console.log(response);
+            return response.text();
+        })
+            .then(function (responseData) {
+            if (responseData.includes("successfully")) {
+                const responseString = "password reset successfully";
+                showAlert(responseString);
+            } else if (responseData.includes("exist")) {
+                const responseString = "The email does not exist in the database";
+                showAlert(responseString);
+            } else {
+                const responseString = "Network error";
+                showAlert(responseString);
+            }
+        })
+        //     TODO: write the return data after the completing of the request on the backend
+
+    }
 
 
 })//FIXME: the end of dom content loaded dont write below it
-
-
 
 
 const productObj = [
@@ -1680,9 +1857,6 @@ const productObj = [
 ]
 
 
-
-
-
 // MOVED THE FUNCTIONS OUTSIDE THE DOMCONTENTLOADED BECAUES OF THE SCOPE ISSUE WHEN CALLING INSIDE A DIFFERENT DOMCONTENTLOAEDED AND NO ONE DOMECONTENTEVENTLISTENER CANNOT BE PUT INSIDE ANTOHER ONE
 
 //     function to show the details of the orders in the admin dashboard
@@ -1759,8 +1933,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
     // Check if the current page is index.html
     if (window.location.href.endsWith('orderPage.html')) {
@@ -1771,31 +1943,31 @@ document.addEventListener("DOMContentLoaded", function () {
             if (orderPageSection.length) {
                 orderPageSection.empty();
             }
-                console.log("the adc section clear log is working");
+            console.log("the adc section clear log is working");
 
-                const responseData = JSON.parse(sessionStorage.getItem("responseJson"));
+            const responseData = JSON.parse(sessionStorage.getItem("responseJson"));
 
-                $.each(responseData, function(index, eachOrder) {
+            $.each(responseData, function (index, eachOrder) {
 
-                    console.log(eachOrder.email);
-                    console.log(loggedInUserEmail2);
+                console.log(eachOrder.email);
+                console.log(loggedInUserEmail2);
 
 
-                    if (eachOrder.email == loggedInUserEmail2) {
+                if (eachOrder.email == loggedInUserEmail2) {
 
-                        console.log("the condition inside showdataonorderpage is being passed ");
+                    console.log("the condition inside showdataonorderpage is being passed ");
 
-                        $.each(eachOrder.items, function(index, item) {
-                            /////////////////////////////////////////////
-                            let imagePath;
-                            productObj.forEach(function(obj){
-                                if(obj.name==item.itemName){
-                                   imagePath = obj.image;
-                                }
-                            })
+                    $.each(eachOrder.items, function (index, item) {
+                        /////////////////////////////////////////////
+                        let imagePath;
+                        productObj.forEach(function (obj) {
+                            if (obj.name == item.itemName) {
+                                imagePath = obj.image;
+                            }
+                        })
 
-                            // Add the HTML for each column in the row
-                            const html = `
+                        // Add the HTML for each column in the row
+                        const html = `
                             <div class=" col-10 mx-auto col-md-2 my-3">
                                 <img src="${imagePath}" alt="" class="img-fluid">
                             </div>
@@ -1813,17 +1985,17 @@ document.addEventListener("DOMContentLoaded", function () {
                               </div>
 `;
 
-                            orderPageSection.append(html);
-                        });
+                        orderPageSection.append(html);
+                    });
 
-                    }
-                    else {
-                        console.log("the amail does not match");
-                    }
-                });
+                } else {
+                    console.log("the amail does not match");
+                }
+            });
 
         }
-        setTimeout(showDataOnOrderPage,1000)
+
+        setTimeout(showDataOnOrderPage, 1000)
 
     } else {
         // For all other pages

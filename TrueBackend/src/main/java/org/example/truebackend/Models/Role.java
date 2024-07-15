@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +29,8 @@ public enum Role {
                     MANAGER_DELETE,
                     MANAGER_CREATE
             )
+
+
     ),
     MANAGER(
             Set.of(
@@ -50,6 +53,11 @@ public enum Role {
         authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
         return authorities;
     }
+//public List<SimpleGrantedAuthority> getAuthorities() {
+//    List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//    authorities.add(new SimpleGrantedAuthority("ROLE_" + this.name()));
+//    return authorities;
+//}
 
 
 }
