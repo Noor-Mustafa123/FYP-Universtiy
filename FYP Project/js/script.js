@@ -857,13 +857,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             console.log(responseData);
             console.log(responseData.errorString);
-            showAlert(responseData.errorString);
+            console.log("the showAlert is called once in the .then")
+            errorString = responseData.errorString;
+            showAlert(errorString);
 
             //* setting the access token to the session storage and placing checks to check if the value already exists then remove it then add the new access token
             //TODO: Make setup that the accessToken is use to login next
 
-            console.log(responseData.access_token);
-            console.log(responseData.refresh_token);
 
             if (!sessionStorage.getItem("accessToken")) {
                 sessionStorage.setItem("accessToken", JSON.stringify(responseData.access_token));
@@ -886,9 +886,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Store the username in localStorage
                 sessionStorage.setItem('userName', userName);
                 // Redirect to the home page after the POST request is completed
-                setTimeout(function () {
-                    window.location.href = '../index.html';
-                }, 6000)
+                // setTimeout(function () {
+                //     window.location.href = '../index.html';
+                // }, 6000)
             }
         }).catch(function (e) {
             console.log(e);
@@ -1125,7 +1125,11 @@ document.addEventListener("DOMContentLoaded", function () {
             alertContainer.html(successTemplateString);
         } else if (responseString.indexOf("Expired") != -1) {
             alertContainer.html(failureTemplateString);
-        } else {
+        }
+        else if (responseString.indexOf("confirmation") != -1) {
+            alertContainer.html(successTemplateString);
+        }
+        else {
             alertContainer.html(failureTemplateString)
         }
         // Remove the alert after 3 seconds

@@ -39,6 +39,7 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
             "/v3/api-docs/**",
             "/swagger-resources",
             "/swagger-resources/**",
+            "/UserData/webhook",
             "/configuration/ui",
             "/configuration/security",
             "/swagger-ui/**",

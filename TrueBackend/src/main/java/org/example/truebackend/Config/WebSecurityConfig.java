@@ -52,12 +52,14 @@ public class WebSecurityConfig {
 //  because we are not using cookies for session management then we are dont need the csrf property active so we disable it
                 .csrf(AbstractHttpConfigurer::disable)
 //  this is used to configure authorization rules for HTTP requests in a Spring Security application. This method allows you to specify which requests should be authorized based on roles, permissions, or other criteria.
-//   The AuthorizedHttpRequestsConfigurer is a class provided by Spring Security. When you configure it, you are indeed configuring Spring Security.
-//authorizeHttpRequests Method: This method is part of the HttpSecurity class in Spring Security. It allows you to configure authorization rules for HTTP requests.
+//  The AuthorizedHttpRequestsConfigurer is a class provided by Spring Security. When you configure it, you are indeed configuring Spring Security.
+//  .authorizeHttpRequests Method: This method is part of the HttpSecurity class in Spring Security. It allows you to configure authorization rules for HTTP requests.
                 .authorizeHttpRequests((httpRequest) -> {
                     httpRequest.requestMatchers(WHITE_LIST_URL).permitAll()
                             .requestMatchers("/api/v1/auth/register").permitAll()//Explicitly allowing the register endpoint
                             .requestMatchers("/UserData/resetPassword").permitAll()
+                            .requestMatchers("/UserData/webhook").permitAll()
+                            .requestMatchers("/api/v1/auth/confirm-account").permitAll()
                             .requestMatchers("/api/v1/auth/login").permitAll()//Explicitly allowing the login endpoint
                             .requestMatchers("/api/v1/auth/authenticate").permitAll()//explicitly allowing the authenticate plugin for testing purposes
 // This means that any user with the ADMIN or MANAGER role can access any endpoint under /api/v1/management/**.
@@ -79,30 +81,6 @@ public class WebSecurityConfig {
 
 
 
-
-//                http
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .authorizeHttpRequests(req ->
-//                        req.requestMatchers(WHITE_LIST_URL)
-//                                .permitAll()
-//                                .requestMatchers("/api/v1/auth/register").permitAll() // Explicitly permit register endpoint
-//                                .requestMatchers("/api/v1/management/**").hasAnyRole(ADMIN.name(), MANAGER.name())
-//                                .requestMatchers(GET, "/api/v1/management/**").hasAnyAuthority(ADMIN_READ.name(), MANAGER_READ.name())
-//                                .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name())
-//                                .requestMatchers(PUT, "/api/v1/management/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name())
-//                                .requestMatchers(DELETE, "/api/v1/management/**").hasAnyAuthority(ADMIN_DELETE.name(), MANAGER_DELETE.name())
-//                                .anyRequest()
-//                                .authenticated()
-//                )
-//                .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-//                .authenticationProvider(authenticationProvider)
-//                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .logout(logout ->
-//                        logout.logoutUrl("/api/v1/auth/logout")
-//                                .addLogoutHandler(logoutHandler)
-//                                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-//                );
-//
         return http.build();
     }
 }

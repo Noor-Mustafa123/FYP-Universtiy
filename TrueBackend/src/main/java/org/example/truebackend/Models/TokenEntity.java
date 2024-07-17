@@ -3,6 +3,8 @@ package org.example.truebackend.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Builder
 @Data
@@ -22,6 +24,8 @@ public class TokenEntity {
 
     @Enumerated(EnumType.STRING)
     public TokenType tokenType = TokenType.BEARER;
+
+    public String confirmationToken;
 
     public boolean revoked;
 

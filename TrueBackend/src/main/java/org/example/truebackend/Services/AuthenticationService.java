@@ -3,6 +3,7 @@ package org.example.truebackend.Services;
 import org.example.truebackend.Controllers.AuthenticationReponse;
 import org.example.truebackend.repositorylayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.example.truebackend.Models.*;
 import org.example.truebackend.repositorylayer.TokenRepository;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -29,6 +32,8 @@ public class AuthenticationService {
     private TokenRepository tokenRepo;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private ConfirmationTokenService confirmationTokenService;
 
 
     // method to extract data from the request and create user entity object
@@ -44,6 +49,13 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(userObj);
         int length = refreshToken.length();
         System.out.println("The length of the string is: " + length);
+
+
+//        Creating a random string
+          Date createdDate = new Date();
+          String  confirmationToken = UUID.randomUUID().toString();
+
+
         //        creating the object of the token entity to save it
         var TokenObj = TokenEntity.builder()
                 .user(userObj)
@@ -52,6 +64,7 @@ public class AuthenticationService {
                 .token(token)
                 .tokenType(TokenType.BEARER)
                 .refreshToken(refreshToken)
+                .confirmationToken(confirmationToken)
                 .build();
 
         System.out.println(userObj);
@@ -65,6 +78,15 @@ public class AuthenticationService {
         System.out.println(authenticationReponse.getJwtToken());
 
         tokenRepo.save(TokenObj);
+
+//        adding system to send mail to the user
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+                simpleMailMessage.setCc("assassin6180@gmail.com");
+                simpleMailMessage.setTo(userObj.getEmail());
+                simpleMailMessage.setSubject("Account Confirmation Mail");
+                simpleMailMessage.setText("To confirm your account, please click here : " + "http://localhost:8080/api/v1/auth/confirm-account?token="+confirmationToken);
+
+        confirmationTokenService.sendEmail(simpleMailMessage);
 
         return authenticationReponse;
 
@@ -105,7 +127,7 @@ public class AuthenticationService {
     }
 
 
-    public void saveUserToken(User userObj, String token, String refreshToken ) {
+    public void saveUserToken(User userObj, String token, String refreshToken) {
         TokenEntity tokenEntity = TokenEntity.builder()
                 .user(userObj)
                 .token(token)

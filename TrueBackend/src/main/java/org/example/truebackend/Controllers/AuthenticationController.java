@@ -2,6 +2,7 @@ package org.example.truebackend.Controllers;
 
 import jakarta.transaction.Transactional;
 import org.example.truebackend.Models.*;
+import org.example.truebackend.Services.ConfirmationTokenService;
 import org.example.truebackend.Services.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.example.truebackend.repositorylayer.TokenRepository;
 import org.example.truebackend.Services.AuthenticationService;
 import org.example.truebackend.Services.JwtTokenService;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 
@@ -34,7 +36,11 @@ public class AuthenticationController {
     ServiceLayer serviceLayer;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    ConfirmationTokenService confirmationTokenService;
 
+
+//   this is here to hold incoming tokenEntity objects from methods
     TokenEntity tokenObj;
 
 
@@ -60,6 +66,7 @@ public class AuthenticationController {
                 .password(encodedPassword)
                 .tokens(new ArrayList<>())
                 .build();
+
 
 
         System.out.println(userObj.getTokens());
@@ -91,7 +98,7 @@ public class AuthenticationController {
         //validate the token?
         System.out.println("refresh controller was hit");
         try {
-            tokenObj = jwtTokenService.isTokenValid(refreshEntity.refreshToken);
+           tokenObj = jwtTokenService.isTokenValid(refreshEntity.refreshToken);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(AuthenticationReponse
                     .builder()
@@ -114,6 +121,23 @@ public class AuthenticationController {
                 .jwtToken(newToken)
                 .build());
     }
+
+
+    @GetMapping("/confirm-account")
+public RedirectView emailConfirmation(@RequestParam("token") String confirmationToken){
+    try{
+      confirmationTokenService.getTokenEntityByConfirmationToken(confirmationToken);
+        return new RedirectView("https://fyp-university.000webhostapp.com/FYP%20Project/ConfirmationEmailSucessPage.html");
+    }
+    catch(Exception e){
+        System.out.println(e);
+        return new RedirectView("https://fyp-university.000webhostapp.com/FYP%20Project/ErrorPage.html");
+        }
+
+    }
+
+
+
 
 
 }

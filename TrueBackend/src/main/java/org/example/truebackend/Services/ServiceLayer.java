@@ -48,7 +48,7 @@ public class ServiceLayer {
         else{
             System.out.println("this else condition is running");
            AuthenticationReponse authenticationEntityObj = authenticationService.registerNewUser(entityObj);
-            authenticationEntityObj.setErrorString("Data saved Successfully");
+            authenticationEntityObj.setErrorString("Please check your gmail for a confirmation link to approve account creation");
             return authenticationEntityObj;
         }
 
