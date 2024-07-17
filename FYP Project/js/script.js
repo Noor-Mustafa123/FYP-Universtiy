@@ -956,9 +956,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     showAlert("Login Successfully");
                     // Redirect to the home page after the login is successful
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    // await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails")
 
-                    await fetch("http://localhost:8080/UserData/OrderDetails", {
+
+                    await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails", {
                         headers: {
                             'Content-Type': 'application/json',
                             "Authorization": "Bearer " + accessToken
@@ -1033,7 +1033,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // ! Ill have to send a request for the orderDetails but that link is not allowed by the filter so ill have to add the jwt token in as well to ps
 
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    await fetch("http://localhost:8080/UserData/OrderDetails", {
+                    await fetch("https://fyp-universtiy-production-4f96.up.railway.app/UserData/OrderDetails", {
                         headers: {
                             'Content-Type': 'application/json',
                             "Authorization": "Bearer " + accessToken
@@ -1203,7 +1203,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             // newUserPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/api/v1/auth/register");
-            newUserPostRequest("http://localhost:8080/api/v1/auth/register");
+            newUserPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/api/v1/auth/register");
 
             // Show a toast notification for successful submission
             console.log('Form submitted successfully.');
@@ -1274,7 +1274,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // userLoginRequest(`https://fyp--universtiyproduction-4f96.up.railway.app/UserData/login`,userEmail,userPassword);
 
-            userLoginRequest(`http://localhost:8080/api/v1/auth/login`, userEmail, userPassword);
+            userLoginRequest(`https://fyp--universtiyproduction-4f96.up.railway.app/api/v1/auth/login`, userEmail, userPassword);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1360,7 +1360,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.status == 401) {
                 // request for the new token has been made now hopefully the new token is saved
-                await sendRefreshRequest("http://localhost:8080/api/v1/auth/refresh");
+                await sendRefreshRequest("https://fyp-universtiy-production-4f96.up.railway.app/api/v1/auth/refresh");
 
 
                 const response = await fetch(url, {
@@ -1415,7 +1415,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // using the checkout button to send the request to checkout
     $(".checkOutBtn").on("click", function (e) {
         // checkOutPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/UserData/Stripe/Authenticate");
-        checkOutPostRequest("http://localhost:8080/UserData/Stripe/Authenticate");
+        checkOutPostRequest("https://fyp-universtiy-production-4f96.up.railway.app/UserData/Stripe/Authenticate");
 
     })
 
@@ -1512,7 +1512,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Add your AJAX request here if you want to submit the form data to the server
 
             // passwordResetRequest(`https://fyp-universtiy-production-4f96.up.railway.app/UserData/resetPassword`);
-            passwordResetRequest(`http://localhost:8080/UserData/resetPassword`);
+            passwordResetRequest(`https://fyp-universtiy-production-4f96.up.railway.app/UserData/resetPassword`);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1555,7 +1555,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.status == 401) {
                 // request for the new token has been made now hopefully the new token is saved
-                await sendRefreshRequest("http://localhost:8080/api/v1/auth/refresh");
+                await sendRefreshRequest("https://fyp-universtiy-production-4f96.up.railway.app/api/v1/refresh");
 
 
                 const response = await fetch(url, {
