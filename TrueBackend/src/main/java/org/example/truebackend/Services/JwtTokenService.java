@@ -142,7 +142,6 @@ public class JwtTokenService {
 //               The parseClaimsJws(String compact) method is used to parse and validate signed JWTs (JWS). It will validate the signature and throw a SignatureException if the signature is invalid.  On the other hand, the parseClaimsJwt(String compact) method is used to parse JWTs that are not signed (also known as Unsecured JWS). It does not validate the signature.
                 .parseClaimsJws(token)
                 .getBody();
-
     }
 
     //this method is used to extract any specific claim by name
