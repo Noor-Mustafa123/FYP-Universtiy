@@ -19,9 +19,10 @@ import java.util.ArrayList;
 
 import static org.example.truebackend.Models.Role.USER;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = {"https://fyp-university.000webhostapp.com", "http://localhost:63342"})
+
 public class AuthenticationController {
 
     @Autowired
