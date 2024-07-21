@@ -36,7 +36,7 @@ public class User implements UserDetails {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-//    ? you can use the FetchMode.JOIN strategy to tell Hibernate to fetch the associated TokenEntity objects when it fetches a User object. This is known as eager fetching.
+// ? you can use the FetchMode.JOIN strategy to tell Hibernate to fetch the associated TokenEntity objects when it fetches a User object. This is known as eager fetching.
     @Fetch(FetchMode.JOIN)
     @ToString.Exclude
     private List<TokenEntity> tokens = new ArrayList<>();

@@ -79,7 +79,7 @@ public class AuthenticationService {
 
         tokenRepo.save(TokenObj);
 
-//        adding system to send mail to the user
+// adding system to send mail to the user
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
                 simpleMailMessage.setCc("assassin6180@gmail.com");
                 simpleMailMessage.setTo(userObj.getEmail());

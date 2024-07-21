@@ -7,6 +7,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.example.truebackend.repositorylayer.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,14 @@ import java.util.stream.Collectors;
 public class JwtTokenService {
 
     // Use a secret key with at least 256 bits (32 characters if base64 encoded)
-    private final String secretKey = "B5r5aTyLW1vdorJLHs9egCQB3NFgKm9p3kW5qTxMSp9RzU2s"; // Ensure this key is at least 32 bytes long
-
-    private long expiration = 86400000;
-    private long refreshTokenExpiration = 604800000;
+   // Ensure this key is at least 32 bytes long
+//    distributing concerns by settign these values in the configuration class for ease of being changed
+    @Value("${application.security.jwt.secret-key}")
+    private String secretKey;
+    @Value("${application.security.jwt.expiration}")
+    private long expiration;
+    @Value("${application.security.jwt.refresh-token.expiration}")
+    private long refreshTokenExpiration;
 
 
     @Autowired
