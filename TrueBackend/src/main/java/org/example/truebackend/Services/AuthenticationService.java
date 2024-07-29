@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.example.truebackend.Models.*;
 import org.example.truebackend.repositorylayer.TokenRepository;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -34,6 +32,8 @@ public class AuthenticationService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private ConfirmationTokenService confirmationTokenService;
+
+
 
 
     // method to extract data from the request and create user entity object
@@ -106,10 +106,21 @@ public class AuthenticationService {
         System.out.println("This boolean shows that wether the user is authenticated");
        System.out.println(authObj.isAuthenticated());
 
-
+// ! create a new branch
 //        get the users details from the database matching and generet tokens and return it to the user
-        List<User> userList = userRepo.findByEmail(loginRequest.getEmail());
-        User user = userList.get(0);
+        Optional<List<User>> userListOptional = Optional.of(userRepo.findByEmail(loginRequest.getEmail()));
+
+//       The orElse method returns the value present inside the Optional if it's non-empty, otherwise it returns the value provided in the orElse method.
+           List<User> userList = userListOptional.orElse(Collections.emptyList());
+
+
+
+        if(userList.isEmpty()){
+            authenticationReponse.setErrorString("The Email and password do not exist Please sign up with a new account");
+            return authenticationReponse;
+        }
+
+       User user = userList.get(0);
 
         String jwtToken = jwtService.generateToken(user);
         String jwtRefreshToken = jwtService.generateRefreshToken(user);
