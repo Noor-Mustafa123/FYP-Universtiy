@@ -79,7 +79,7 @@ public class AuthenticationService {
 
         tokenRepo.save(TokenObj);
 
-// adding system to send mail to the user
+   // adding system to send mail to the user
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
                 simpleMailMessage.setCc("assassin6180@gmail.com");
                 simpleMailMessage.setTo(userObj.getEmail());
@@ -161,6 +161,7 @@ public class AuthenticationService {
             token.setRevoked(true);
         });
         tokenRepo.saveAll(validTokens);
+
     }
 
 
@@ -169,6 +170,15 @@ public class AuthenticationService {
 //    TODO: to make the token entity so that i can save the data to the database
 //    TODO: to make method to save the data to the database
 //    TODO: to make repository classes
+
+
+
+
+
+
+
+
+
 
 
 }
