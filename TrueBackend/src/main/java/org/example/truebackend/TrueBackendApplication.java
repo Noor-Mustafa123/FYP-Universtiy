@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.eureka.EurekaClientConfigBean;
+import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +30,21 @@ public class TrueBackendApplication {
     public static void main(String[] args) {
         System.out.println("the springboot application is running in the main method");
         Stripe.apiKey = "sk_test_51OzjOa03YcH2K12qrrOmhM1qo5Xumk3NbQfpBQCJfJ7ROQ0whGIoZ68xIplVRXtPWH5o4JoAqAy3HF8Vy7Zgxrse00l9bGziJm";
-        SpringApplication.run(TrueBackendApplication.class, args);
+        ConfigurableApplicationContext context =   SpringApplication.run(TrueBackendApplication.class, args);
 //        ApplicationContext context = SpringApplication.run(TrueBackendApplication.class, args);
 //        TrueBackendApplication application = context.getBean(TrueBackendApplication.class);
 //        application.run();
+
+
+
+        EurekaClientConfigBean clientConfig = context.getBean(EurekaClientConfigBean.class);
+        System.out.println("Eureka service URL: " + clientConfig.getServiceUrl());
+        System.out.println("Register with Eureka: " + clientConfig.shouldRegisterWithEureka());
+        System.out.println("Fetch registry: " + clientConfig.shouldFetchRegistry());
+
+        EurekaInstanceConfigBean instanceConfig = context.getBean(EurekaInstanceConfigBean.class);
+        System.out.println("App name: " + instanceConfig.getAppname());
+
     }
 
 
