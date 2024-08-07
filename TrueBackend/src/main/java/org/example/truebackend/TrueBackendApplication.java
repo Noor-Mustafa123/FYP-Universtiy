@@ -16,8 +16,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootApplication
 
+
+@SpringBootApplication
+@EnableDiscoveryClient
 public class TrueBackendApplication {
 
 //    @Autowired
@@ -26,7 +28,7 @@ public class TrueBackendApplication {
 //    private StudentRepo studentRepo;
 
 
-    Logger logger = LoggerFactory.getLogger(TrueBackendApplication.class);
+//    Logger logger = LoggerFactory.getLogger(TrueBackendApplication.class);
     public static void main(String[] args) {
         System.out.println("the springboot application is running in the main method");
         Stripe.apiKey = "sk_test_51OzjOa03YcH2K12qrrOmhM1qo5Xumk3NbQfpBQCJfJ7ROQ0whGIoZ68xIplVRXtPWH5o4JoAqAy3HF8Vy7Zgxrse00l9bGziJm";
@@ -37,13 +39,13 @@ public class TrueBackendApplication {
 
 
 
-        EurekaClientConfigBean clientConfig = context.getBean(EurekaClientConfigBean.class);
-        System.out.println("Eureka service URL: " + clientConfig.getServiceUrl());
-        System.out.println("Register with Eureka: " + clientConfig.shouldRegisterWithEureka());
-        System.out.println("Fetch registry: " + clientConfig.shouldFetchRegistry());
-
-        EurekaInstanceConfigBean instanceConfig = context.getBean(EurekaInstanceConfigBean.class);
-        System.out.println("App name: " + instanceConfig.getAppname());
+//        EurekaClientConfigBean clientConfig = context.getBean(EurekaClientConfigBean.class);
+//        System.out.println("Eureka service URL: " + clientConfig.getServiceUrl());
+//        System.out.println("Register with Eureka: " + clientConfig.shouldRegisterWithEureka());
+//        System.out.println("Fetch registry: " + clientConfig.shouldFetchRegistry());
+//
+//        EurekaInstanceConfigBean instanceConfig = context.getBean(EurekaInstanceConfigBean.class);
+//        System.out.println("App name: " + instanceConfig.getAppname());
 
     }
 
