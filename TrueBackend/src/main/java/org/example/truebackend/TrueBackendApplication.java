@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @SpringBootApplication
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 public class TrueBackendApplication {
 
 //    @Autowired
