@@ -72,9 +72,7 @@ public class ServiceLayer {
 //set the response authentication response entity to be returned wit hteh set detailos
 
         AuthenticationReponse authenticationReponse = new AuthenticationReponse();
-        System.out.println(listOfEmails.get(0).getPassword());
-        System.out.println(password);
-        System.out.println(passwordEncoder.matches(password,listOfEmails.get(0).getPassword()));
+
         if(listOfEmails.isEmpty()){
              authenticationReponse.setErrorString("The Email and password do not exist Please sign up with a new account");
                 return authenticationReponse;
@@ -85,7 +83,9 @@ public class ServiceLayer {
             return authenticationReponse;
         }
         else if(listOfEmails.get(0).getEmail().equals("mustafanoor715@gmail.com")){
-
+            System.out.println(listOfEmails.get(0).getPassword());
+            System.out.println(password);
+            System.out.println(passwordEncoder.matches(password,listOfEmails.get(0).getPassword()));
 
             String emailOfUser = listOfEmails.get(0).getEmail();
             String firstName = listOfEmails.get(0).getFirstName();
