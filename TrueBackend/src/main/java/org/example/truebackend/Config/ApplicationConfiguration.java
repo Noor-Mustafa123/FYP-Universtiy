@@ -26,7 +26,7 @@ public class ApplicationConfiguration {
     private final UserRepository repository;
 
     // The UserDetailsService is an interface provided by Spring Security that is used to retrieve user-related data. It is used by the DaoAuthenticationProvider to handle data access for user authentication. the userDetailsService return an object of the interface userDetails which is  the user
-    // So we return the lambda expression itself? so whta is this lambda expression used as a lambda expression is used as an object of the userDetailsService ? is that correct
+    // iSo we return the lambda expression itself? so whta is this lambda expression used as a lambda expression is used as an object of the userDetailsService ? is that correct
 
    // Purpose: This service is used to load user-specific data. It is a core interface in Spring Security for retrieving user information.
    // Bean Creation: By defining it as a bean, you allow Spring to inject it wherever needed, such as in the AuthenticationProvider.
