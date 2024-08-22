@@ -21,4 +21,8 @@ public class AuthenticationReponse {
 
     private String errorString;
 
+    private String userEmail;
+
+    private String userAddress;
+
 }

@@ -49,6 +49,8 @@ public class ServiceLayer {
             System.out.println("this else condition is running");
            AuthenticationReponse authenticationEntityObj = authenticationService.registerNewUser(entityObj);
             authenticationEntityObj.setErrorString("Please check your gmail for a confirmation link to approve account creation");
+            authenticationEntityObj.setUserEmail(entityObj.getEmail());
+            authenticationEntityObj.setUserAddress(entityObj.getAddress());
             return authenticationEntityObj;
         }
 
