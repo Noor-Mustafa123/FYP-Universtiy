@@ -56,6 +56,7 @@ public class WebSecurityConfig {
         http
 //  because we are not using cookies for session management then we are dont need the csrf property active so we disable it
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(c -> c.configurationSource(corsConfigurationSource()))
 //  this is used to configure authorization rules for HTTP requests in a Spring Security application. This method allows you to specify which requests should be authorized based on roles, permissions, or other criteria.
 //  The AuthorizedHttpRequestsConfigurer is a class provided by Spring Security. When you configure it, you are indeed configuring Spring Security.
 //  .authorizeHttpRequests Method: This method is part of the HttpSecurity class in Spring Security. It allows you to configure authorization rules for HTTP requests.
@@ -90,11 +91,14 @@ public class WebSecurityConfig {
     }
 
 
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // Adjust to specific origins if needed
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
