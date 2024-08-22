@@ -105,17 +105,17 @@ public class ServiceLayer {
             return authenticationReponseObjAdmin;
         }
         else {
-            String emailOfUser = listOfEmails.get(0).getEmail();
-           String firstName = listOfEmails.get(0).getFirstName();
-           String addressOfUser = listOfEmails.get(0).getAddress();
-          Login loginObj = Login.builder()
-                    .email(emailOfUser)
+            // Regular user logic
+            User user = listOfEmails.get(0);
+            Login loginObj = Login.builder()
+                    .email(user.getEmail())
                     .password(password)
                     .build();
-          AuthenticationReponse  authenticationReponseObjUser  =authenticationService.authenticateUser(loginObj);
-          authenticationReponseObjUser.setErrorString("Successfully logged in as user");
-            authenticationReponseObjUser.setFirstNameOfUser(firstName);
-          return authenticationReponseObjUser;
+            AuthenticationReponse authenticationReponseObjUser = authenticationService.authenticateUser(loginObj);
+            String errorString = String.format("Successfully logged in as user - %s - %s", user.getFirstName(), user.getAddress());
+            authenticationReponseObjUser.setErrorString(errorString);
+            authenticationReponseObjUser.setFirstNameOfUser(user.getFirstName());
+            return authenticationReponseObjUser;
         }
 }
 

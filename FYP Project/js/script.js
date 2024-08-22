@@ -925,28 +925,25 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(function (response) {
                 return response.json();
             }).then(async function (responseData) {
-
                 console.log("first request is hit");
-                // getting the data from the response to store in the local storage to send with teh checkout request
+                // getting the data from the response to store in the local storage to send with the checkout request
                 console.log(responseData.errorString);
-                console.log(responseData.access_token)
+                console.log(responseData.access_token);
                 console.log(responseData.refresh_token);
                 if (responseData.errorString.indexOf("Successfully") !== -1) {
                     let splitArray = responseData.errorString.split("-");
-                    let email = splitArray[1];
-                    let address = splitArray[2];
+                    let email = splitArray[1].trim();
+                    let address = splitArray[2].trim();
                     loggedInUserAddress = address;
                     loggedInUserEmail = email;
 
                     sessionStorage.setItem('Email', loggedInUserEmail);
                     sessionStorage.setItem("Address", loggedInUserAddress);
                     sessionStorage.removeItem("accessToken");
-                    sessionStorage.setItem("accessToken", responseData.access_token)
+                    sessionStorage.setItem("accessToken", responseData.access_token);
 
                     sessionStorage.removeItem("refreshToken");
-                    sessionStorage.setItem("refreshToken", responseData.refresh_token)
-
-
+                    sessionStorage.setItem("refreshToken", responseData.refresh_token);
                 }
 
                 let accessToken = sessionStorage.getItem("accessToken");
@@ -986,24 +983,28 @@ document.addEventListener("DOMContentLoaded", function () {
                         });
 
 
-                    setTimeout(() => {
-                        window.location.href = '../index.html';
-                    }, 5000);
+                    // setTimeout(() => {
+                    //     window.location.href = '../index.html';
+                    // }, 5000);
+                    //
+                    // console.log(responseData);
+                    // //Dynamically getting the first name
+                    // let responseParts = responseData.split('-'); // This splits the string into an array of words
+                    //
+                    // console.log(responseParts)
+                    // // FIXME: there is a bug while showing the name match it
+                    //
+                    // let lastName = responseParts[responseParts.length - 3];
+                    //
+                    // let lastNameSplit = lastName.split(' ');
+                    //
+                    // let veryLastName = lastNameSplit[lastNameSplit.length - 1];
+                    //
+                    // sessionStorage.setItem('userName', `${veryLastName}`);
 
-                    console.log(responseData);
-                    //Dynamically getting the first name
-                    let responseParts = responseData.split('-'); // This splits the string into an array of words
+                    console.log(responseData.firstNameOfUser);
 
-                    console.log(responseParts)
-                    // FIXME: there is a bug while showing the name match it
-
-                    let lastName = responseParts[responseParts.length - 3];
-
-                    let lastNameSplit = lastName.split(' ');
-
-                    let veryLastName = lastNameSplit[lastNameSplit.length - 1];
-
-                    sessionStorage.setItem('userName', `${veryLastName}`);
+                    sessionStorage.setItem('userName', responseData.firstNameOfUser);
 
                 } else if (responseData.errorString.indexOf("admin") !== -1) {
                     console.log("the admin condition has been hit and entered");
