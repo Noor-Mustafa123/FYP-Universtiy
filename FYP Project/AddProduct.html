@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FYP Project</title>
+    <link rel="manifest" href="Manifest.json"  crossorigin="use-credentials">
+    <!-- fontawesome css -->
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!--  A manifest file, typically named manifest.json, is a simple JSON file that tells the browser about your web application and how it should behave when 'installed' on the user's mobile device or desktop.  A typical manifest file includes information about the app name, app short name, start URL, icons, background color, display mode, orientation, and scope.-->
+    <!-- fontawesome css -->
+
+    <link rel="stylesheet" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!-- css -->
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+
+
+
+
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add New Product</h2>
+    <form>
+        <!-- Product Name -->
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" class="form-control" id="productName" placeholder="Enter product name" required>
+        </div>
+
+        <!-- Product Description -->
+        <div class="form-group">
+            <label for="productDescription">Product Description</label>
+            <textarea class="form-control" id="productDescription" rows="3" placeholder="Enter product description" required></textarea>
+        </div>
+
+
+        <!-- Product Price -->
+        <div class="form-group">
+            <label for="productQuantity">Product Quantity</label>
+            <input type="number" class="form-control" id="productQuantity" placeholder="Enter product Quantity" required>
+        </div>
+
+        <div class="form-group">
+            <label for="productCategory">Product Category</label>
+            <select class="form-control" id="productCategory" required>
+                <option value="">Select a category</option>
+                <option value="livingroom">livingroom</option>
+                <option value="patio">patio</option>
+                <option value="bathroom">bathroom</option>
+                <option value="bedroom">bedroom</option>
+                <option value="kitchen">kitchen</option>
+            </select>
+        </div>
+
+        <!-- Product Price -->
+        <div class="form-group">
+            <label for="productPrice">Product Price</label>
+            <input type="number" class="form-control" id="productPrice" placeholder="Enter product price" required>
+        </div>
+
+        <!-- Product Image -->
+        <div class="form-group">
+            <label for="productImage">Product Image</label>
+            <input type="file" class="form-control-file" id="productImage" required>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary btn-block">Add Product</button>
+    </form>
+</div>
+
+
+
+
+
+
+<!-- Add your additional JavaScript, if needed -->
+
+<!-- jQuery -->
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<!-- jQuery Validation Plugin -->
+<script src="../node_modules/jquery-validation/dist/jquery.validate.js"></script>
+<script src="../node_modules/jquery-validation/dist/additional-methods.js"></script>
+<script>
+    $(document).ready(function() {
+        if(jQuery().validate) {
+            console.log("jQuery Validate is loaded");
+        } else {
+            console.log("jQuery Validate is not loaded");
+        }
+    });
+</script>
+<!-- Bootstrap JS -->
+<script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- FontAwesome JS -->
+<script src="../node_modules/@fortawesome/fontawesome-free/js/all.min.js"></script>
+<!-- Custom js -->
+<script src="js/script.js"></script>
+
+
+
+</body>
+
+</html>

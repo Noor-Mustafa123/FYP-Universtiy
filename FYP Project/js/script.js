@@ -489,6 +489,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 ////////////////////////////////////////////////////////////
     // JSON FOR THE SINGLE PRODUCT PAGE
+    const sessionProductObj =   sessionStorage.getItem("productObj");
 
 
     // target those elements in which to change the data
@@ -931,6 +932,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(responseData.errorString);
                 console.log(responseData.access_token)
                 console.log(responseData.refresh_token);
+                console.log(responseData.firstNameOfUser)
                 if (responseData.errorString.indexOf("Successfully") !== -1) {
                     let splitArray = responseData.errorString.split("-");
                     let email = splitArray[1];
@@ -958,7 +960,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
 
 
-                    await fetch("https://microservicesapigateway-production.up.railway.app/UserData/OrderDetails", {
+                    await fetch("http://192.168.1.7:9000/UserData/OrderDetails", {
                         headers: {
                             'Content-Type': 'application/json',
                             "Authorization": "Bearer " + accessToken
@@ -985,25 +987,28 @@ document.addEventListener("DOMContentLoaded", function () {
                             console.log("this catch is catching the error")
                         });
 
-
-                    setTimeout(() => {
-                        window.location.href = '../index.html';
-                    }, 5000);
+                    //
+                    // setTimeout(() => {
+                    //     window.location.href = '../index.html';
+                    // }, 5000);
 
                     console.log(responseData);
                     //Dynamically getting the first name
-                    let responseParts = responseData.split('-'); // This splits the string into an array of words
+                    // let responseParts = responseData.split('-'); // This splits the string into an array of words
+                    //
+                    // console.log(responseParts)
+                    // // FIXME: there is a bug while showing the name match it
+                    //
+                    // let lastName = responseParts[responseParts.length - 3];
+                    //
+                    // let lastNameSplit = lastName.split(' ');
+                    //
+                    // let veryLastName = lastNameSplit[lastNameSplit.length - 1];
 
-                    console.log(responseParts)
-                    // FIXME: there is a bug while showing the name match it
 
-                    let lastName = responseParts[responseParts.length - 3];
+                    console.log(responseData.firstNameOfUser);
 
-                    let lastNameSplit = lastName.split(' ');
-
-                    let veryLastName = lastNameSplit[lastNameSplit.length - 1];
-
-                    sessionStorage.setItem('userName', `${veryLastName}`);
+                    sessionStorage.setItem('userName', responseData.firstNameOfUser);
 
                 } else if (responseData.errorString.indexOf("admin") !== -1) {
                     console.log("the admin condition has been hit and entered");
@@ -1033,7 +1038,8 @@ document.addEventListener("DOMContentLoaded", function () {
 // ! Ill have to send a request for the orderDetails but that link is not allowed by the filter so ill have to add the jwt token in as well to ps
 
                     //add a function await function to send a requst to get the data of all the user orders relevelnt to a email of the user
-                    await fetch("https://microservicesapigateway-production.up.railway.app/UserData/OrderDetails", {
+                    await fetch("http://192.168.1.7:9000/UserData/OrderDetails", {
+                        // http://192.168.1.7:9000/UserData/OrderDetails
                         headers: {
                             'Content-Type': 'application/json',
                             "Authorization": "Bearer " + accessToken
@@ -1203,7 +1209,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             // newUserPostRequest("https://microservicesapigateway-production.up.railway.appy.app/api/v1/auth/register");
-            newUserPostRequest("https://microservicesapigateway-production.up.railway.app/api/v1/auth/register");
+            newUserPostRequest("http://192.168.1.7:9000/api/v1/auth/register");
 
             // Show a toast notification for successful submission
             console.log('Form submitted successfully.');
@@ -1274,7 +1280,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // userLoginRequest(`https://microservicesapigateway-production.up.railway.appy.app/UserData/login`,userEmail,userPassword);
 
-            userLoginRequest(`https://microservicesapigateway-production.up.railway.app/api/v1/auth/login`, userEmail, userPassword);
+            userLoginRequest(`http://192.168.1.7:9000/api/v1/auth/login`, userEmail, userPassword);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1360,7 +1366,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.status == 401) {
                 // request for the new token has been made now hopefully the new token is saved
-                await sendRefreshRequest("https://microservicesapigateway-production.up.railway.appilway.app/api/v1/auth/refresh");
+                // await sendRefreshRequest("https://microservicesapigateway-production.up.railway.appilway.app/api/v1/auth/refresh");
+
+                await sendRefreshRequest("http://192.168.1.7:9000/api/v1/auth/refresh");
 
 
                 const response = await fetch(url, {
@@ -1400,6 +1408,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         })
             .catch(function(error){
+                showAlert(error.message);
                 console.log(error.message);
             })
 
@@ -1415,7 +1424,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // using the checkout button to send the request to checkout
     $(".checkOutBtn").on("click", function (e) {
         // checkOutPostRequest("https://microservicesapigateway-production.up.railway.appy.app/UserData/Stripe/Authenticate");
-        checkOutPostRequest("https:microservicesapigateway-production.up.railway.appway.app/UserData/Stripe/Authenticate");
+        checkOutPostRequest("http://192.168.1.7:9000/UserData/Stripe/Authenticate");
 
     })
 
@@ -1513,7 +1522,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Add your AJAX request here if you want to submit the form data to the server
 
             // passwordResetRequest(`https://microservicesapigateway-production.up.railway.appy.app/UserData/resetPassword`);
-            passwordResetRequest(`https:microservicesapigateway-production.up.railway.appway.app/UserData/resetPassword`);
+            passwordResetRequest(`http://192.168.1.7:9000/UserData/resetPassword`);
 
 
             // Prevent form submission so the page doesn't reload
@@ -1556,7 +1565,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (response.status == 401) {
                 // request for the new token has been made now hopefully the new token is saved
-                await sendRefreshRequest("https://microservicesapigateway-production.up.railway.app/api/v1/refresh");
+                await sendRefreshRequest("http://192.168.1.7:9000/api/v1/refresh");
 
 
                 const response = await fetch(url, {
@@ -1938,6 +1947,115 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
+
+
+
+
+// adding functionality to send post reqeust when a new proudct is added
+
+const form = document.querySelector("form");
+
+form.addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Retrieve values from the form inputs
+    let newProductInfo = {
+        "productName": document.getElementById("productName").value,
+        "productDesc": document.getElementById("productDescription").value,
+        "productPrice": document.getElementById("productPrice").value,
+        "productQuantity": document.getElementById("productQuantity").value
+
+    };
+    let productImage = document.getElementById("productImage").files[0];
+    let productCategory = document.getElementById("productCategory").value
+    // Log the newProductInfo object to the console (for debugging purposes)
+    console.log(newProductInfo);
+    let accessToken = sessionStorage.getItem("accessToken");
+    let refreshToken = sessionStorage.getItem("refreshToken");
+    // Send a POST request with the newProductInfo object
+    fetch("http://localhost:9000/UserData/AddProduct", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+        },
+        body: JSON.stringify(newProductInfo)
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+
+            window.location.href = "products.html";
+
+
+            let productHTML = `
+            <div class="col-10 mx-auto col-md-6 col-lg-4 product ${productCategory.toLowerCase()}">
+                <div class="featured-container p-5">
+                    <img src="path_to_images/${productImage.name}" alt="${data.productName}" class="img-fluid">
+                    <span class="featured-search-icon" data-toggle="modal" data-target="#productModal">
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <a href="#" class="featured-store-link text-capitalize" data-product-id="${data.priceId}">add to cart</a>
+                </div>
+                <h6 class="text-capitalize text-center my-2 texas">
+                    ${data.productName}
+                </h6>
+                <h6 class="text-center">
+                    <span class="text-muted old-price mx-2">$${data.oldPrice}</span>
+                    <span class="span-text">$${data.productPrice}</span>
+                </h6>
+            </div>`;
+
+
+            const productContainer = document.querySelector('.productsContainer');
+            if (productContainer) {
+                // Append the new product to the products container
+                productContainer.insertAdjacentHTML('beforeend', productHTML);
+
+            }
+
+
+
+            let productToBeAdded = {
+                "name": data.name,
+                "price": {
+                    "old": 2000,
+                    "new": data.productPrice
+                },
+                "category": productCategory,
+                "color": "black",
+                "image": productImage,
+                "description": data.description,
+                "reviews": {
+                    "rating": 4.5,
+                    "count": 15
+                },
+                "additionalInformation": "Dimensions: 60\" x 32\" x 30\"\nMaterial: Velvet\nAssembly required: No"
+                , "priceId": data.priceId
+            };
+
+            console.log(productToBeAdded);
+            productObj.push(productToBeAdded);
+            sessionStorage.setItem("productObj", JSON.stringify(productObj));
+
+            console.log("Success:", data);
+            // Optionally, you can add code here to handle the response, e.g., show a success message
+
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            // Optionally, you can add code here to handle the error, e.g., show an error message
+        });
+});
+
+
+
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     // Check if the current page is index.html
     if (window.location.href.endsWith('orderPage.html')) {
@@ -1965,6 +2083,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     $.each(eachOrder.items, function (index, item) {
                         /////////////////////////////////////////////
                         let imagePath;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         productObj.forEach(function (obj) {
                             if (obj.name == item.itemName) {
                                 imagePath = obj.image;

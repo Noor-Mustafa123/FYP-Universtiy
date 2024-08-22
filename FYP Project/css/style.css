@@ -513,6 +513,13 @@ body {
     overflow: hidden;
     animation: bgshadow 5s infinite;
 }
+
+
+
+
+
+
+
 .error-container > span.zero:before {
     content: '';
     display: block;
