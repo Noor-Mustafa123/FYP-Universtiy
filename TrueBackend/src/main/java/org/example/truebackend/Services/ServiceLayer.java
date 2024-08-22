@@ -114,18 +114,10 @@ public class ServiceLayer {
                     .build();
           AuthenticationReponse  authenticationReponseObjUser  =authenticationService.authenticateUser(loginObj);
           authenticationReponseObjUser.setErrorString("Successfully logged in as user");
+            authenticationReponseObjUser.setFirstNameOfUser(firstName);
           return authenticationReponseObjUser;
         }
 }
-
-
-
-
-
-
-
-
-
 
 
 

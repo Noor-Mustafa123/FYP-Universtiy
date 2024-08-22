@@ -178,8 +178,8 @@ public class ControllerLayer {
 //                these parameter are getting values from static methods
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("https://66c71a021dadc60076620b78--incomparable-lokum-318c80.netlify.app/index.html")
-                .setCancelUrl("https://66c71a021dadc60076620b78--incomparable-lokum-318c80.netlify.app/FYP%20Project/ErrorPage.html");
+                .setSuccessUrl("https://66c7345e882f3d1892c7d4aa--venerable-clafoutis-906f89.netlify.app/index.html")
+                .setCancelUrl("https://66c7345e882f3d1892c7d4aa--venerable-clafoutis-906f89.netlify.app/FYP%20Project/ErrorPage.html");
 //                use a foreach loop to iterate over each object in the list
 
 
