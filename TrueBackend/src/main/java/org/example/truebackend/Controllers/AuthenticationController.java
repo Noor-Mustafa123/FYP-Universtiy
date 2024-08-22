@@ -131,11 +131,11 @@ public class AuthenticationController {
 public RedirectView emailConfirmation(@RequestParam("token") String confirmationToken){
     try{
       confirmationTokenService.getTokenEntityByConfirmationToken(confirmationToken);
-        return new RedirectView("https://fyp-university.000webhostapp.com/FYP%20Project/ConfirmationEmailSucessPage.html");
+        return new RedirectView("https://66c6f96e4bcb5e198050427a--fanciful-lolly-8777de.netlify.app/FYP%20Project/ConfirmationEmailSucessPage.html");
     }
     catch(Exception e){
         System.out.println(e);
-        return new RedirectView("https://fyp-university.000webhostapp.com/FYP%20Project/ErrorPage.html");
+        return new RedirectView("https://66c6f96e4bcb5e198050427a--fanciful-lolly-8777de.netlify.app/FYP%20Project/ErrorPage.html");
         }
 
     }
