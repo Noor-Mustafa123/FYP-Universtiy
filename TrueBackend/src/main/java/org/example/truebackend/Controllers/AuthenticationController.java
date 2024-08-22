@@ -131,11 +131,11 @@ public class AuthenticationController {
 public RedirectView emailConfirmation(@RequestParam("token") String confirmationToken){
     try{
       confirmationTokenService.getTokenEntityByConfirmationToken(confirmationToken);
-        return new RedirectView("https://66c74679d1cee330a11530fa--comfy-seahorse-b16223.netlify.app/FYP%20Project/ConfirmationEmailSucessPage.html");
+        return new RedirectView("https://66c772aeff6a2414490f16f2--astonishing-blancmange-fd3bca.netlify.app/FYP%20Project/ConfirmationEmailSucessPage.html");
     }
     catch(Exception e){
         System.out.println(e);
-        return new RedirectView("https://66c74679d1cee330a11530fa--comfy-seahorse-b16223.netlify.app/FYP%20Project/ErrorPage.html");
+        return new RedirectView("https://66c772aeff6a2414490f16f2--astonishing-blancmange-fd3bca.netlify.app/FYP%20Project/ErrorPage.html");
         }
 
     }
