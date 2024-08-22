@@ -84,7 +84,7 @@ public class AuthenticationService {
                 simpleMailMessage.setCc("assassin6180@gmail.com");
                 simpleMailMessage.setTo(userObj.getEmail());
                 simpleMailMessage.setSubject("Account Confirmation Mail");
-                simpleMailMessage.setText("To confirm your account, please click here : " + "https://fyp-universtiy-production.up.railway.app/api/v1/auth/confirm-account?token="+confirmationToken);
+                simpleMailMessage.setText("To confirm your account, please click here : " + "https://66c6f96e4bcb5e198050427a--fanciful-lolly-8777de.netlify.app/api/v1/auth/confirm-account?token="+confirmationToken);
 
         confirmationTokenService.sendEmail(simpleMailMessage);
 
