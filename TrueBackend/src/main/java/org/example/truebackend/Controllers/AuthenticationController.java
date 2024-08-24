@@ -131,7 +131,7 @@ public class AuthenticationController {
 public RedirectView emailConfirmation(@RequestParam("token") String confirmationToken){
     try{
       confirmationTokenService.getTokenEntityByConfirmationToken(confirmationToken);
-        return new RedirectView("https://noor711.serv00.net/FYP%20Project/ConfirmationEmailSucessPage.html");
+        return new RedirectView("https://noor711.serv00.net/FYP%20Project/confirmationemailsucesspage.html");
     }
     catch(Exception e){
         System.out.println(e);
