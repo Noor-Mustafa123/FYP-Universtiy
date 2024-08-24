@@ -45,7 +45,8 @@ public class JwtSecurityFilter extends OncePerRequestFilter {
             "/swagger-ui/**",
             "/webjars/**",
             "/swagger-ui.html",
-            "/UserData/resetPassword"
+            "/UserData/resetPassword",
+            "/UserData/webhook"
     };
     @Autowired
     private AntPathMatcher pathMatcher;

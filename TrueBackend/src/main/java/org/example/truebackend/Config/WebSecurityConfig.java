@@ -40,7 +40,8 @@ public class WebSecurityConfig {
             "/configuration/security",
             "/swagger-ui/**",
             "/webjars/**",
-            "/swagger-ui.html"
+            "/swagger-ui.html",
+            "/UserData/webhook"
     };
 
     private final JwtSecurityFilter jwtAuthFilter;
@@ -64,6 +65,7 @@ public class WebSecurityConfig {
                     httpRequest.requestMatchers(WHITE_LIST_URL).permitAll()
                             .requestMatchers("/api/v1/auth/register").permitAll()//Explicitly allowing the register endpoint
                             .requestMatchers("/UserData/resetPassword").permitAll()
+                            .requestMatchers("/UserData/webhook").permitAll()
                             .requestMatchers("/UserData/webhook").permitAll()
                             .requestMatchers("/api/v1/auth/confirm-account").permitAll()
                             .requestMatchers("/api/v1/auth/login").permitAll()//Explicitly allowing the login endpoint
