@@ -53,7 +53,7 @@ public class ControllerLayer {
     @Autowired
     private OrderService orderService;
 
-    private static final String signingSecret = "whsec_6B7trDNjC8hcBwCxEPoghEKGA0Aaytla";
+    private static final String signingSecret = "whsec_9DTptCHInYeSWXk0mouPTqhtrk0yS6mx";
 
 /////////////////////////////////////////////////////////
 //    FOR BETTER ERROR LOGGING AND MORE ROBUST IMPORT A LIBRARY
