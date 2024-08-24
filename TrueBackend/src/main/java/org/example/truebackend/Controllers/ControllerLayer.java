@@ -237,7 +237,7 @@ public class ControllerLayer {
                 stripeService.saveUserInfoOnOrder(userInfo);
                 PaymentIntent PaymentIntent = (PaymentIntent) event.getData().getObject();
                 System.out.println(PaymentIntent.toString());
-                System.out.println("User Data Saved");
+                System.out.println("User Data Saved is saved to the database this log is showing from the try block in the webhook method ");
             } else {
                 System.out.println("Other events ignored, Event type:" +event.getType());
             }
