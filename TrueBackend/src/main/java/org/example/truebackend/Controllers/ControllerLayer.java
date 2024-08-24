@@ -213,14 +213,15 @@ public class ControllerLayer {
 //this is a test comment
 
     //    I have activated the endpoint as a webhook
-//    now i make a controleller method that when i locally trigger an event in case of that specific event that method dosee that specific thing
+//    now i make a controller method that when i locally trigger an event in case of that specific event that method dosee that specific thing
     @PostMapping("/webhook")
     public void paymentSuccessEventHandler(@RequestBody String payload, HttpServletRequest request) {
+        logger.info("the webhook has been triggered");
         String headerSignature = request.getHeader("Stripe-Signature");
         Event event = null;
         try {
             event = Webhook.constructEvent(payload, headerSignature, signingSecret);
-//            System.out.println(event);
+            System.out.println(event);
         } catch (SignatureVerificationException e) {
             logger.error("this is the authentication error in the webhook event creating ", e);
             throw new RuntimeException(e);
