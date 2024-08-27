@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.mapper.Mapper;
 import org.apache.coyote.Response;
 import org.example.truebackend.Models.*;
+import org.example.truebackend.Services.ImageUploadService;
 import org.example.truebackend.Services.OrderService;
 import org.example.truebackend.Services.ServiceLayer;
 import org.example.truebackend.Services.StripeService;
@@ -24,6 +25,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -52,6 +54,9 @@ public class ControllerLayer {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private ImageUploadService imageServiceObject;
 
     private static final String signingSecret = "whsec_9DTptCHInYeSWXk0mouPTqhtrk0yS6mx";
 
@@ -132,9 +137,16 @@ public class ControllerLayer {
     @PostMapping("/Stripe/AddProduct")
     public ResponseEntity<ProductResponse> addNewProduct(@RequestBody itemInfo itemInfo) {
         try {
+
+//        Creating image url
+         String imageUrl =   imageServiceObject.imageUploadMethod( itemInfo.getProductImage());
+
+
+
 // ProductCreateParams.builder() is creating a new instance of ProductCreateParams.Builder, which you can then use to set the properties of a new ProductCreateParams object and create it with the build method.
             ProductCreateParams Parameters = ProductCreateParams.builder()
                     .setName(itemInfo.getProductName())
+                    .addImage(imageUrl)
                     .setDescription(itemInfo.getProductDesc())
                     .build();
             Product productObj = Product.create(Parameters);
@@ -161,6 +173,8 @@ public class ControllerLayer {
         } catch (StripeException e) {
             logger.error("An error occurred: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -169,7 +183,8 @@ public class ControllerLayer {
 
     @PostMapping("/Stripe/Authenticate")
     public ResponseEntity<String> stripeMethod(@RequestBody UserInfoForStripe userInfo) {
-//     creating object to add parameter
+
+
 
 // The SessionCreateParams.builder() method is a static factory method that returns an instance of the Builder class, which is a static inner class of SessionCreateParams.
 // FIXME: NOTE: this is a static factory method which is used to create another class "NOT" a factory object creational design pattern
