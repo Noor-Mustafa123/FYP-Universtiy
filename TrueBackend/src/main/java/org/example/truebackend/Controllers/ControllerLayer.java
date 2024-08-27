@@ -137,7 +137,7 @@ public class ControllerLayer {
     @PostMapping("/Stripe/AddProduct")
     public ResponseEntity<ProductResponse> addNewProduct(@RequestBody itemInfo itemInfo) {
         try {
-
+System.out.println("the add product method has been triggered");
 //        Creating image url
          String imageUrl =   imageServiceObject.imageUploadMethod( itemInfo.getProductImage());
 
