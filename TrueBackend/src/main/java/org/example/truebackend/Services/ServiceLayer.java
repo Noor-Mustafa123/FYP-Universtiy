@@ -101,6 +101,8 @@ public class ServiceLayer {
 
             AuthenticationReponse authenticationReponseObjAdmin = authenticationService.authenticateUser(loginObj);
             authenticationReponseObjAdmin.setErrorString("This is an admin");
+            authenticationReponseObjAdmin.setUserEmail(email);
+            authenticationReponseObjAdmin.setUserAddress(listOfEmails.get(0).getAddress());
             System.out.println(authenticationReponseObjAdmin.getRefreshToken());
             System.out.println(authenticationReponseObjAdmin.getJwtToken());
             System.out.println(authenticationReponseObjAdmin.getErrorString());
@@ -116,6 +118,9 @@ public class ServiceLayer {
             AuthenticationReponse authenticationReponseObjUser = authenticationService.authenticateUser(loginObj);
             String errorString = String.format("Successfully logged in as user - %s - %s", user.getFirstName(), user.getAddress());
             authenticationReponseObjUser.setErrorString(errorString);
+            authenticationReponseObjUser.setUserEmail(email);
+            System.out.println(email);
+            authenticationReponseObjUser.setUserAddress(listOfEmails.get(0).getAddress());
             authenticationReponseObjUser.setFirstNameOfUser(user.getFirstName());
             return authenticationReponseObjUser;
         }
