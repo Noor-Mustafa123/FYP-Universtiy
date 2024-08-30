@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.*;
@@ -134,9 +135,18 @@ public class ControllerLayer {
     }
 
 
+//    Correct, @RequestBody is not suitable for handling multipart/form-data requests in Spring Boot. The @RequestBody annotation is designed for handling data in formats like JSON or XML, not for handling form data that includes binary files.
     @PostMapping("/Stripe/AddProduct")
-    public ResponseEntity<ProductResponse> addNewProduct(@RequestBody itemInfo itemInfo) {
+    public ResponseEntity<ProductResponse> addNewProduct(@RequestParam("productName") String productName,
+                                                         @RequestParam("productDesc") String productDesc,
+                                                         @RequestParam("productPrice") Long productPrice,
+                                                         @RequestParam("productQuantity") Integer productQuantity,
+                                                         @RequestPart("productImage") MultipartFile productImage) {
         try {
+
+            itemInfo itemInfo = new itemInfo(productName,productDesc,productPrice,productImage);
+
+
 System.out.println("the add product method has been triggered");
 //        Creating image url
          String imageUrl =   imageServiceObject.imageUploadMethod( itemInfo.getProductImage());

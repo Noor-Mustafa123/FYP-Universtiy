@@ -1,6 +1,7 @@
 package org.example.truebackend.Models;
 
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @Component
 public class itemInfo {
 
